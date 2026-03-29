@@ -1,0 +1,17 @@
+{% # theme-check-disable AssetPreload %}
+
+<link rel="preload" as="font" href="{{ 'Inter-Variable.woff2' | asset_url }}" type="font/woff2" crossorigin>
+
+<style>
+  {%- capture content -%}
+    @font-face {
+      font-family: 'Inter';
+      src: url("{{ 'Inter-Variable.woff2' | asset_url }}") format('woff2-variations');
+      font-weight: 300 500;
+      font-style: normal;
+      font-display: swap;
+    }
+  {%- endcapture -%}
+
+  {{ content | strip_newlines | strip }}
+</style>

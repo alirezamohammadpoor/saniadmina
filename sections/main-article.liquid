@@ -1,0 +1,36 @@
+<div data-section-id="{{ section.id }}" data-section-type="article">
+  <div class="container">
+    <div class="flex flex-col gap-y-8 my-8 text-center">
+      <h1 class="text-2xl font-medium">
+        {{ article.title }}
+      </h1>
+
+      <div class="text-lg">
+        {{- article.published_at | time_tag: format: 'date' -}}
+        
+        {% if section.settings.show_author %}
+          By: {{ article.author }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mx-auto mt-8 max-w-[600px]">
+      <div class="article-content rte">
+        {{ article.content }}
+      </div>
+    </div>
+  </div>    
+</div>
+
+{% schema %}
+{
+  "name": "Article - Main",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show Author"
+    }
+  ]
+}
+{% endschema %}

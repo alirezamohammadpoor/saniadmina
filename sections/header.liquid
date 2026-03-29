@@ -1,0 +1,74 @@
+<header
+  class="header"
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  role="banner"
+>
+  <div class="container">
+    <div class="relative flex items-center justify-between h-[var(--header-height)]">
+      {%- comment -%} Left: Menu {%- endcomment -%}
+      <button
+        class="text-label text-fg"
+        data-mobile-menu-toggle
+        aria-label="Toggle Menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        Menu
+      </button>
+
+      {%- comment -%} Center: Brand {%- endcomment -%}
+      <a href="{{ routes.root_url }}" class="absolute left-1/2 -translate-x-1/2 text-[12px] font-normal text-fg whitespace-nowrap">
+        Sania d'Mina
+      </a>
+
+      {%- comment -%} Right: Bag {%- endcomment -%}
+      <button
+        class="text-label text-fg"
+        data-ajax-cart-toggle
+        aria-label="Toggle Bag"
+        aria-controls="ajax-cart"
+        aria-expanded="false"
+      >
+        <span
+          class="{% if cart.item_count > 0 %}has-items{% endif %}"
+          data-component="header-cart-control"
+        >
+          Bag ({{ cart.item_count }})
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if shop.brand.logo %}
+      "logo": {{ shop.brand.logo | image_url: width: 500 | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_link_twitter   | json }},
+      {{ settings.social_link_facebook  | json }},
+      {{ settings.social_link_youtube   | json }},
+      {{ settings.social_link_tiktok    | json }},
+      {{ settings.social_link_instagram | json }}
+    ],
+    "url": {{ request.origin | append: page.url | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "primary_menu",
+      "label": "Primary Menu"
+    }
+  ]
+}
+{% endschema %}

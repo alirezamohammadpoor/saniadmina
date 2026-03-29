@@ -1,0 +1,34 @@
+{% paginate blog.articles by 36 %}
+  <section data-section-id="{{ section.id }}" data-section-type="blog">
+    <div class="layout-content-wrapper">
+      <div class="container">
+        <div class="grid gap-y-8 gap-x-8 grid-cols-1 lg:grid-cols-2">
+          {% for article in blog.articles %}
+            <div>
+              {% render 'article-card',
+                        article: article
+              %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if paginate.next.is_link %}
+        <a
+          href="{{ paginate.next.url }}"
+        >
+          {{ paginate.next.title }}
+        </a>
+      {% endif %}
+    </div>
+  </section>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Blog - Main",
+  "settings": [
+
+  ]
+}
+{% endschema %}

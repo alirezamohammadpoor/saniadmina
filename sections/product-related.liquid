@@ -1,0 +1,46 @@
+{% assign limit = 6 %}
+
+{%- if recommendations.performed? -%}
+  <div class="container" data-content>
+    <div class="product-grid">
+      {%- liquid
+        for product in recommendations.products limit: limit
+          render 'product-card', product: product
+        endfor
+      %}
+    </div>
+  </div>
+{%- else -%}   
+  <section
+    data-section-id="{{ section.id }}"
+    data-section-type="product-related"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related"
+  >
+    {% if section.settings.title != blank %}
+      <div class="container">        
+        <h3 class="product-related__title">
+          {{ section.settings.title }}
+        </h3>
+      </div>
+    {% endif %}
+
+    <div class="container">
+      <div data-content-target>
+        <!-- Cards go here... -->
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product - Related",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ]
+}
+{% endschema %}

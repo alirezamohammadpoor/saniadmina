@@ -1,0 +1,158 @@
+{% doc %}
+  @param {product} product - The product to display - required
+  @param {string} [loading] - Optional loading attribute for the image - defaults to "lazy"
+  @param {string} [sizes] - Optional sizes attribute for the image
+  @param {number} [image_min_width] - Optional minimum width for the image - defaults to 500
+  @param {number} [image_max_width] - Optional maximum width for the image - defaults to 900
+
+  @example
+  {% render 'product-card',
+             product: product,
+             loading: 'eager'
+  %}
+{% enddoc %}
+
+{% if product %}
+  {%- liquid
+    if image_min_width == blank
+      assign image_min_width = 500
+    endif
+
+    if image_max_width == blank
+      assign image_max_width = 900
+    endif
+
+    capture image_widths
+      render 'image-widths', min_width: image_min_width, max_width: image_max_width
+    endcapture
+
+    if loading == blank
+      assign loading = 'lazy'
+    endif
+
+    if sizes == blank
+      assign sizes = '(max-width: 767.98px) 50vw, (max-width: 1023.98px) 33vw, 25vw'
+    endif
+
+    assign product_url = product.url
+    if collection and collection.handle != 'all'
+      assign product_url = product.url | within: collection
+    endif
+
+    assign badge = blank
+    for tag in product.tags
+      if tag contains 'badge:'
+        assign badge = tag | remove: 'badge:' | replace: '-', ' '
+      endif
+    endfor
+  -%}
+
+  {%- capture alt_text %}
+    {% if product.featured_image.alt %}
+      {{ product.featured_image.alt }}
+    {% else %}
+      "{{ product.title }}" Featured Image
+    {% endif %}
+  {%- endcapture %}
+  {% assign alt_text = alt_text | strip_newlines | strip %}
+
+  <div
+    class="product-card group h-full"
+    data-component="product-card"
+  >
+    <a href="{{ product_url }}" class="flex flex-col gap-2">
+      {%- comment -%} Image — 3:4 ratio {%- endcomment -%}
+      <div class="relative w-full aspect-[3/4] overflow-hidden bg-[#E8E5E0]">
+        {{ product.featured_image
+          | image_url: width: image_max_width
+          | image_tag:
+            loading: loading,
+            widths: image_widths,
+            alt: alt_text,
+            class: 'h-full w-full object-cover lazy-image',
+            sizes: sizes
+        }}
+
+        {% if badge != blank %}
+          <span class="absolute top-2 left-2 text-label text-fg" style="font-size: 10px;">
+            {{ badge | upcase }}
+          </span>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Info: default state (hidden on hover) {%- endcomment -%}
+      <div class="product-card__info">
+        <div class="flex items-center justify-between">
+          <span class="text-[12px] text-fg">{{ product.title }}</span>
+
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Color' %}
+              <div class="flex items-center gap-1">
+                {% for value in option.values %}
+                  {% if value.swatch.color %}
+                    <span
+                      class="block w-[10px] h-[10px]"
+                      style="background-color: {{ value.swatch.color }};"
+                      title="{{ value }}"
+                    ></span>
+                  {% else %}
+                    <span
+                      class="block w-[10px] h-[10px] bg-fg"
+                      title="{{ value }}"
+                    ></span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <span class="text-[12px] text-fg">
+          {% if product.available %}
+            {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+          {% else %}
+            {{ 'products.product.sold_out' | t }}
+          {% endif %}
+        </span>
+      </div>
+
+      {%- comment -%} Hover: show sizes (hidden by default) {%- endcomment -%}
+      <div class="product-card__sizes">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-wrap gap-x-2 gap-y-1">
+            {% for option in product.options_with_values %}
+              {% if option.name == 'Size' %}
+                {% for value in option.values %}
+                  <span class="text-[12px] {% if value.available %}text-fg{% else %}text-muted line-through{% endif %}">
+                    {{ value }}
+                  </span>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Color' %}
+              <div class="flex items-center gap-1">
+                {% for value in option.values %}
+                  {% if value.swatch.color %}
+                    <span
+                      class="block w-[10px] h-[10px]"
+                      style="background-color: {{ value.swatch.color }};"
+                      title="{{ value }}"
+                    ></span>
+                  {% else %}
+                    <span
+                      class="block w-[10px] h-[10px] bg-fg"
+                      title="{{ value }}"
+                    ></span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </a>
+  </div>
+{% endif %}

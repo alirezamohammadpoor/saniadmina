@@ -1,0 +1,41 @@
+{%- comment %}
+
+  Article Card
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% render 'article-card',
+             article: { article } - required
+  %}
+
+{% endcomment -%}
+
+{% if article %}
+  <div class="flex flex-col gap-y-2">
+    <a href="{{ article.url }}" title="{{ article.title | escape }}">
+      <div class="relative aspect-[1.47]">
+        {%- liquid
+          assign alt_text =  article.image.alt | default: article.title | escape
+
+          capture image_widths
+            render 'image-widths', max_width: 900
+          endcapture
+        -%}
+
+        {{
+          article.image
+          | image_url: width: 900
+          | image_tag:
+            widths: image_widths,
+            alt: alt_text,
+            class: 'h-full w-full object-cover lazy-image'
+        }}
+      </div>
+      <div class="flex flex-col gap-y-2">
+        <div class="text-sm uppercase">{{- article.published_at | time_tag: format: 'date' -}}</div>
+        <div class="text-lg font-medium">{{ article.title }}</div>
+      </div>
+    </a>
+  </div>
+{% endif %}

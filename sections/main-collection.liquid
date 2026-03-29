@@ -1,0 +1,73 @@
+{%- comment %}
+
+  Collection Main Section
+  ------------------------------------------------------------------------------
+
+{% endcomment -%}
+
+{% paginate collection.products by 12 %}
+
+<div data-section-id="{{ section.id }}" data-section-type="collection">
+  <div class="mb-8 lg:mb-10">
+    <div class="container">
+      <h1 class="text-xl text-center">
+        {{ collection.title }}
+      </h1>
+    </div>    
+  </div>
+
+  <div class="container">
+    <div
+      class="results-display"
+      data-component="results-display"
+    >
+      <ul>
+        {% if collection.products.size > 0 %}   
+          {% for product in collection.products %}
+            {%- liquid
+              assign loading = blank
+
+              if forloop.index <= 8
+                assign loading = 'eager'
+              endif
+            %}
+                        
+            <li>
+              {% render 'product-card',
+                         product: product,
+                         loading: loading
+              %}
+            </li>
+          {% endfor %}
+        {% else %}
+          <li class="col-span-full text-center">
+            <p>Nothing Found..</p>
+          </li>
+        {% endif %}
+      </ul>
+
+
+      {% if paginate.next %}
+        <a
+          href="{{- paginate.next.url -}}"
+          class="h-0 w-0 overflow-hidden opacity-0"
+          aria-hidden="true"
+          data-more
+        >
+          Load more
+        </a>
+      {% endif %}      
+    </div>
+  </div>
+</div>
+
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Collection - Main",
+  "settings": [
+
+  ]
+}
+{% endschema %}
