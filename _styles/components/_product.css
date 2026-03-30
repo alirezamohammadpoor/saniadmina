@@ -1,18 +1,3 @@
-/* Product Card — hover swap */
-.product-card__sizes {
-  display: none;
-}
-
-.product-card:hover .product-card__info,
-.product-card:focus-within .product-card__info {
-  display: none;
-}
-
-.product-card:hover .product-card__sizes,
-.product-card:focus-within .product-card__sizes {
-  display: block;
-}
-
 /* Product Grid */
 .product-grid {
   display: grid;

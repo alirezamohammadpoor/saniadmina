@@ -38,6 +38,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 
 ### Rules
 
+- **Always use Tailwind classes for styling. Never write raw CSS.** The only exception is the existing `_product.css` hover swap which predates this rule.
 - No accent colors. No shadows. No border radius.
 - Labels/nav/tags: uppercase + letter-spaced
 - Depth via whitespace and weight contrast only

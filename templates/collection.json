@@ -11,7 +11,28 @@
   "sections": {
     "main": {
       "type": "main-collection",
-      "settings": {}
+      "blocks": {
+        "editorial_jNkTqb": {
+          "type": "editorial",
+          "settings": {
+            "image": "shopify://shop_images/AVENUE-HIGH-Wide-Shaft-black-glitter-leather-boots-sania-dmina_02.jpg"
+          }
+        },
+        "editorial_4QWxMp": {
+          "type": "editorial",
+          "settings": {
+            "image": "shopify://shop_images/AVENUE-HIGH-Wide-Shaft-black-glitter-leather-boots-sania-dmina_01.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "editorial_jNkTqb",
+        "editorial_4QWxMp"
+      ],
+      "settings": {
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/frontpagesaniadminacarla7pumpsiliridaarton.jpg"
+      }
     }
   },
   "order": [

@@ -122,7 +122,8 @@
     "general": {
       "no_matches": "Sorry, there are no products in this collection",
       "no_products_found": "No products found",
-      "link_title": "Browse our {{ title }} collection"
+      "link_title": "Browse our {{ title }} collection",
+      "products": "products"
     }
   },
   "contact": {
