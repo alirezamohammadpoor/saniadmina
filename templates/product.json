@@ -15,11 +15,18 @@
     },
     "related": {
       "type": "product-related",
+      "settings": {
+        "title": "You may also like"
+      }
+    },
+    "as-seen-on": {
+      "type": "product-as-seen-on",
       "settings": {}
     }
   },
   "order": [
     "main",
-    "related"
+    "related",
+    "as-seen-on"
   ]
 }

@@ -15,6 +15,7 @@
 
 {% liquid
   assign use_variant_image = use_variant_image | default: false
+  assign extra_class = extra_class | default: ''
 
   assign has_swatch = false
   assign swatch_image = nil
@@ -36,7 +37,7 @@
 {% comment %} if has_swatch is false, display "unavailable" ? {% endcomment %}
 
 <span
-  class="swatch"
+  class="swatch {{ extra_class }}"
   {% if swatch.color %}
     style="color: rgb({{ swatch.color.rgb }});"
   {% endif %}

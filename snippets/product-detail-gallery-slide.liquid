@@ -19,7 +19,7 @@
   -%}
   
   <div
-    class="relative aspect-square embla__slide"
+    class="relative aspect-[4/5] embla__slide"
     role="group"
     aria-roledescription="slide"
   >
@@ -31,7 +31,7 @@
         widths: main_image_widths,
         sizes: '100vw',
         alt: image.alt,
-        class: 'h-full w-full object-contain lazy-image'
+        class: 'h-full w-full object-cover lazy-image'
     }}
   </div>     
 {% endif %}

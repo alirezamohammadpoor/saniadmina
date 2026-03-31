@@ -8,8 +8,9 @@
   @param {object} [current_variant] - The current variant to display - optional
 
   @example
-    {% render 'product-price',
-              product: product
+    {% render 'product-detail-form',
+              product: product,
+              current_variant: current_variant
     %}
 {% enddoc %}
 
@@ -23,108 +24,161 @@
     class="h-full"
     data-component="product-detail-form"
   >
-    {% form 'product', product, style: 'height: 100%' %} 
-      <div class="lg:sticky lg:top-0">
-        <div class="container">
-          <div class="lg:pt-28">
-            <h1 class="mb-2 text-center lg:text-left text-2xl uppercase font-bold">
-              {{ product.title }}
-            </h1>
+    {% form 'product', product, style: 'height: 100%' %}
+      <div class="lg:sticky lg:top-[43px] lg:h-[calc(100vh-43px)] lg:flex lg:items-center lg:justify-center">
+        <div class="px-4 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
 
-            <div class="text-center lg:text-left text-xl">
-              {% render 'product-detail-price',
-                        product: product,
-                        current_variant: current_variant
-              %}
-            </div>
+          {%- comment -%} Title {%- endcomment -%}
+          <h1 class="text-[20px] lg:text-[28px] font-normal text-left text-fg mb-2">
+            {{ product.title }}
+          </h1>
 
-            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-              <meta itemprop="priceCurrency" content="{{ shop.currency }}">
-              <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
-              <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
+          {%- comment -%} Price {%- endcomment -%}
+          <div class="text-left text-[12px] lg:text-[14px] text-fg mb-6">
+            {% render 'product-detail-price',
+                      product: product,
+                      current_variant: current_variant
+            %}
+          </div>
 
-              <div
-                data-component="variant-picker"
-                class="flex flex-col gap-2"
-                {% if product.has_only_default_variant %}
-                  style="display: none;"
-                  aria-hidden="true"
-                {% endif %}
-              >
-                {% for option in product.options_with_values %}
-                  {%- liquid
-                    assign option_name_handle = option.name | handle
-                    assign hide_option = false
-                    assign selection_type = 'select'
-
-                    if option_name_handle == 'color'
-                      assign selection_type = 'radio'
-                    endif
-
-                    comment
-                      Add any logic needed to hide specific options
-                    endcomment
-                  -%}
-                  
-                  <div
-                    {% if hide_option %}
-                      style="display: none;"
-                      aria-hidden="true"
-                    {% endif %}
-                  >
-
-                    {% render 'variant-picker-option',
-                              option: option,
-                              selection_type: selection_type
-                    %}                
+          {%- comment -%} Heel height — thumbnails if metafield has images, text fallback {%- endcomment -%}
+          {% if product.metafields.custom.heel_types != blank %}
+            {%- assign heel_types = product.metafields.custom.heel_types.value -%}
+            <div class="mb-6">
+              <span class="text-[12px] font-medium text-fg block mb-3">Heel height</span>
+              <div class="flex gap-2">
+                {% for heel in heel_types %}
+                  <div class="flex flex-col items-center gap-1">
+                    <div class="w-20 h-20 overflow-hidden bg-[#E8E5E0]">
+                      {% if heel.image %}
+                        <img
+                          src="{{ heel.image | image_url: width: 160 }}"
+                          alt="{{ heel.name }}"
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                        >
+                      {% endif %}
+                    </div>
+                    <span class="text-[10px] text-fg">{{ heel.name }}</span>
                   </div>
                 {% endfor %}
               </div>
+            </div>
+          {% elsif product.metafields.custom.heel_height_mm != blank %}
+            <div class="text-[12px] text-muted mb-6">
+              Heel height: {{ product.metafields.custom.heel_height_mm | divided_by: 10.0 }} cm
+            </div>
+          {% endif %}
 
-                <label class="sr-only" for="no-js-variant-select">Select Variant</label>
-                <select name="id" class="no-js" id="no-js-variant-select">
-                  {% for variant in product.variants %}
-                    <option
-                      {% if variant == current_variant %}selected="selected"{% endif %}
-                      {% unless variant.available %}disabled="disabled"{% endunless %}
-                      value="{{ variant.id }}"
-                    >
-                        {{ variant.title }}
-                    </option>
-                  {% endfor %}
-                </select>
+          <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+            <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+            <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
 
-                <input type="hidden" value="1" name="quantity" />
-
-                <button
-                  type="submit"
-                  name="add"
-                  class="btn"
-                  {% if current_variant.available == false %}
-                    disabled="disabled"
-                  {% endif %}
-                  data-component="atc-button"
-                >
-                  <span data-label>
-                    {% if current_variant.available %}
-                      Add To Cart
-                    {% else %}
-                      Sold Out
-                    {% endif %}
-                  </span>
-                </button>  
-
-                <div>
-                  <div>
-                    {{ form | payment_terms }}
-                  </div>
-                </div>
-
-              {% if product.description != blank %}
-                <div>
-                  {{ product.description }}
-                </div>
+            {%- comment -%} Variant Picker {%- endcomment -%}
+            <div
+              data-component="variant-picker"
+              class="flex flex-col gap-6"
+              {% if product.has_only_default_variant %}
+                style="display: none;"
+                aria-hidden="true"
               {% endif %}
+            >
+              {% for option in product.options_with_values %}
+                {%- liquid
+                  assign option_name_handle = option.name | handle
+                  assign hide_option = false
+                  assign selection_type = 'select'
+
+                  if option_name_handle == 'color'
+                    assign selection_type = 'radio'
+                  endif
+
+                  if option_name_handle == 'size'
+                    assign selection_type = 'radio'
+                  endif
+                -%}
+
+                <div
+                  {% if hide_option %}
+                    style="display: none;"
+                    aria-hidden="true"
+                  {% endif %}
+                >
+                  {% render 'variant-picker-option',
+                            option: option,
+                            product: product,
+                            selection_type: selection_type
+                  %}
+                </div>
+              {% endfor %}
+            </div>
+
+            {%- comment -%} No-JS variant select fallback {%- endcomment -%}
+            <label class="sr-only" for="no-js-variant-select">Select Variant</label>
+            <select name="id" class="no-js" id="no-js-variant-select">
+              {% for variant in product.variants %}
+                <option
+                  {% if variant == current_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                  value="{{ variant.id }}"
+                >
+                    {{ variant.title }}
+                </option>
+              {% endfor %}
+            </select>
+
+            <input type="hidden" value="1" name="quantity" />
+
+            {%- comment -%} Add to Bag button {%- endcomment -%}
+            <button
+              type="submit"
+              name="add"
+              class="w-full h-12 bg-fg text-bg text-[12px] font-medium flex items-center justify-between px-6 mt-6 disabled:bg-muted disabled:cursor-not-allowed"
+              {% if current_variant.available == false %}
+                disabled="disabled"
+              {% endif %}
+              data-component="atc-button"
+            >
+              <span data-label>
+                {% if current_variant.available %}
+                  {{ 'app.add_to_cart' | t }}
+                {% else %}
+                  {{ 'app.sold_out' | t }}
+                {% endif %}
+              </span>
+              <span data-atc-price class="font-normal">
+                {{ current_variant.price | money_without_trailing_zeros }}
+              </span>
+            </button>
+
+            <div>
+              <div>
+                {{ form | payment_terms }}
+              </div>
+            </div>
+
+            {%- comment -%} Description {%- endcomment -%}
+            {% if product.description != blank %}
+              <div class="text-[12px] text-fg mt-6 leading-relaxed">
+                {{ product.description }}
+              </div>
+            {% endif %}
+
+            {%- comment -%} Info links — open single modal, expand clicked section {%- endcomment -%}
+            <div class="mt-6 border-t border-fg/10 pt-4 flex flex-col">
+              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="materials-care">
+                Materials & Care <span class="text-[10px]">+</span>
+              </button>
+              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="size-guide">
+                Size Guide <span class="text-[10px]">+</span>
+              </button>
+              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="shipping-returns">
+                Shipping & Returns <span class="text-[10px]">+</span>
+              </button>
+              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="payments">
+                Payments <span class="text-[10px]">+</span>
+              </button>
             </div>
           </div>
         </div>
@@ -132,8 +186,93 @@
 
       <script type="application/json" data-product-json>
         {% render 'product-json-lite', product: product %}
-      </script>      
+      </script>
     {% endform %}
   </div>
+
+  {%- comment -%} Product Info Modal — single modal with accordion sections {%- endcomment -%}
+  <div class="fixed inset-0 z-200 hidden" data-product-info-modal>
+    <div class="absolute inset-0 bg-fg/30 z-0" data-modal-backdrop></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10">
+      <div class="flex items-center justify-between px-4 lg:px-10 py-6 border-b border-fg/10">
+        <span class="text-[12px] font-medium text-fg">Product Info</span>
+        <button type="button" class="text-[12px] text-fg" data-modal-close>Close</button>
+      </div>
+      <div class="px-4 lg:px-10">
+        <details class="border-b border-fg/10" data-info-section="materials-care">
+          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
+            Materials & Care
+            <span class="text-[10px] transition-transform open:rotate-45">+</span>
+          </summary>
+          <div class="text-[12px] text-fg leading-relaxed pb-4">
+            {{ product.metafields.custom.materials_care | default: 'Information coming soon.' }}
+          </div>
+        </details>
+        <details class="border-b border-fg/10" data-info-section="size-guide">
+          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
+            Size Guide
+            <span class="text-[10px] transition-transform open:rotate-45">+</span>
+          </summary>
+          <div class="text-[12px] text-fg leading-relaxed pb-4">
+            Find your perfect fit. Our shoes are crafted on Italian lasts and run true to European sizing.
+          </div>
+        </details>
+        <details class="border-b border-fg/10" data-info-section="shipping-returns">
+          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
+            Shipping & Returns
+            <span class="text-[10px] transition-transform open:rotate-45">+</span>
+          </summary>
+          <div class="text-[12px] text-fg leading-relaxed pb-4">
+            {{ product.metafields.custom.shipping_returns | default: 'Complimentary shipping on all orders. Free returns within 14 days.' }}
+          </div>
+        </details>
+        <details class="border-b border-fg/10" data-info-section="payments">
+          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
+            Payments
+            <span class="text-[10px] transition-transform open:rotate-45">+</span>
+          </summary>
+          <div class="text-[12px] text-fg leading-relaxed pb-4">
+            We accept Visa, Mastercard, American Express, and Klarna. All transactions are secure and encrypted.
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Info modal script — open/close, auto-expand clicked section {%- endcomment -%}
+  <script>
+    (function() {
+      const modal = document.querySelector('[data-product-info-modal]');
+      if (!modal) return;
+      const main = document.querySelector('main') || document.body;
+      const sections = modal.querySelectorAll('[data-info-section]');
+
+      const close = () => {
+        modal.classList.add('hidden');
+        sections.forEach((s) => s.removeAttribute('open'));
+      };
+
+      const open = (sectionId) => {
+        sections.forEach((s) => {
+          if (s.dataset.infoSection === sectionId) {
+            s.setAttribute('open', '');
+          } else {
+            s.removeAttribute('open');
+          }
+        });
+        modal.classList.remove('hidden');
+      };
+
+      document.querySelectorAll('[data-info-trigger]').forEach((t) => {
+        t.addEventListener('click', () => open(t.dataset.infoTrigger));
+      });
+
+      modal.querySelector('[data-modal-close]').addEventListener('click', close);
+      modal.querySelector('[data-modal-backdrop]').addEventListener('click', close);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      });
+    })();
+  </script>
 
 {% endunless %}

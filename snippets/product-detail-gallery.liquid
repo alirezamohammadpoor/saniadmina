@@ -22,7 +22,7 @@
 
     if option_name_upcase == 'COLOR'
       assign colors_with_images = 0
-      
+
       for color in option.values
         assign color_upcase = color | upcase
 
@@ -39,7 +39,7 @@
       if colors_with_images == option.values.size
         assign color_galleries_possible = true
       endif
-    endif 
+    endif
   endfor
 %}
 
@@ -50,17 +50,17 @@
     {% assign option_position_label = 'option' | append: option.position %}
 
     {% if option_name_upcase == "COLOR" %}
-      {% for color in option.values %}    
+      {% for color in option.values %}
         {%- liquid
           assign color_upcase = color | upcase
           assign list_items = ''
           assign slides = ''
           assign slides_count = 0
           assign is_active = false
-          
+
           if current_variant[option_position_label] == color
             assign is_active = true
-          endif 
+          endif
 
           for image in product.images
             assign image_alt_upcase = image.alt | upcase
@@ -72,7 +72,7 @@
               endif
 
               capture list_item
-                render 'product-detail-gallery-item', image: image
+                render 'product-detail-gallery-item', image: image, loading: loading
               endcapture
 
               capture slide
@@ -80,12 +80,12 @@
               endcapture
 
               assign list_items = list_items | append: list_item
-              assign slides = slides | append: slide  
+              assign slides = slides | append: slide
               assign slides_count = slides_count | plus: 1
             endif
           endfor
         -%}
-        
+
         <div
           class="product-detail-gallery"
           {% if is_active %}
@@ -95,12 +95,16 @@
           data-product-title="{{ product.title | escape }}"
           data-color="{{ color }}"
         >
-          {% render 'product-gallery-slideshow', slides: slides, slides_count: slides_count %}
+          {%- comment -%} Mobile: Embla carousel {%- endcomment -%}
+          <div class="lg:hidden">
+            {% render 'product-gallery-slideshow', slides: slides, slides_count: slides_count %}
+          </div>
 
-          <div class="product-detail-gallery__list">
+          {%- comment -%} Desktop: stacked vertical scroll {%- endcomment -%}
+          <div class="hidden lg:flex lg:flex-col lg:gap-1">
             {{ list_items }}
-          </div>       
-        </div>         
+          </div>
+        </div>
       {% endfor %}
     {% endif %}
   {% endfor %}
@@ -122,7 +126,7 @@
       endif
 
       capture list_item
-        render 'product-detail-gallery-item', image: image
+        render 'product-detail-gallery-item', image: image, loading: loading
       endcapture
 
       capture slide
@@ -130,7 +134,7 @@
       endcapture
 
       assign list_items = list_items | append: list_item
-      assign slides = slides | append: slide   
+      assign slides = slides | append: slide
       assign slides_count = slides_count | plus: 1
     endfor
   -%}
@@ -141,10 +145,14 @@
     data-component="product-detail-gallery"
     data-product-title="{{ product.title | escape }}"
   >
-    {% render 'product-gallery-slideshow', slides: slides, slides_count: slides_count %}
+    {%- comment -%} Mobile: Embla carousel {%- endcomment -%}
+    <div class="lg:hidden">
+      {% render 'product-gallery-slideshow', slides: slides, slides_count: slides_count %}
+    </div>
 
-    <div class="product-detail-gallery__list">
+    {%- comment -%} Desktop: stacked vertical scroll {%- endcomment -%}
+    <div class="hidden lg:flex lg:flex-col lg:gap-1">
       {{ list_items }}
-    </div>   
-  </div>    
+    </div>
+  </div>
 {% endif %}

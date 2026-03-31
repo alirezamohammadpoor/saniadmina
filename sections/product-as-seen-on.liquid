@@ -1,0 +1,43 @@
+{%- comment -%}
+  As Seen On Section
+  Displays social media features for a product.
+  Data from product.metafields.custom.as_seen_on (JSON list of { handle, image, product_name })
+{%- endcomment -%}
+
+{%- assign as_seen_on = product.metafields.custom.as_seen_on.value -%}
+
+{% if as_seen_on != blank and as_seen_on.size > 0 %}
+  <section class="px-2 lg:px-10 py-10">
+    <h3 class="text-label text-muted mb-4">As seen on</h3>
+
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
+      {% for item in as_seen_on %}
+        <div class="min-w-[200px] lg:min-w-[260px] shrink-0 snap-start">
+          {% if item.image %}
+            <div class="aspect-[3/4] overflow-hidden bg-[#E8E5E0] mb-2">
+              <img
+                src="{{ item.image | image_url: width: 520 }}"
+                alt="{{ item.handle | default: 'As seen on' }}"
+                class="w-full h-full object-cover"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+          {% if item.handle %}
+            <span class="text-[12px] text-fg block">{{ item.handle }}</span>
+          {% endif %}
+          {% if item.product_name %}
+            <span class="text-[12px] text-muted block">{{ item.product_name }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product - As Seen On",
+  "settings": []
+}
+{% endschema %}

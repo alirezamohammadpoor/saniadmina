@@ -54,19 +54,19 @@ input[type="radio"] + label .swatch {
 /* Hover state */
 input[type="checkbox"]:not(:disabled):not(:checked) + label:hover .swatch,
 input[type="radio"]:not(:disabled):not(:checked) + label:hover .swatch {
-  @apply outline outline-green outline-offset-2;
+  @apply outline-1 outline-offset-1 outline-[var(--color-fg)]/50;
 }
 
 /* Selected state */
 input[type="checkbox"]:checked + label .swatch,
 input[type="radio"]:checked + label .swatch {
-  @apply outline outline-blue outline-offset-2;
+  @apply outline-1 outline-offset-1 outline-[var(--color-fg)];
 }
 
 /* Focus state */
 input[type="checkbox"]:focus-visible + label .swatch,
 input[type="radio"]:focus-visible + label .swatch {
-  @apply outline outline-red outline-offset-2;
+  @apply outline-1 outline-offset-1 outline-[var(--color-fg)];
 }
 
 /* Disabled state */

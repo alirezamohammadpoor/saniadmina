@@ -16,14 +16,51 @@
         {{ slides }}
       </div>
     </div>
-    
-    <div class="text-center" data-pagination></div>
 
+    {%- comment -%} A11y pagination — sr-only, updated by existing JS {%- endcomment -%}
+    <div class="sr-only" data-pagination></div>
+
+    {%- comment -%} Visual dot pagination {%- endcomment -%}
     {% if slides_count > 1 %}
-      <div class="flex justify-between items-center">
-        <button class="btn" type="button" aria-label="Previous Image" data-previous>Back</button>
-        <button class="btn" type="button" aria-label="Next image" data-next>Forward</button>
+      <div class="flex justify-center items-center gap-2 py-3" data-dots>
+        {% for i in (1..slides_count) %}
+          <span
+            class="block w-1.5 h-1.5 {% if forloop.first %}bg-fg{% else %}bg-muted{% endif %}"
+            data-dot="{{ forloop.index0 }}"
+          ></span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Prev/Next buttons — hidden visually, stay in DOM for JS {%- endcomment -%}
+    {% if slides_count > 1 %}
+      <div class="sr-only">
+        <button type="button" aria-label="Previous Image" data-previous>Back</button>
+        <button type="button" aria-label="Next image" data-next>Forward</button>
       </div>
     {% endif %}
   </div>
+
+  {%- comment -%} Dot sync script — observes [data-pagination] text changes {%- endcomment -%}
+  {% if slides_count > 1 %}
+    <script>
+      (function() {
+        const el = document.currentScript.closest('.product-detail-gallery__slideshow');
+        const pag = el.querySelector('[data-pagination]');
+        const dots = el.querySelectorAll('[data-dot]');
+        if (!pag || !dots.length) return;
+        const sync = () => {
+          const t = pag.textContent.trim();
+          const idx = parseInt(t.split('/')[0], 10) - 1;
+          if (isNaN(idx)) return;
+          dots.forEach((d) => {
+            d.classList.toggle('bg-fg', +d.dataset.dot === idx);
+            d.classList.toggle('bg-muted', +d.dataset.dot !== idx);
+          });
+        };
+        new MutationObserver(sync).observe(pag, { childList: true, characterData: true, subtree: true });
+        sync();
+      })();
+    </script>
+  {% endif %}
 </div>

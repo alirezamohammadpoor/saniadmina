@@ -1,32 +1,34 @@
 {% assign limit = 6 %}
 
 {%- if recommendations.performed? -%}
-  <div class="container" data-content>
-    <div class="product-grid">
+  <div class="px-2 lg:px-10" data-content>
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
       {%- liquid
         for product in recommendations.products limit: limit
+          echo '<div class="min-w-[200px] lg:min-w-[260px] shrink-0 snap-start">'
           render 'product-card', product: product
+          echo '</div>'
         endfor
       %}
     </div>
   </div>
-{%- else -%}   
+{%- else -%}
   <section
     data-section-id="{{ section.id }}"
     data-section-type="product-related"
     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related"
   >
     {% if section.settings.title != blank %}
-      <div class="container">        
-        <h3 class="product-related__title">
+      <div class="px-2 lg:px-10 pt-10">
+        <h3 class="text-label text-muted mb-4">
           {{ section.settings.title }}
         </h3>
       </div>
     {% endif %}
 
-    <div class="container">
+    <div class="px-2 lg:px-10">
       <div data-content-target>
-        <!-- Cards go here... -->
+        <!-- Cards injected by JS -->
       </div>
     </div>
   </section>
@@ -39,7 +41,8 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Title"
+      "label": "Title",
+      "default": "You may also like"
     }
   ]
 }
