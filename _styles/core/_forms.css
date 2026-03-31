@@ -223,7 +223,7 @@ input[type="number"] {
 
 /* Quantity Adjuster */
 .quantity-adjuster {
-  @apply h-full inline-flex items-stretch justify-between rounded border;
+  @apply inline-flex items-center gap-2;
 
   button,
   input[type="number"] {
@@ -231,31 +231,11 @@ input[type="number"] {
   }
 
   button {
-    @apply inline-flex items-center justify-center px-[11px];
-
-    &:first-child {
-      @apply pr-[4px];
-    }
-
-    &:last-child {
-      @apply pl-[4px];
-    }
-
-    /* 
-    &:focus-visible {
-      @apply outline-accent-focus;
-    }  
-    */  
+    @apply inline-flex items-center justify-center text-[12px] text-muted;
 
     &[disabled] {
       @apply opacity-50;
     }
-
-    /*
-    &:not([disabled]) {
-      @apply hover:text-fground-tertiary;
-    }
-    */
 
     svg {
       width: 8px;
@@ -264,7 +244,7 @@ input[type="number"] {
   }
 
   input[type="number"] {
-    @apply flex-1 min-w-4 text-center appearance-none font-sans text-base;
+    @apply w-5 text-center appearance-none font-sans text-[14px] text-fg;
   }
 }
 

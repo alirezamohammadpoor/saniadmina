@@ -25,8 +25,42 @@
     data-component="product-detail-form"
   >
     {% form 'product', product, style: 'height: 100%' %}
-      <div class="lg:sticky lg:top-[43px] lg:h-[calc(100vh-43px)] lg:flex lg:items-center lg:justify-center">
+      <div class="lg:sticky lg:top-[var(--header-height)] lg:h-[calc(100vh-var(--header-height))] lg:flex lg:items-center lg:justify-center">
         <div class="px-4 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
+
+          {%- comment -%} Breadcrumb: derived from navigation structure {%- endcomment -%}
+          {%- liquid
+            assign breadcrumb_col = current_collection | default: product.collections.first
+            assign breadcrumb_parent = nil
+            assign main_menu = linklists['main-menu']
+            if breadcrumb_col and main_menu
+              for link in main_menu.links
+                for sublink in link.links
+                  assign sub_handle = sublink.url | split: '/collections/' | last | split: '?' | first
+                  if sub_handle == breadcrumb_col.handle
+                    assign breadcrumb_parent = link
+                    break
+                  endif
+                endfor
+                if breadcrumb_parent
+                  break
+                endif
+              endfor
+            endif
+          -%}
+          {% if breadcrumb_col %}
+            <nav class="mb-3" aria-label="Breadcrumb">
+              <ol class="flex items-center gap-1 text-[12px] text-fg">
+                {% if breadcrumb_parent %}
+                  <li><a href="{{ breadcrumb_parent.url }}">{{ breadcrumb_parent.title }}</a></li>
+                  <li>/</li>
+                {% endif %}
+                <li><a href="{{ breadcrumb_col.url }}">{{ breadcrumb_col.title }}</a></li>
+                <li>/</li>
+                <li>{{ product.title }}</li>
+              </ol>
+            </nav>
+          {% endif %}
 
           {%- comment -%} Title {%- endcomment -%}
           <h1 class="text-[20px] lg:text-[28px] font-normal text-left text-fg mb-2">
@@ -87,7 +121,6 @@
               {% for option in product.options_with_values %}
                 {%- liquid
                   assign option_name_handle = option.name | handle
-                  assign hide_option = false
                   assign selection_type = 'select'
 
                   if option_name_handle == 'color'
@@ -99,12 +132,7 @@
                   endif
                 -%}
 
-                <div
-                  {% if hide_option %}
-                    style="display: none;"
-                    aria-hidden="true"
-                  {% endif %}
-                >
+                <div>
                   {% render 'variant-picker-option',
                             option: option,
                             product: product,
@@ -165,20 +193,12 @@
               </div>
             {% endif %}
 
-            {%- comment -%} Info links — open single modal, expand clicked section {%- endcomment -%}
-            <div class="mt-6 border-t border-fg/10 pt-4 flex flex-col">
-              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="materials-care">
-                Materials & Care <span class="text-[10px]">+</span>
-              </button>
-              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="size-guide">
-                Size Guide <span class="text-[10px]">+</span>
-              </button>
-              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="shipping-returns">
-                Shipping & Returns <span class="text-[10px]">+</span>
-              </button>
-              <button type="button" class="text-[12px] text-fg py-3 border-b border-fg/10 flex items-center justify-between w-full text-left" data-info-trigger="payments">
-                Payments <span class="text-[10px]">+</span>
-              </button>
+            {%- comment -%} Info links — open modal {%- endcomment -%}
+            <div class="mt-6 flex flex-col gap-3">
+              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="materials-care">Materials & Care</button>
+              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="size-guide">Size Guide</button>
+              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="shipping-returns">Shipping & Returns</button>
+              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="payments">Payments</button>
             </div>
           </div>
         </div>
@@ -190,87 +210,131 @@
     {% endform %}
   </div>
 
-  {%- comment -%} Product Info Modal — single modal with accordion sections {%- endcomment -%}
-  <div class="fixed inset-0 z-200 hidden" data-product-info-modal>
-    <div class="absolute inset-0 bg-fg/30 z-0" data-modal-backdrop></div>
-    <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10">
-      <div class="flex items-center justify-between px-4 lg:px-10 py-6 border-b border-fg/10">
-        <span class="text-[12px] font-medium text-fg">Product Info</span>
+  {%- comment -%} Product Info Modal — tab navigation {%- endcomment -%}
+  <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal role="dialog" aria-label="Product information" aria-hidden="true">
+    <div class="absolute inset-0 bg-fg/30 z-0 opacity-0 transition-opacity duration-300" data-modal-backdrop></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-300" data-modal-panel>
+      {%- comment -%} Header: close button, same height/padding as main header {%- endcomment -%}
+      <div class="flex items-center justify-end container h-[var(--header-height)]">
         <button type="button" class="text-[12px] text-fg" data-modal-close>Close</button>
       </div>
-      <div class="px-4 lg:px-10">
-        <details class="border-b border-fg/10" data-info-section="materials-care">
-          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
-            Materials & Care
-            <span class="text-[10px] transition-transform open:rotate-45">+</span>
-          </summary>
-          <div class="text-[12px] text-fg leading-relaxed pb-4">
-            {{ product.metafields.custom.materials_care | default: 'Information coming soon.' }}
-          </div>
-        </details>
-        <details class="border-b border-fg/10" data-info-section="size-guide">
-          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
-            Size Guide
-            <span class="text-[10px] transition-transform open:rotate-45">+</span>
-          </summary>
-          <div class="text-[12px] text-fg leading-relaxed pb-4">
+
+      {%- comment -%} Tab navigation — vertical list {%- endcomment -%}
+      <div class="flex flex-col gap-1 px-4 lg:px-10 pb-6 border-b border-fg/10">
+        <button type="button" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">Materials & Care</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">Size Guide</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">Shipping & Returns</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">Payments</button>
+      </div>
+
+      {%- comment -%} Tab content panels {%- endcomment -%}
+      <div class="px-4 lg:px-10 py-8">
+        <div data-info-panel="materials-care">
+          <h4 class="text-[14px] text-fg font-normal mb-4">Materials</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
+            {{ product.metafields.custom.materials_care | default: 'Crafted from premium Italian calfskin leather with a leather sole. Handmade in Italy.' }}
+          </p>
+          <div class="border-t border-[#e5e3de] my-6"></div>
+          <h4 class="text-[14px] text-fg font-normal mb-4">Care</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
+            Store in the provided dust bag when not in use. Avoid prolonged exposure to direct sunlight and moisture.
+          </p>
+        </div>
+        <div data-info-panel="size-guide" class="hidden">
+          <h4 class="text-[14px] text-fg font-normal mb-4">Size Guide</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
             Find your perfect fit. Our shoes are crafted on Italian lasts and run true to European sizing.
-          </div>
-        </details>
-        <details class="border-b border-fg/10" data-info-section="shipping-returns">
-          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
-            Shipping & Returns
-            <span class="text-[10px] transition-transform open:rotate-45">+</span>
-          </summary>
-          <div class="text-[12px] text-fg leading-relaxed pb-4">
-            {{ product.metafields.custom.shipping_returns | default: 'Complimentary shipping on all orders. Free returns within 14 days.' }}
-          </div>
-        </details>
-        <details class="border-b border-fg/10" data-info-section="payments">
-          <summary class="text-[12px] text-fg py-4 cursor-pointer flex items-center justify-between list-none">
-            Payments
-            <span class="text-[10px] transition-transform open:rotate-45">+</span>
-          </summary>
-          <div class="text-[12px] text-fg leading-relaxed pb-4">
+          </p>
+        </div>
+        <div data-info-panel="shipping-returns" class="hidden">
+          <h4 class="text-[14px] text-fg font-normal mb-4">Shipping</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
+            Complimentary shipping on all orders. Orders are processed within 1-2 business days.
+          </p>
+          <div class="border-t border-[#e5e3de] my-6"></div>
+          <h4 class="text-[14px] text-fg font-normal mb-4">Returns</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
+            {{ product.metafields.custom.shipping_returns | default: 'Free returns within 14 days of delivery. Items must be unworn and in original packaging.' }}
+          </p>
+        </div>
+        <div data-info-panel="payments" class="hidden">
+          <h4 class="text-[14px] text-fg font-normal mb-4">Payments</h4>
+          <p class="text-[12px] text-muted leading-relaxed">
             We accept Visa, Mastercard, American Express, and Klarna. All transactions are secure and encrypted.
-          </div>
-        </details>
+          </p>
+        </div>
       </div>
     </div>
   </div>
 
-  {%- comment -%} Info modal script — open/close, auto-expand clicked section {%- endcomment -%}
+  {%- comment -%} Info modal script — animated open/close {%- endcomment -%}
   <script>
     (function() {
-      const modal = document.querySelector('[data-product-info-modal]');
-      if (!modal) return;
-      const main = document.querySelector('main') || document.body;
-      const sections = modal.querySelectorAll('[data-info-section]');
-
-      const close = () => {
-        modal.classList.add('hidden');
-        sections.forEach((s) => s.removeAttribute('open'));
-      };
-
-      const open = (sectionId) => {
-        sections.forEach((s) => {
-          if (s.dataset.infoSection === sectionId) {
-            s.setAttribute('open', '');
-          } else {
-            s.removeAttribute('open');
-          }
+      const switchTab = (modal, id) => {
+        modal.querySelectorAll('[data-info-tab]').forEach((t) => {
+          const isActive = t.dataset.infoTab === id;
+          t.classList.toggle('font-medium', isActive);
+          t.classList.toggle('text-fg', isActive);
+          t.classList.toggle('font-normal', !isActive);
+          t.classList.toggle('text-muted', !isActive);
         });
-        modal.classList.remove('hidden');
+        modal.querySelectorAll('[data-info-panel]').forEach((p) => {
+          p.classList.toggle('hidden', p.dataset.infoPanel !== id);
+        });
       };
 
-      document.querySelectorAll('[data-info-trigger]').forEach((t) => {
-        t.addEventListener('click', () => open(t.dataset.infoTrigger));
+      const openModal = (modal, tabId) => {
+        if (tabId) switchTab(modal, tabId);
+        modal.classList.remove('pointer-events-none');
+        modal.querySelector('[data-modal-backdrop]').classList.add('opacity-100');
+        modal.querySelector('[data-modal-backdrop]').classList.remove('opacity-0');
+        modal.querySelector('[data-modal-panel]').classList.remove('translate-x-full');
+        modal.querySelector('[data-modal-panel]').classList.add('translate-x-0');
+      };
+
+      const closeModal = (modal) => {
+        modal.querySelector('[data-modal-backdrop]').classList.remove('opacity-100');
+        modal.querySelector('[data-modal-backdrop]').classList.add('opacity-0');
+        modal.querySelector('[data-modal-panel]').classList.add('translate-x-full');
+        modal.querySelector('[data-modal-panel]').classList.remove('translate-x-0');
+        setTimeout(() => {
+          modal.classList.add('pointer-events-none');
+        }, 300);
+      };
+
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-info-trigger]');
+        if (trigger) {
+          const modal = document.querySelector('[data-product-info-modal]');
+          if (modal) openModal(modal, trigger.dataset.infoTrigger);
+          return;
+        }
+
+        const tab = e.target.closest('[data-info-tab]');
+        if (tab) {
+          const modal = tab.closest('[data-product-info-modal]');
+          if (modal) switchTab(modal, tab.dataset.infoTab);
+          return;
+        }
+
+        if (e.target.closest('[data-modal-close]')) {
+          const modal = e.target.closest('[data-product-info-modal]');
+          if (modal) closeModal(modal);
+          return;
+        }
+
+        if (e.target.hasAttribute('data-modal-backdrop')) {
+          const modal = e.target.closest('[data-product-info-modal]');
+          if (modal) closeModal(modal);
+          return;
+        }
       });
 
-      modal.querySelector('[data-modal-close]').addEventListener('click', close);
-      modal.querySelector('[data-modal-backdrop]').addEventListener('click', close);
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+        if (e.key === 'Escape') {
+          const modal = document.querySelector('[data-product-info-modal]:not(.pointer-events-none)');
+          if (modal) closeModal(modal);
+        }
       });
     })();
   </script>

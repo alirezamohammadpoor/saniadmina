@@ -20,20 +20,21 @@
     class="h-full flex flex-col overflow-y-scroll overflow-scroll no-scrollbar"
     data-scroller
   >
-    <div class="sticky top-0 bg-white container flex justify-between items-center py-5">
+    <div class="sticky top-0 bg-bg px-4 flex justify-between items-center py-5 z-10">
       <div>
         {% if title %}
-          <div>{{ title }}</div>
+          <span class="text-[12px] text-fg">{{ title }}</span>
         {% endif %}
       </div>
 
       <button
+        class="text-[12px] text-fg"
         data-close
-        aria-label="Close Menu"  
+        aria-label="Close Menu"
       >Close</button>
     </div>
 
-    <div class="container">
+    <div class="px-4">
       {{ content }}
     </div>
   </div>

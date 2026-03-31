@@ -1,5 +1,5 @@
 {% doc %}
-  
+
   Cart Footer
   ------------------------------------------------------------------------------
 
@@ -8,32 +8,30 @@
 
   @example
     {% render 'cart-footer',
-             checkout_button_text: 'Proceed To Checkout',
-             checkout_message: 'Taxes will be calculated at checkout'
+             checkout_button_text: 'Go to checkout',
+             checkout_message: 'Calculated in checkout'
     %}
 {% enddoc %}
-
 
 <div
   class="ajax-cart__footer"
   data-component="cart-footer"
 >
-  <div class="ajax-cart__footer-row text-right">
-    <span style="padding-right: 20px;">Sub-Total</span>
-    <span class="ajax-cart__total-price" data-subtotal-price>{{ cart.items_subtotal_price | money }}</span>
+  <div class="flex justify-between items-center text-[12px] text-muted">
+    <span>Shipping</span>
+    <span>{{ checkout_message | default: 'Calculated in checkout' }}</span>
   </div>
-  <div class="ajax-cart__footer-row">
-    <button type="submit" name="checkout" class="btn btn-block">
-      {{ checkout_button_text | default: 'Proceed To Checkout' }}
-    </button>
+
+  <div class="flex justify-between items-center text-[12px] text-fg">
+    <span>Total value</span>
+    <span data-subtotal-price>{{ cart.items_subtotal_price | money }}</span>
   </div>
-  {% if checkout_message != blank %}
-    <div class="ajax-cart__footer-row" style="display: flex; justify-content: space-between;">
-      <div>
-      </div>
-      <div class="text-right">
-        {{ checkout_message }}
-      </div>
-    </div>
-  {% endif %}
+
+  <button
+    type="submit"
+    name="checkout"
+    class="w-full h-12 bg-fg text-bg text-[12px] font-medium flex items-center justify-center mt-1"
+  >
+    {{ checkout_button_text | default: 'Go to checkout' }}
+  </button>
 </div>

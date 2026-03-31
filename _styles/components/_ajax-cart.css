@@ -1,13 +1,11 @@
 .ajax-cart {
-  --ajax-cart-padding-h: 33px;
-  --ajax-cart-inner-padding-h: 14px;
-  --ajax-cart-padding-v: 25px;
   --z-body: 1;
   --z-footer: 2;
   --z-empty: 4;
   --z-header: 5;
 
-  @apply fixed z-(--z-ajax-cart) top-0 right-0 h-screen w-full max-w-[min(90vw,500px)] bg-white;
+  @apply fixed z-(--z-ajax-cart) top-0 right-0 h-screen w-full bg-bg;
+  @media (min-width: 1024px) { max-width: min(90vw, 500px); }
   @apply translate-x-full;
   transition: var(--transition-drawer-out);
 
@@ -21,19 +19,18 @@
 }
 
 .ajax-cart__header {
-  @apply relative flex items-center justify-end;
+  @apply relative flex items-center justify-between;
 
-  z-index: var(--z-header);  
+  z-index: var(--z-header);
   height: var(--header-height);
-
-  padding: 0 calc(var(--ajax-cart-padding-h) + var(--ajax-cart-inner-padding-h));
+  padding-inline: var(--spacing-container);
 }
 
 .ajax-cart__body {
   @apply relative;
 
-  z-index: var(--z-body);  
-  padding: 0 var(--ajax-cart-padding-h) var(--ajax-cart-padding-v);
+  z-index: var(--z-body);
+  padding: 0 var(--spacing-container);
 }
 
 .ajax-cart__item {
@@ -43,8 +40,8 @@
 }
 
 .ajax-cart__item-inner {
-  @apply flex items-start gap-x-4;
-  padding: 20px var(--ajax-cart-inner-padding-h);
+  @apply flex items-start gap-x-3;
+  padding: 16px 0;
 
   transition: opacity 250ms ease-in-out;
 
@@ -61,7 +58,7 @@
   }
 
   img {
-    @apply w-[100px] aspect-square object-contain;
+    @apply w-[120px] aspect-[4/5] object-cover;
 
     &.is-cached {
       transition: none;
@@ -70,25 +67,17 @@
 }
 
 .ajax-cart__footer {
-  @apply sticky bottom-0 flex flex-col gap-y-5;
-  z-index: var(--z-footer);  
-  padding: 0 var(--ajax-cart-padding-h) var(--ajax-cart-padding-v);
+  @apply flex flex-col gap-y-3 bg-bg;
+  z-index: var(--z-footer);
+  padding: 16px var(--spacing-container);
 }
 
-.ajax-cart__footer-row {
-  padding: 0 var(--ajax-cart-inner-padding-h);
-}
-
-.ajax-cart__total-price {
-
-}
 
 .ajax-cart__empty {
-  @apply absolute top-0 left-0 h-full w-full flex flex-col justify-center bg-white;
+  @apply absolute top-0 left-0 h-full w-full flex flex-col justify-center bg-bg;
   z-index: var(--z-empty);  
 
-  /* @TODO...something about this inner padding? */
-  padding: 0 calc(var(--ajax-cart-padding-h) + var(--ajax-cart-inner-padding-h));
+  padding: 0 var(--spacing-container);
 
   @apply opacity-0 pointer-events-none;
   transition: opacity 100ms ease-out;

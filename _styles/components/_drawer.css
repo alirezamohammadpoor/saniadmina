@@ -1,6 +1,7 @@
 .drawer {
-  @apply fixed z-(--z-drawer) top-0 left-0 h-[100dvh] w-full max-w-[min(90vw,500px)] -translate-x-full;
-  @apply bg-white;
+  @apply fixed z-(--z-drawer) top-0 left-0 h-[100dvh] w-full -translate-x-full;
+  @media (min-width: 1024px) { max-width: min(90vw, 500px); }
+  @apply bg-bg;
 
   transition: var(--transition-drawer-out);
 

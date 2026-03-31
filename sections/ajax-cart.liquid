@@ -8,19 +8,22 @@
     aria-labelledby="{{ section.id }}-title"
     inert   
   >
-    <h3 id="{{ section.id }}-title" class="sr-only">Cart</h3>
+    <h3 id="{{ section.id }}-title" class="sr-only">Bag</h3>
 
-    <form action="{{ routes.cart_url }}" method="post" novalidate>
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="flex flex-col h-full">
       <div class="ajax-cart__header">
-        <button data-ajax-cart-close type="button">Close</button>
+        <span class="text-[12px] text-fg" data-cart-title>Bag ({{ cart.item_count }})</span>
+        <button class="text-[12px] text-fg" data-ajax-cart-close type="button">Close</button>
       </div>
 
-      {% render 'cart-body' %}
-      
+      <div class="flex-1 overflow-y-auto">
+        {% render 'cart-body' %}
+      </div>
+
       {% render 'cart-footer',
                  checkout_button_text: section.settings.checkout_button_text,
                  checkout_message: section.settings.checkout_message
-      %}        
+      %}
     </form> 
 
     <div class="ajax-cart__empty">
