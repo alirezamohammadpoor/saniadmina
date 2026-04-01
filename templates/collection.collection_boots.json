@@ -11,8 +11,20 @@
   "sections": {
     "main": {
       "type": "main-collection",
+      "blocks": {
+        "editorial_Lcd4LQ": {
+          "type": "editorial",
+          "settings": {
+            "image": "shopify://shop_images/AVENUE-HIGH-silver-glitter-leather-boots-sania-dmina_3.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "editorial_Lcd4LQ"
+      ],
       "settings": {
-        "show_hero": true
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/AVENUE-HIGH-black-glitter-leather-boots-sania-dmina_2.jpg"
       }
     }
   },

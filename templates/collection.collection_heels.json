@@ -11,8 +11,18 @@
   "sections": {
     "main": {
       "type": "main-collection",
+      "blocks": {
+        "editorial_K9He79": {
+          "type": "editorial",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "editorial_K9He79"
+      ],
       "settings": {
-        "show_hero": true
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/ELENA-patent-leather-black-slingback-shoes-sania-dmina-classic-comfortable-heels_2.jpg"
       }
     }
   },

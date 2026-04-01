@@ -11,8 +11,20 @@
   "sections": {
     "main": {
       "type": "main-collection",
+      "blocks": {
+        "editorial_6TzB8Y": {
+          "type": "editorial",
+          "settings": {
+            "image": "shopify://shop_images/sania-dmina-YUNA-ivory-leather-square-toe-mule-heel-shoes-summer-wedding_4fff791c-fb71-4116-9182-a07085ac691b.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "editorial_6TzB8Y"
+      ],
       "settings": {
-        "show_hero": true
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/sania-dmina-BONDI-black-leather-strappy-shoes-summer.jpg"
       }
     }
   },
