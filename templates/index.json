@@ -21,9 +21,10 @@
       "type": "featured-products",
       "settings": {
         "title": "New Arrivals",
+        "display": "scroll",
         "source": "collection",
-        "collection": "frontpage",
-        "product_list": []
+        "collection": "new-arrivals",
+        "limit": 8
       }
     }
   },

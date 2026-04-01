@@ -23,7 +23,20 @@ export default class ProductSection extends BaseSection {
     })
   }
 
-  onUnload(e: ThemeEditorSectionUnloadEvent) {    
+  onNavigateEnd() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.galleries.forEach(g => {
+          if (g.isActive) {
+            g.emblaApi?.reInit()
+            g.updatePagination()
+          }
+        })
+      })
+    })
+  }
+
+  onUnload(e: ThemeEditorSectionUnloadEvent) {
     this.productDetailForm.destroy()
     this.galleries.forEach(g => g.destroy())
 

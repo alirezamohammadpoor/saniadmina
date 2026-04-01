@@ -16,8 +16,8 @@ export default class ProductDetailGallery extends BaseComponent {
   isActive: boolean
   emblaNode: HTMLElement | undefined
   emblaViewport: HTMLElement | undefined
-  emblaPaginationNode: HTMLElement | undefined
   slides: HTMLElement[]
+  dots: HTMLElement[]
   pagination: HTMLElement | undefined
   buttonNext: HTMLElement | undefined
   buttonPrevious: HTMLElement | undefined
@@ -34,7 +34,6 @@ export default class ProductDetailGallery extends BaseComponent {
 
     this.emblaNode = this.qs('.embla')
     this.emblaViewport = this.qs('.embla__viewport')
-    this.emblaPaginationNode = this.qs('.embla__pagination')
     this.slides = this.qsa('.embla__slide')
 
     if (!this.emblaNode) {
@@ -43,6 +42,7 @@ export default class ProductDetailGallery extends BaseComponent {
     }
 
     this.pagination = this.qs(selectors.pagination)
+    this.dots = this.qsa('[data-dot]')
     this.buttonNext = this.qs(selectors.buttonNext)
     this.buttonPrevious = this.qs(selectors.buttonPrevious)
 
@@ -88,7 +88,9 @@ export default class ProductDetailGallery extends BaseComponent {
     (this.qsa('img') as HTMLImageElement[]).forEach(img => img.setAttribute('loading', 'eager'))
 
     this.el.setAttribute('aria-current', 'true')
+    this.emblaApi?.scrollTo(0, true)
     this.emblaApi?.reInit()
+    this.updatePagination()
     this.isActive = true
   }
 
@@ -98,9 +100,18 @@ export default class ProductDetailGallery extends BaseComponent {
   }
 
   updatePagination() {
-    if (!this.pagination) return
-    
-    this.pagination.innerHTML = `${this.emblaApi?.selectedScrollSnap() + 1} / ${this.emblaApi?.scrollSnapList().length}`
+    const idx = this.emblaApi?.selectedScrollSnap() ?? 0
+    const total = this.emblaApi?.scrollSnapList().length ?? 0
+
+    if (this.pagination) {
+      this.pagination.innerHTML = `${idx + 1} / ${total}`
+    }
+
+    this.dots.forEach(d => {
+      const isActive = +d.dataset.dot === idx
+      d.classList.toggle('bg-fg', isActive)
+      d.classList.toggle('bg-muted', !isActive)
+    })
   }
 
   updateAriaCurrent(items: HTMLElement[], activeIndex: number) {

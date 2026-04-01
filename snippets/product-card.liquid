@@ -13,6 +13,27 @@
 {% enddoc %}
 
 {% if product %}
+  {%- comment -%} Swatch image swap — global event delegation, init once {%- endcomment -%}
+  {% unless product_card_swap_init %}
+    {% assign product_card_swap_init = true %}
+    <script>
+      if (!window.__cardSwapInit) {
+        window.__cardSwapInit = true;
+        document.addEventListener('mouseover', (e) => {
+          const btn = e.target.closest('[data-card-swatch]');
+          if (!btn) return;
+          const card = btn.closest('.product-card');
+          if (!card) return;
+          const img = card.querySelector('.lazy-image');
+          if (!img || !btn.dataset.cardSwatch) return;
+          img.src = btn.dataset.cardSwatch;
+          img.srcset = btn.dataset.cardSwatch;
+          img.sizes = '100vw';
+        });
+      }
+    </script>
+  {% endunless %}
+
   {%- liquid
     if image_min_width == blank
       assign image_min_width = 500
@@ -69,9 +90,36 @@
             loading: loading,
             widths: image_widths,
             alt: alt_text,
-            class: 'h-full w-full object-cover lazy-image',
+            class: 'h-full w-full object-cover lazy-image absolute inset-0 transition-opacity duration-300 group-hover:opacity-0',
             sizes: sizes
         }}
+
+        {%- comment -%} Second image: second image whose alt contains the featured color name {%- endcomment -%}
+        {%- assign featured_color = product.selected_or_first_available_variant.option1 | upcase -%}
+        {%- assign hover_image = nil -%}
+        {%- assign color_image_count = 0 -%}
+        {%- for image in product.images -%}
+          {%- assign image_alt_up = image.alt | upcase -%}
+          {%- if image_alt_up contains featured_color -%}
+            {%- assign color_image_count = color_image_count | plus: 1 -%}
+            {%- if color_image_count == 2 -%}
+              {%- assign hover_image = image -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% if hover_image %}
+          {{ hover_image
+            | image_url: width: image_max_width
+            | image_tag:
+              loading: 'lazy',
+              widths: image_widths,
+              alt: alt_text,
+              class: 'h-full w-full object-cover absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100',
+              sizes: sizes
+          }}
+        {% endif %}
 
         {% if badge != blank %}
           <span class="absolute top-2 left-2 text-label text-fg" style="font-size: 10px;">
@@ -80,66 +128,44 @@
         {% endif %}
       </div>
 
-      {%- comment -%} Meta wrapper — relative so hover state overlays without CLS {%- endcomment -%}
-      <div class="relative">
-        {%- comment -%} Default state: name + swatches + price {%- endcomment -%}
-        <div class="group-hover:opacity-0 transition-opacity">
-          <div class="flex items-center justify-between">
-            <span class="text-[12px] text-fg">{{ product.title }}</span>
-
-            {% for option in product.options_with_values %}
-              {% if option.name == 'Color' %}
-                {%- assign color_count = option.values.size -%}
-                {%- assign max_mobile = 5 -%}
-                {%- assign overflow = color_count | minus: max_mobile -%}
-                <div class="flex items-center gap-1">
-                  {% for value in option.values %}
-                    {% if value.swatch.color %}
-                      <span
-                        class="block w-[10px] h-[10px]{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
-                        style="background-color: {{ value.swatch.color }};"
-                        title="{{ value }}"
-                      ></span>
-                    {% else %}
-                      <span
-                        class="block w-[10px] h-[10px] bg-fg{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
-                        title="{{ value }}"
-                      ></span>
-                    {% endif %}
-                  {% endfor %}
-                  {% if overflow > 0 %}
-                    <span class="text-[10px] text-muted lg:hidden">+{{ overflow }}</span>
-                  {% endif %}
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-
-          <span class="text-[12px] text-fg">
-            {% if product.available %}
-              {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
-            {% else %}
-              {{ 'products.product.sold_out' | t }}
-            {% endif %}
-          </span>
-        </div>
-
-        {%- comment -%} Hover state: "Available in sizes" + size list — overlays default {%- endcomment -%}
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
-          <span class="text-[12px] text-fg">Available in sizes</span>
-          <div class="flex flex-wrap gap-x-2 gap-y-1">
-            {% for option in product.options_with_values %}
-              {% if option.name == 'Size' %}
-                {% for value in option.values %}
-                  <span class="text-[12px] {% if value.available %}text-fg{% else %}text-muted line-through{% endif %}">
-                    {{ value }}
-                  </span>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-      </div>
     </a>
+
+    {%- comment -%} Meta: name + swatches + price — outside <a> so swatches don't navigate {%- endcomment -%}
+    <div class="mt-2">
+      <div class="flex items-center justify-between">
+        <a href="{{ product_url }}" class="text-[12px] text-fg">{{ product.title }}</a>
+
+        {% for option in product.options_with_values %}
+          {% if option.name == 'Color' %}
+            {%- assign color_count = option.values.size -%}
+            {%- assign max_mobile = 5 -%}
+            {%- assign overflow = color_count | minus: max_mobile -%}
+            <div class="flex items-center gap-1">
+              {% for value in option.values %}
+                <button
+                  type="button"
+                  class="block w-3 h-3 cursor-pointer{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
+                  style="{% if value.swatch.color %}background-color: {{ value.swatch.color }};{% else %}background-color: #1A1A18;{% endif %}"
+                  data-card-swatch="{{ value.variant.featured_media | image_url: width: 900 }}"
+                  aria-label="{{ value }}"
+                  title="{{ value }}"
+                ></button>
+              {% endfor %}
+              {% if overflow > 0 %}
+                <span class="text-[10px] text-muted lg:hidden">+{{ overflow }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <a href="{{ product_url }}" class="text-[12px] text-fg">
+        {% if product.available %}
+          {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+        {% else %}
+          {{ 'products.product.sold_out' | t }}
+        {% endif %}
+      </a>
+    </div>
   </div>
 {% endif %}

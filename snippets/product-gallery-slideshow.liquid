@@ -41,26 +41,4 @@
     {% endif %}
   </div>
 
-  {%- comment -%} Dot sync script — observes [data-pagination] text changes {%- endcomment -%}
-  {% if slides_count > 1 %}
-    <script>
-      (function() {
-        const el = document.currentScript.closest('.product-detail-gallery__slideshow');
-        const pag = el.querySelector('[data-pagination]');
-        const dots = el.querySelectorAll('[data-dot]');
-        if (!pag || !dots.length) return;
-        const sync = () => {
-          const t = pag.textContent.trim();
-          const idx = parseInt(t.split('/')[0], 10) - 1;
-          if (isNaN(idx)) return;
-          dots.forEach((d) => {
-            d.classList.toggle('bg-fg', +d.dataset.dot === idx);
-            d.classList.toggle('bg-muted', +d.dataset.dot !== idx);
-          });
-        };
-        new MutationObserver(sync).observe(pag, { childList: true, characterData: true, subtree: true });
-        sync();
-      })();
-    </script>
-  {% endif %}
 </div>

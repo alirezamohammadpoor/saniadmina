@@ -51,7 +51,7 @@
           {% if breadcrumb_col %}
             <nav class="mb-3" aria-label="Breadcrumb">
               <ol class="flex items-center gap-1 text-[12px] text-fg">
-                {% if breadcrumb_parent %}
+                {% if breadcrumb_parent and breadcrumb_parent.title != breadcrumb_col.title %}
                   <li><a href="{{ breadcrumb_parent.url }}">{{ breadcrumb_parent.title }}</a></li>
                   <li>/</li>
                 {% endif %}
@@ -75,26 +75,36 @@
             %}
           </div>
 
-          {%- comment -%} Heel height — thumbnails if metafield has images, text fallback {%- endcomment -%}
-          {% if product.metafields.custom.heel_types != blank %}
-            {%- assign heel_types = product.metafields.custom.heel_types.value -%}
+          {%- comment -%} Description {%- endcomment -%}
+          {% if product.description != blank %}
+            <div class="text-[12px] text-fg mb-6 leading-relaxed">
+              {{ product.description }}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Heel variants — sibling products with different heel heights {%- endcomment -%}
+          {%- assign heel_variants = product.metafields.custom.heel_variants.value -%}
+          {% if heel_variants != blank %}
             <div class="mb-6">
               <span class="text-[12px] font-medium text-fg block mb-3">Heel height</span>
-              <div class="flex gap-2">
-                {% for heel in heel_types %}
-                  <div class="flex flex-col items-center gap-1">
-                    <div class="w-20 h-20 overflow-hidden bg-[#E8E5E0]">
-                      {% if heel.image %}
-                        <img
-                          src="{{ heel.image | image_url: width: 160 }}"
-                          alt="{{ heel.name }}"
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                        >
-                      {% endif %}
+              <div class="flex gap-1">
+                {% for entry in heel_variants %}
+                  {%- assign is_active = false -%}
+                  {%- if entry.id == product.id -%}
+                    {%- assign is_active = true -%}
+                  {%- endif -%}
+                  <a href="{{ entry.url }}" class="no-underline">
+                    <div class="w-24 h-[120px] overflow-hidden bg-[#E8E5E0] {% if is_active %}ring-1 ring-fg{% endif %}">
+                      {{ entry.featured_image
+                        | image_url: width: 240
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'w-full h-full object-cover',
+                          widths: '240',
+                          sizes: '96px'
+                      }}
                     </div>
-                    <span class="text-[10px] text-fg">{{ heel.name }}</span>
-                  </div>
+                  </a>
                 {% endfor %}
               </div>
             </div>
@@ -186,13 +196,6 @@
               </div>
             </div>
 
-            {%- comment -%} Description {%- endcomment -%}
-            {% if product.description != blank %}
-              <div class="text-[12px] text-fg mt-6 leading-relaxed">
-                {{ product.description }}
-              </div>
-            {% endif %}
-
             {%- comment -%} Info links — open modal {%- endcomment -%}
             <div class="mt-6 flex flex-col gap-3">
               <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="materials-care">Materials & Care</button>
@@ -231,35 +234,35 @@
       <div class="px-4 lg:px-10 py-8">
         <div data-info-panel="materials-care">
           <h4 class="text-[14px] text-fg font-normal mb-4">Materials</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             {{ product.metafields.custom.materials_care | default: 'Crafted from premium Italian calfskin leather with a leather sole. Handmade in Italy.' }}
           </p>
-          <div class="border-t border-[#e5e3de] my-6"></div>
+          <div class="border-t border-fg/10 my-6"></div>
           <h4 class="text-[14px] text-fg font-normal mb-4">Care</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             Store in the provided dust bag when not in use. Avoid prolonged exposure to direct sunlight and moisture.
           </p>
         </div>
         <div data-info-panel="size-guide" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Size Guide</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             Find your perfect fit. Our shoes are crafted on Italian lasts and run true to European sizing.
           </p>
         </div>
         <div data-info-panel="shipping-returns" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Shipping</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             Complimentary shipping on all orders. Orders are processed within 1-2 business days.
           </p>
-          <div class="border-t border-[#e5e3de] my-6"></div>
+          <div class="border-t border-fg/10 my-6"></div>
           <h4 class="text-[14px] text-fg font-normal mb-4">Returns</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             {{ product.metafields.custom.shipping_returns | default: 'Free returns within 14 days of delivery. Items must be unworn and in original packaging.' }}
           </p>
         </div>
         <div data-info-panel="payments" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Payments</h4>
-          <p class="text-[12px] text-muted leading-relaxed">
+          <p class="text-[12px] text-fg leading-relaxed">
             We accept Visa, Mastercard, American Express, and Klarna. All transactions are secure and encrypted.
           </p>
         </div>

@@ -1,14 +1,3 @@
-/* Product Grid */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 /* Hide inactive color galleries */
 .product-detail-gallery:not([aria-current="true"]) {
   display: none;

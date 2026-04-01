@@ -1,35 +1,30 @@
 {%- liquid
-  assign product_count = 0
   assign product_source = section.settings.collection.products
 
   if section.settings.source == 'product_list'
     assign product_source = section.settings.product_list
   endif
-
-  capture product_grid_items
-    for product in product_source
-      render 'product-card', product: product
-
-      assign product_count = product_count | plus: 1
-    endfor
-  endcapture
-%}
+-%}
 
 <section
   data-section-id="{{ section.id }}"
   data-section-type="featured-products"
   class="py-(--layout-padding-top)"
 >
-  {% if section.settings.title != blank %}
-    <div class="container mb-6">
-      <h2 class="text-h2 text-fg">{{ section.settings.title }}</h2>
-    </div>
-  {% endif %}
-
-  <div class="container">
-    <div class="product-grid">
-      {{ product_grid_items }}
-    </div>
+  <div class="px-2">
+    {% if section.settings.display == 'scroll' %}
+      {% render 'product-scroll',
+        products: product_source,
+        title: section.settings.title,
+        limit: section.settings.limit
+      %}
+    {% else %}
+      {% render 'product-grid',
+        products: product_source,
+        title: section.settings.title,
+        limit: section.settings.limit
+      %}
+    {% endif %}
   </div>
 </section>
 
@@ -46,6 +41,22 @@
     {
       "type": "header",
       "content": "Products"
+    },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Display",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "scroll",
+          "label": "Horizontal Scroll"
+        }
+      ],
+      "default": "scroll"
     },
     {
       "type": "select",
@@ -72,6 +83,15 @@
       "type": "product_list",
       "id": "product_list",
       "label": "Product List"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
     }
   ],
   "presets": [
@@ -80,6 +100,7 @@
       "settings": {
         "title": "New Arrivals",
         "source": "collection",
+        "display": "scroll",
         "collection": "frontpage"
       }
     }

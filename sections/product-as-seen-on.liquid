@@ -1,43 +1,76 @@
 {%- comment -%}
   As Seen On Section
-  Displays social media features for a product.
-  Data from product.metafields.custom.as_seen_on (JSON list of { handle, image, product_name })
+  Displays social media features using section blocks.
+  Add blocks in the theme editor with image, product, and instagram handle.
 {%- endcomment -%}
 
-{%- assign as_seen_on = product.metafields.custom.as_seen_on.value -%}
+{% if section.blocks.size > 0 %}
+  <section class="px-2 pt-6 lg:pt-10 pb-6 lg:pb-10" data-as-seen-on>
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-h3 text-fg">As seen on</h3>
 
-{% if as_seen_on != blank and as_seen_on.size > 0 %}
-  <section class="px-2 lg:px-10 py-10">
-    <h3 class="text-label text-muted mb-4">As seen on</h3>
+      {% if section.blocks.size > 4 %}
+        <div class="hidden lg:flex items-center gap-3">
+          <button type="button" class="w-11 h-11 inline-flex items-center justify-center text-muted" data-scroll-prev aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button type="button" class="w-11 h-11 inline-flex items-center justify-center text-fg" data-scroll-next aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+      {% endif %}
+    </div>
 
-    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
-      {% for item in as_seen_on %}
-        <div class="min-w-[200px] lg:min-w-[260px] shrink-0 snap-start">
-          {% if item.image %}
-            <div class="aspect-[3/4] overflow-hidden bg-[#E8E5E0] mb-2">
-              <img
-                src="{{ item.image | image_url: width: 520 }}"
-                alt="{{ item.handle | default: 'As seen on' }}"
-                class="w-full h-full object-cover"
-                loading="lazy"
-              >
+    <div class="flex gap-2 overflow-x-auto overflow-y-hidden snap-x no-scrollbar" data-scroll-container>
+      {% for block in section.blocks %}
+        {% if block.settings.image == blank %}{% continue %}{% endif %}
+        <div class="w-[47%] lg:w-[calc(25%-6px)] shrink-0 snap-start" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <div class="aspect-[4/5] overflow-hidden bg-[#E8E5E0]">
+              {{ block.settings.image
+                | image_url: width: 520
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'w-full h-full object-cover',
+                  sizes: '(max-width: 767px) 47vw, 25vw'
+              }}
             </div>
           {% endif %}
-          {% if item.handle %}
-            <span class="text-[12px] text-fg block">{{ item.handle }}</span>
-          {% endif %}
-          {% if item.product_name %}
-            <span class="text-[12px] text-muted block">{{ item.product_name }}</span>
+
+          {% if block.settings.handle != blank %}
+            {%- assign ig_username = block.settings.handle | remove: '@' -%}
+            <a href="https://instagram.com/{{ ig_username }}" target="_blank" rel="noopener" class="text-[12px] text-fg block mt-2">{{ block.settings.handle }}</a>
           {% endif %}
         </div>
       {% endfor %}
     </div>
   </section>
+
+  {% render 'scroll-arrows-script' %}
 {% endif %}
 
 {% schema %}
 {
   "name": "Product - As Seen On",
-  "settings": []
+  "settings": [],
+  "blocks": [
+    {
+      "type": "entry",
+      "name": "As Seen On Entry",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Instagram Handle",
+          "info": "e.g. @username"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

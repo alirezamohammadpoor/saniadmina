@@ -7,8 +7,8 @@
     <div class="flex flex-col gap-6 lg:flex-row lg:gap-20">
       {%- comment -%} Customer Care {%- endcomment -%}
       <div class="flex flex-col gap-1">
-        <span class="text-[12px] text-fg">Customer Care</span>
-        <a href="mailto:{{ section.settings.email | default: 'info@saniadmina.com' }}" class="text-[12px] text-muted">
+        <span class="text-label text-fg">Customer Care</span>
+        <a href="mailto:{{ section.settings.email | default: 'info@saniadmina.com' }}" class="text-[14px] text-muted">
           {{ section.settings.email | default: 'info@saniadmina.com' }}
         </a>
       </div>
@@ -16,7 +16,7 @@
       {%- comment -%} Menu blocks {%- endcomment -%}
       {% for block in section.blocks %}
         <div class="flex flex-col gap-1" {{ block.shopify_attributes }}>
-          <span class="text-[12px] text-fg">
+          <span class="text-label text-fg">
             {{ block.settings.title }}
           </span>
 
@@ -27,7 +27,7 @@
                   <li>
                     <a
                       href="{{ link.url }}"
-                      class="text-[12px] text-muted"
+                      class="text-[14px] text-muted"
                       {% if link.current %}aria-current="page"{% endif %}
                     >
                       {{ link.title }}
@@ -52,10 +52,11 @@
       </div>
     {% endif %}
 
-    {%- comment -%} Large brand text {%- endcomment -%}
-    <div class="mt-4 text-display text-fg">
-      SANIA D'MINA
-    </div>
+  </div>
+
+  {%- comment -%} Large brand text — edge to edge {%- endcomment -%}
+  <div class="text-[15vw] font-light leading-none text-fg overflow-hidden text-center">
+    SANIA D'MINA
   </div>
 </footer>
 

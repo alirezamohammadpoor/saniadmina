@@ -21,12 +21,63 @@
     },
     "as-seen-on": {
       "type": "product-as-seen-on",
+      "blocks": {
+        "entry_VgzEhy": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_656291130_18075219359176866_2126849560883856540_n.jpg",
+            "handle": "@mliandrea"
+          }
+        },
+        "entry_qaLpY6": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_503840997_18504664774059491_651443854027358353_n.jpg",
+            "handle": "@mliandrea"
+          }
+        },
+        "entry_F6tBzG": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_651764841_17917911114295496_6259035412413627413_n.jpg",
+            "handle": "@lottebylotte"
+          }
+        },
+        "entry_h9aQya": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_641809586_18565762249044942_3986746036734131757_n.jpg",
+            "handle": "@sharareh.hoss"
+          }
+        },
+        "entry_PREbaY": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_641623446_18565762258044942_3446250424782444638_n.jpg",
+            "handle": "@sharareh.hoss"
+          }
+        },
+        "entry_ezqV9d": {
+          "type": "entry",
+          "settings": {
+            "handle": ""
+          }
+        }
+      },
+      "block_order": [
+        "entry_VgzEhy",
+        "entry_qaLpY6",
+        "entry_F6tBzG",
+        "entry_h9aQya",
+        "entry_PREbaY",
+        "entry_ezqV9d"
+      ],
       "settings": {}
     }
   },
   "order": [
     "main",
-    "related",
-    "as-seen-on"
+    "as-seen-on",
+    "related"
   ]
 }
