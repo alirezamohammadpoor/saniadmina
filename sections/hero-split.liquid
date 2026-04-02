@@ -1,0 +1,133 @@
+{%- comment -%}
+  Hero Split Section
+  Two side-by-side images, each 50vw, full viewport height.
+  Left: product info (bottom-left overlay)
+  Right: campaign text + CTA (right-aligned overlay)
+{%- endcomment -%}
+
+<section class="flex h-screen" data-section-id="{{ section.id }}">
+  {%- comment -%} Left panel {%- endcomment -%}
+  <div class="relative w-1/2 overflow-hidden">
+    {% if section.settings.left_image %}
+      {{ section.settings.left_image
+        | image_url: width: 1400
+        | image_tag:
+          loading: 'eager',
+          class: 'w-full h-full object-cover',
+          sizes: '50vw'
+      }}
+    {% else %}
+      <div class="w-full h-full bg-[#E8E5E0]"></div>
+    {% endif %}
+
+    {% if section.settings.left_title != blank %}
+      <div class="absolute bottom-8 left-8 text-bg">
+        <p class="text-[12px] tracking-widest uppercase mb-1">{{ section.settings.left_subtitle }}</p>
+        <p class="text-[14px]">{{ section.settings.left_title }}</p>
+        {% if section.settings.left_price != blank %}
+          <p class="text-[14px] mt-1">{{ section.settings.left_price }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Right panel {%- endcomment -%}
+  <div class="relative w-1/2 overflow-hidden">
+    {% if section.settings.right_image %}
+      {{ section.settings.right_image
+        | image_url: width: 1400
+        | image_tag:
+          loading: 'eager',
+          class: 'w-full h-full object-cover',
+          sizes: '50vw'
+      }}
+    {% else %}
+      <div class="w-full h-full bg-[#E8E5E0]"></div>
+    {% endif %}
+
+    {% if section.settings.right_heading != blank %}
+      <div class="absolute right-8 top-1/2 -translate-y-1/2 text-right text-bg">
+        {% if section.settings.right_label != blank %}
+          <p class="text-label mb-2">{{ section.settings.right_label }}</p>
+        {% endif %}
+        <p class="text-[28px] font-light italic">{{ section.settings.right_heading }}</p>
+        {% if section.settings.right_link_text != blank %}
+          <a href="{{ section.settings.right_link }}" class="inline-block text-[12px] text-bg underline mt-4">
+            {{ section.settings.right_link_text }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Split",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left image"
+    },
+    {
+      "type": "text",
+      "id": "left_subtitle",
+      "label": "Subtitle",
+      "info": "Small text above the title"
+    },
+    {
+      "type": "text",
+      "id": "left_title",
+      "label": "Title",
+      "info": "Product name or description"
+    },
+    {
+      "type": "text",
+      "id": "left_price",
+      "label": "Price"
+    },
+    {
+      "type": "header",
+      "content": "Right Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right image"
+    },
+    {
+      "type": "text",
+      "id": "right_label",
+      "label": "Label",
+      "info": "Small uppercase text, e.g. SPRING '26"
+    },
+    {
+      "type": "text",
+      "id": "right_heading",
+      "label": "Heading",
+      "info": "Large italic text, e.g. Keesha 55"
+    },
+    {
+      "type": "text",
+      "id": "right_link_text",
+      "label": "Link text",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Split"
+    }
+  ]
+}
+{% endschema %}

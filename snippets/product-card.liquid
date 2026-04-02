@@ -13,27 +13,6 @@
 {% enddoc %}
 
 {% if product %}
-  {%- comment -%} Swatch image swap — global event delegation, init once {%- endcomment -%}
-  {% unless product_card_swap_init %}
-    {% assign product_card_swap_init = true %}
-    <script>
-      if (!window.__cardSwapInit) {
-        window.__cardSwapInit = true;
-        document.addEventListener('mouseover', (e) => {
-          const btn = e.target.closest('[data-card-swatch]');
-          if (!btn) return;
-          const card = btn.closest('.product-card');
-          if (!card) return;
-          const img = card.querySelector('.lazy-image');
-          if (!img || !btn.dataset.cardSwatch) return;
-          img.src = btn.dataset.cardSwatch;
-          img.srcset = btn.dataset.cardSwatch;
-          img.sizes = '100vw';
-        });
-      }
-    </script>
-  {% endunless %}
-
   {%- liquid
     if image_min_width == blank
       assign image_min_width = 500
@@ -142,14 +121,11 @@
             {%- assign overflow = color_count | minus: max_mobile -%}
             <div class="flex items-center gap-1">
               {% for value in option.values %}
-                <button
-                  type="button"
-                  class="block w-3 h-3 cursor-pointer{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
+                <span
+                  class="block w-2.5 h-2.5{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
                   style="{% if value.swatch.color %}background-color: {{ value.swatch.color }};{% else %}background-color: #1A1A18;{% endif %}"
-                  data-card-swatch="{{ value.variant.featured_media | image_url: width: 900 }}"
-                  aria-label="{{ value }}"
                   title="{{ value }}"
-                ></button>
+                ></span>
               {% endfor %}
               {% if overflow > 0 %}
                 <span class="text-[10px] text-muted lg:hidden">+{{ overflow }}</span>

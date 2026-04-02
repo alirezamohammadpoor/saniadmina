@@ -123,9 +123,9 @@
         {%- comment -%} Size system toggle (EU/US/UK) {%- endcomment -%}
         {% if is_size and has_size_toggle %}
           <div class="flex items-center gap-3" data-size-toggle>
-            <button type="button" class="text-[12px] font-medium text-fg" data-toggle-system="eu">EU</button>
-            <button type="button" class="text-[12px] font-normal text-muted" data-toggle-system="us">US</button>
-            <button type="button" class="text-[12px] font-normal text-muted" data-toggle-system="uk">UK</button>
+            <button type="button" class="text-[12px] font-medium text-fg cursor-pointer" data-toggle-system="eu">EU</button>
+            <button type="button" class="text-[12px] font-normal text-muted cursor-pointer" data-toggle-system="us">US</button>
+            <button type="button" class="text-[12px] font-normal text-muted cursor-pointer" data-toggle-system="uk">UK</button>
           </div>
         {% endif %}
       </div>
@@ -133,45 +133,7 @@
       {{ option_values_content }}
     </fieldset>
 
-    {%- comment -%} Color name update on change {%- endcomment -%}
-    {% if is_color %}
-      <script>
-        (function() {
-          const wrap = document.currentScript.closest('[data-component="variant-picker-option"]');
-          const label = wrap.querySelector('[data-selected-color]');
-          if (!label) return;
-          wrap.querySelectorAll('input[type="radio"]').forEach((input) => {
-            input.addEventListener('change', () => { label.textContent = input.value; });
-          });
-        })();
-      </script>
-    {% endif %}
-
-    {%- comment -%} Size toggle script — swaps label visibility, never touches input values {%- endcomment -%}
-    {% if is_size and has_size_toggle %}
-      <script>
-        (function() {
-          const wrap = document.currentScript.closest('[data-component="variant-picker-option"]');
-          const toggles = wrap.querySelectorAll('[data-toggle-system]');
-          let active = 'eu';
-          toggles.forEach((btn) => {
-            btn.addEventListener('click', () => {
-              active = btn.dataset.toggleSystem;
-              toggles.forEach((b) => {
-                const isActive = b.dataset.toggleSystem === active;
-                b.classList.toggle('font-medium', isActive);
-                b.classList.toggle('text-fg', isActive);
-                b.classList.toggle('font-normal', !isActive);
-                b.classList.toggle('text-muted', !isActive);
-              });
-              wrap.querySelectorAll('[data-size-eu]').forEach((el) => el.classList.toggle('hidden', active !== 'eu'));
-              wrap.querySelectorAll('[data-size-us]').forEach((el) => el.classList.toggle('hidden', active !== 'us'));
-              wrap.querySelectorAll('[data-size-uk]').forEach((el) => el.classList.toggle('hidden', active !== 'uk'));
-            });
-          });
-        })();
-      </script>
-    {% endif %}
+    {%- comment -%} Color sync and size toggle behavior handled by TS component (variantPickerOption.ts) {%- endcomment -%}
   {% else %}
     <div>
       <label for="{{ option_parent_id }}" class="text-[12px] font-medium text-fg mb-3 block">

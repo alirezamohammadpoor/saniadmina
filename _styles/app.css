@@ -158,10 +158,16 @@
     }
   }
   
-  a, button {
+  a, button, [role="button"] {
+    @apply cursor-pointer;
+
     &:focus-visible:not(:has([disabled])) {
       @apply outline outline-fg;
     }
+  }
+
+  button[disabled] {
+    @apply cursor-not-allowed;
   }
 
   /* Remove all animations and transitions for people that prefer not to see them */

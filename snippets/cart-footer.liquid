@@ -19,7 +19,7 @@
 >
   <div class="flex justify-between items-center text-[12px] text-muted">
     <span>{{ 'ajax_cart.general.shipping' | t }}</span>
-    <span>{{ checkout_message | default: 'ajax_cart.general.calculated_in_checkout' | t }}</span>
+    <span>{{ 'ajax_cart.general.calculated_in_checkout' | t }}</span>
   </div>
 
   <div class="flex justify-between items-center text-[12px] text-fg">
@@ -32,6 +32,6 @@
     name="checkout"
     class="w-full h-12 bg-fg text-bg text-[12px] font-medium flex items-center justify-center mt-1"
   >
-    {{ checkout_button_text | default: 'ajax_cart.general.checkout' | t }}
+    {{ 'ajax_cart.general.checkout' | t }}
   </button>
 </div>

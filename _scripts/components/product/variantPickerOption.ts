@@ -31,6 +31,36 @@ export default class VariantPickerOption extends BaseComponent {
     this.inputs = this.qsa('input') as HTMLInputElement[]
 
     this.el.addEventListener('change', this.onChange.bind(this))
+
+    // Color label sync — update "Color: X" when a swatch is selected
+    const colorLabel = this.qs('[data-selected-color]') as HTMLElement | null
+    if (colorLabel) {
+      this.inputs.forEach(input => {
+        input.addEventListener('change', () => {
+          colorLabel.textContent = input.value
+        })
+      })
+    }
+
+    // Size toggle — swap EU/US/UK labels
+    const toggles = this.qsa('[data-toggle-system]') as HTMLElement[]
+    if (toggles.length) {
+      toggles.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const system = btn.dataset.toggleSystem
+          toggles.forEach(b => {
+            const isActive = b.dataset.toggleSystem === system
+            b.classList.toggle('font-medium', isActive)
+            b.classList.toggle('text-fg', isActive)
+            b.classList.toggle('font-normal', !isActive)
+            b.classList.toggle('text-muted', !isActive)
+          })
+          this.qsa('[data-size-eu]').forEach(el => el.classList.toggle('hidden', system !== 'eu'))
+          this.qsa('[data-size-us]').forEach(el => el.classList.toggle('hidden', system !== 'us'))
+          this.qsa('[data-size-uk]').forEach(el => el.classList.toggle('hidden', system !== 'uk'))
+        })
+      })
+    }
   }
 
   get selectedOption(): SelectedOption | undefined {

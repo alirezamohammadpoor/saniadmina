@@ -60,7 +60,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 - **Editorial images (PLP):** Collection metafield `custom.editorial_images`
 - **Heel height:** Product metafield `custom.heel_height_mm`
 - **As seen on:** Product metafield `custom.as_seen_on` (JSON list)
-- **Size toggle:** EU default, US/UK from product metafields `custom.sizes_us`, `custom.sizes_uk`
+- **Size toggle:** EU default, US/UK from shop metafields `shop.metafields.custom.sizes_us`, `shop.metafields.custom.sizes_uk` (type: `list.single_line_text_field`)
 - **Copy:** "Add to bag" (not "Add to cart"), "Bag" (not "Cart"), "Checkout"
 
 ## Key Architecture Notes
@@ -69,6 +69,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 - `config/settings_data.json` must have section defaults for all global sections or pages break.
 - Design tokens are code-owned in `_styles/app.css` `@theme` block — not exposed as theme editor settings.
 - Locale strings in `locales/en.default.json`, exported to JS via `snippets/head-scripts.liquid` → `window.app.strings`.
+- **Never use inline `<script>` in Liquid snippets for interactive behavior.** Taxi.js SPA navigation does not re-execute inline scripts after page transitions. All event listeners and DOM behavior must live in TypeScript components (`_scripts/components/`) which are instantiated via the section→component lifecycle on every navigation. Use `data-component` attributes on markup and register behavior in the component's constructor.
 
 ## Product Range
 
