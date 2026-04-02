@@ -44,7 +44,7 @@ input[type="number"] {
   }
 
   label {
-    @apply font-medium text-black mb-1 text-sm;
+    @apply font-medium text-fg mb-1 text-sm;
   }
 
   .form-group__helper,
@@ -53,11 +53,11 @@ input[type="number"] {
   }
 
   .form-group__helper {
-    @apply text-grey;
+    @apply text-muted;
   }
 
   .form-group__error {
-    @apply text-red;
+    @apply text-fg;
   }  
 }
 
@@ -65,35 +65,32 @@ input[type="number"] {
 /* Markup / styling is heavily inspired by -> https://primer.style/components/text-input/react/alpha */
 .form-control {
   @apply relative w-full flex items-stretch gap-x-2 appearance-none overflow-hidden;
-  @apply border border-black rounded;
-  @apply text-black;
+  @apply border border-fg;
+  @apply text-fg;
 
   transition-property: background-color, border-color, color;
   transition-duration: 250ms;
   transition-timing-function: ease;
 
   /* Add hover states */
-  @apply hover:border-black active:border-black focus:border-black;
+  @apply hover:border-fg active:border-fg focus:border-fg;
 
   /* When disabled... */
   &:has([aria-disabled="true"]),
   &:has([disabled]) {
     @apply cursor-not-allowed;
-    @apply bg-[#DDD];
-
-    /* Kill hover states - override with the default styles */
-    /* @apply hover:border-accent-border active:bg-bground-secondary focus:bg-bground-secondary; */
+    @apply bg-muted/20;
   }
 
   &:focus-within {
-    @apply border-black;
+    @apply border-fg;
   }
 
   &:has(input:focus-visible),
   &:has(select:focus-visible),
   &:has(textarea:focus-visible) {
     @apply outline-none; /* Applies outline-width and offset */
-    @apply outline-blue;
+    @apply outline-fg;
 
     input {
       @apply outline-none;
@@ -101,7 +98,7 @@ input[type="number"] {
   }  
 
   &:has([aria-invalid="true"]) {
-    @apply border-red;
+    @apply border-fg;
   }
 
   &:has(select) {
@@ -129,7 +126,7 @@ input[type="number"] {
   input,
   select,
   textarea {
-    @apply w-full px-3 placeholder-grey;
+    @apply w-full px-3 placeholder-muted;
 
     &[aria-disabled="true"],
     &[disabled] {
@@ -203,7 +200,7 @@ input[type="number"] {
 
   &[type="radio"] {
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid var(--color-fg);
   }
 
   &:checked {

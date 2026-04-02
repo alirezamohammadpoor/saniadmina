@@ -88,11 +88,14 @@
       {% if total_products > 4 %}
         {% if editorial_count > 0 %}
           {%- assign ed_block = section.blocks[0] -%}
+          {%- assign ed_link = ed_block.settings.product.url | default: '' -%}
           {%- comment -%} Mobile: editorial then grid {%- endcomment -%}
           <div class="lg:hidden flex flex-col gap-1">
+            {% if ed_link != blank %}<a href="{{ ed_link }}" class="block">{% endif %}
             <div class="w-full h-[80dvh] overflow-hidden bg-[#d9d4cc]">
               {{ ed_block.settings.image | image_url: width: 780 | image_tag: loading: 'lazy', class: 'w-full h-full object-cover lazy-image', sizes: '100vw' }}
             </div>
+            {% if ed_link != blank %}</a>{% endif %}
             <ul class="grid grid-cols-2 gap-1">
               {% for product in collection.products limit: 4 offset: 4 %}
                 <li>{% render 'product-card', product: product, loading: 'eager' %}</li>
@@ -101,9 +104,11 @@
           </div>
           {%- comment -%} Desktop: image LEFT, products RIGHT — stretches to match 2×2 grid {%- endcomment -%}
           <div class="hidden lg:flex lg:items-stretch lg:gap-1">
-            <div class="w-1/2 shrink-0 overflow-hidden bg-[#d9d4cc]">
+            {% if ed_link != blank %}<a href="{{ ed_link }}" class="w-1/2 shrink-0">{% endif %}
+            <div class="{% if ed_link == blank %}w-1/2 shrink-0{% endif %} overflow-hidden bg-[#d9d4cc] h-full">
               {{ ed_block.settings.image | image_url: width: 1420 | image_tag: loading: 'lazy', class: 'w-full h-full object-cover lazy-image', sizes: '50vw' }}
             </div>
+            {% if ed_link != blank %}</a>{% endif %}
             <ul class="flex-1 grid grid-cols-2 gap-1">
               {% for product in collection.products limit: 4 offset: 4 %}
                 <li>{% render 'product-card', product: product, loading: 'eager' %}</li>
@@ -123,11 +128,14 @@
       {% if total_products > 8 %}
         {% if editorial_count > 1 %}
           {%- assign ed_block = section.blocks[1] -%}
+          {%- assign ed_link = ed_block.settings.product.url | default: '' -%}
           {%- comment -%} Mobile: editorial then grid {%- endcomment -%}
           <div class="lg:hidden flex flex-col gap-1">
+            {% if ed_link != blank %}<a href="{{ ed_link }}" class="block">{% endif %}
             <div class="w-full h-[80dvh] overflow-hidden bg-[#d9d4cc]">
               {{ ed_block.settings.image | image_url: width: 780 | image_tag: loading: 'lazy', class: 'w-full h-full object-cover lazy-image', sizes: '100vw' }}
             </div>
+            {% if ed_link != blank %}</a>{% endif %}
             <ul class="grid grid-cols-2 gap-1">
               {% for product in collection.products limit: 4 offset: 8 %}
                 <li>{% render 'product-card', product: product %}</li>
@@ -141,9 +149,11 @@
                 <li>{% render 'product-card', product: product %}</li>
               {% endfor %}
             </ul>
-            <div class="w-1/2 shrink-0 overflow-hidden bg-[#d9d4cc]">
+            {% if ed_link != blank %}<a href="{{ ed_link }}" class="w-1/2 shrink-0">{% endif %}
+            <div class="{% if ed_link == blank %}w-1/2 shrink-0{% endif %} overflow-hidden bg-[#d9d4cc] h-full">
               {{ ed_block.settings.image | image_url: width: 1420 | image_tag: loading: 'lazy', class: 'w-full h-full object-cover lazy-image', sizes: '50vw' }}
             </div>
+            {% if ed_link != blank %}</a>{% endif %}
           </div>
         {% else %}
           <ul class="grid grid-cols-2 lg:grid-cols-4 gap-1">
@@ -215,6 +225,11 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Link to product"
         }
       ]
     }

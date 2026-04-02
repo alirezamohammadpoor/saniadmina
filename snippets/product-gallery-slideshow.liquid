@@ -9,7 +9,7 @@
     {% render 'product-gallery-slideshow', slides: slides, slides_count: slides_count %}
 {% enddoc %}
 
-<div class="product-detail-gallery__slideshow">
+<div class="product-detail-gallery__slideshow relative">
   <div class="embla">
     <div class="embla__viewport">
       <div class="embla__container">
@@ -20,9 +20,9 @@
     {%- comment -%} A11y pagination — sr-only, updated by existing JS {%- endcomment -%}
     <div class="sr-only" data-pagination></div>
 
-    {%- comment -%} Visual dot pagination {%- endcomment -%}
+    {%- comment -%} Visual dot pagination — bottom-left of image {%- endcomment -%}
     {% if slides_count > 1 %}
-      <div class="flex justify-center items-center gap-2 py-3" data-dots>
+      <div class="absolute bottom-3 left-4 flex items-center gap-2" data-dots>
         {% for i in (1..slides_count) %}
           <span
             class="block w-1.5 h-1.5 {% if forloop.first %}bg-fg{% else %}bg-muted{% endif %}"

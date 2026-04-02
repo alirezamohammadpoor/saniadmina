@@ -8,11 +8,6 @@
   --color-fg: #1A1A18;
   --color-muted: #9C9890;
 
-  /* Legacy fallbacks (cadaver base styles reference these) */
-  --color-red: #F00;
-  --color-blue: #00F;
-  --color-green: #0F0;
-  --color-grey: #999;
   --color-white: #FFFFFF;
   --color-black: #000000;
 
@@ -165,7 +160,7 @@
   
   a, button {
     &:focus-visible:not(:has([disabled])) {
-      @apply outline outline-blue;
+      @apply outline outline-fg;
     }
   }
 

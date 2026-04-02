@@ -4,7 +4,7 @@
     "sold_out": "Sold Out",
     "unavailable": "Unavailable",
     "adding": "Adding...",
-    "added": "Added size {{ size }} to bag",
+    "added": "Added to bag",
     "error": "Something went wrong"
   },
   "general": {
@@ -313,7 +313,11 @@
     "general": {
       "title": "Bag",
       "remove": "Remove",
-      "subtotal": "Subtotal"
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "calculated_in_checkout": "Calculated in checkout",
+      "total_value": "Total value",
+      "checkout": "Go to checkout"
     }
   },
   "gift_cards": {

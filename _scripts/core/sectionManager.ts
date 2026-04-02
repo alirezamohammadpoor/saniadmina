@@ -49,17 +49,21 @@ export default class SectionManager {
 
   constructors: Record<string, typeof BaseSection>
   instances: BaseSection[]
+  boundHandlers: Map<string, EventListener>
 
   constructor() {
     this.constructors = {}
     this.instances = []
+    this.boundHandlers = new Map()
 
-    // Bind all the theme editor event handlers
+    // Bind all the theme editor event handlers once and store references
     THEME_EDITOR_EVENTS.forEach(ev => {
       const handlerName = getEventHandlerName(ev)
 
       if (this[handlerName]) {
-        this[handlerName] = this[handlerName].bind(this)
+        const bound = this[handlerName].bind(this)
+        this[handlerName] = bound
+        this.boundHandlers.set(ev, bound)
       }
     })
 
@@ -77,22 +81,14 @@ export default class SectionManager {
   attachEvents() {
     if (!isThemeEditor()) return
 
-    THEME_EDITOR_EVENTS.forEach(ev => {
-      const handler = this[getEventHandlerName(ev)]
-
-      if (handler) {
-        window.document.addEventListener(ev, handler.bind(this))
-      }
+    this.boundHandlers.forEach((handler, ev) => {
+      window.document.addEventListener(ev, handler)
     })
   }
 
   removeEvents() {
-    THEME_EDITOR_EVENTS.forEach(ev => {
-      const handler = this[getEventHandlerName(ev)]
-
-      if (handler) {
-        window.document.removeEventListener(ev, handler)
-      }
+    this.boundHandlers.forEach((handler, ev) => {
+      window.document.removeEventListener(ev, handler)
     })
   }
 

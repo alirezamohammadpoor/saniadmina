@@ -22,14 +22,14 @@
         <span class="sr-only">
           {{ 'products.product.price.regular_price' | t }}
         </span>
-        <s class="opacity-50">{{ item.variant.compare_at_price | money }}</s>
+        <s class="opacity-50">{{ item.variant.compare_at_price | money_without_trailing_zeros }}</s>
       </span>
     {% elsif item.original_price != item.final_price %}
       <span>
         <span class="sr-only">
           {{ 'products.product.price.regular_price' | t }}
         </span>
-        <s>{{ item.original_price | money }}</s>
+        <s>{{ item.original_price | money_without_trailing_zeros }}</s>
       </span>
     {% endif %}
 
@@ -37,7 +37,7 @@
       <span class="sr-only">
         {{ 'products.product.price.price' | t }}
       </span>
-      <span>{{ item.final_price | money }}</span>
+      <span>{{ item.final_price | money_without_trailing_zeros }}</span>
     </span>
   </div>
 {% endif %}

@@ -10,11 +10,11 @@
 
 {
   "total_price": {{ cart.total_price }},
-  "total_price_formatted": {{ cart.total_price | money | json }},
+  "total_price_formatted": {{ cart.total_price | money_without_trailing_zeros | json }},
   "original_total_price": {{ cart.original_total_price }},
-  "original_total_price_formatted": {{ cart.original_total_price | money | json }},
+  "original_total_price_formatted": {{ cart.original_total_price | money_without_trailing_zeros | json }},
   "items_subtotal_price": {{ cart.items_subtotal_price | json }},
-  "items_subtotal_price_formatted": {{ cart.items_subtotal_price | money | json }},
+  "items_subtotal_price_formatted": {{ cart.items_subtotal_price | money_without_trailing_zeros | json }},
   "item_count": {{ cart.item_count }},
   "items" : [
     {% for item in cart.items %}

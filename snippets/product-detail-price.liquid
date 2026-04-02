@@ -46,11 +46,11 @@
       </span>
       
       <s
-        {% if current_variant_on_sale != true %}style="display: none"{% endif %}
+        {% if current_variant_on_sale != true %}class="hidden"{% endif %}
         data-compare-price
       >
         {% if current_variant_on_sale %}
-          {{ current_variant.compare_at_price | money }}
+          {{ current_variant.compare_at_price | money_without_trailing_zeros }}
         {% endif %}
       </s>
     </span>
