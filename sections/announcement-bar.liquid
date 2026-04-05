@@ -5,8 +5,8 @@
   role="status"
   aria-live="polite"
 >
-  <div class="flex items-center justify-center h-[35px]">
-    <p class="text-label" style="font-size: 10px;">
+  <div class="flex items-center justify-center h-[var(--announcement-height)]">
+    <p class="text-label text-[10px]">
       {{ section.settings.text | default: 'Complimentary shipping on all orders' }}
     </p>
   </div>

@@ -9,12 +9,18 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "page-hero",
+    "hero_split_iDL6UE": {
+      "type": "hero-split",
+      "name": "Hero Split",
       "settings": {
-        "image": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
-        "image_mobile": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
-        "title": ""
+        "left_image": "shopify://shop_images/downloadgram.org_640389287_1364863285683434_2587606691579560805_n.jpg",
+        "left_title": "BONDI",
+        "left_subtitle": "",
+        "left_link": "shopify://products/bondi",
+        "right_image": "shopify://shop_images/sania-dmina-ELENA-pistachio-suede-slingback-shoes-comfortable-bridesmaid-wedding.jpg",
+        "right_title": "ELENA",
+        "right_subtitle": "",
+        "right_link": "shopify://products/elena"
       }
     },
     "featured-products": {
@@ -24,12 +30,22 @@
         "display": "scroll",
         "source": "collection",
         "collection": "new-arrivals",
+        "product_list": [],
         "limit": 8
+      }
+    },
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "image": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
+        "image_mobile": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
+        "title": ""
       }
     }
   },
   "order": [
-    "hero",
-    "featured-products"
+    "hero_split_iDL6UE",
+    "featured-products",
+    "hero"
   ]
 }

@@ -1,5 +1,5 @@
 <div data-section-id="{{ section.id }}" data-section-type="page-hero">
-  <div class="relative h-screen min-h-[500px] flex flex-col items-center justify-end pt-12 text-white">
+  <div class="relative h-[calc(100dvh-var(--chrome-height))] min-h-[500px] flex flex-col items-center justify-end pt-12 text-white">
     {% render 'graphic-cover'
                 image: section.settings.image,
                 image_mobile: section.settings.image_mobile,
@@ -8,9 +8,9 @@
 
     <div class="relative z-2 py-12">
       {% if section.settings.title != blank %}
-        <h3 class="max-w-[7em] lg:max-w-[11em] mx-auto text-center">
+        <h2 class="max-w-[7em] lg:max-w-[11em] mx-auto text-center">
           {{ section.settings.title }}
-        </h3>
+        </h2>
       {% endif %}
     </div>
   </div>
