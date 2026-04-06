@@ -4,41 +4,48 @@
   data-section-type="footer"
 >
   <div class="container py-10 lg:py-10">
-    <div class="flex flex-col gap-6 lg:flex-row lg:gap-20">
-      {%- comment -%} Customer Care {%- endcomment -%}
-      <div class="flex flex-col gap-1">
-        <span class="text-label text-fg">Customer Care</span>
-        <a href="mailto:{{ section.settings.email | default: 'info@saniadmina.com' }}" class="text-[14px] text-muted">
-          {{ section.settings.email | default: 'info@saniadmina.com' }}
-        </a>
+    <div class="flex flex-col gap-10 lg:flex-row lg:justify-between">
+      {%- comment -%} Left: links {%- endcomment -%}
+      <div class="flex flex-col gap-6 lg:flex-row lg:gap-20">
+        <div class="flex flex-col gap-1">
+          <span class="text-label text-fg">Customer Care</span>
+          <a href="mailto:{{ section.settings.email | default: 'info@saniadmina.com' }}" class="text-[14px] text-muted">
+            {{ section.settings.email | default: 'info@saniadmina.com' }}
+          </a>
+        </div>
+
+        {% for block in section.blocks %}
+          <div class="flex flex-col gap-1" {{ block.shopify_attributes }}>
+            <span class="text-label text-fg">
+              {{ block.settings.title }}
+            </span>
+
+            {%- if block.settings.menu != blank -%}
+              <nav aria-label="{{ block.settings.title }}">
+                <ul class="flex flex-col gap-1">
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a
+                        href="{{ link.url }}"
+                        class="text-[14px] text-muted"
+                        {% if link.current %}aria-current="page"{% endif %}
+                      >
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+          </div>
+        {% endfor %}
       </div>
 
-      {%- comment -%} Menu blocks {%- endcomment -%}
-      {% for block in section.blocks %}
-        <div class="flex flex-col gap-1" {{ block.shopify_attributes }}>
-          <span class="text-label text-fg">
-            {{ block.settings.title }}
-          </span>
-
-          {%- if block.settings.menu != blank -%}
-            <nav aria-label="{{ block.settings.title }}">
-              <ul class="flex flex-col gap-1">
-                {%- for link in block.settings.menu.links -%}
-                  <li>
-                    <a
-                      href="{{ link.url }}"
-                      class="text-[14px] text-muted"
-                      {% if link.current %}aria-current="page"{% endif %}
-                    >
-                      {{ link.title }}
-                    </a>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            </nav>
-          {%- endif -%}
-        </div>
-      {% endfor %}
+      {%- comment -%} Right: newsletter {%- endcomment -%}
+      <div class="w-full lg:w-[400px] shrink-0 flex flex-col gap-1">
+        <span class="text-label text-fg">Newsletter</span>
+        {% render 'newsletter-form', id_prefix: section.id, source: 'footer' %}
+      </div>
     </div>
 
     {%- comment -%} Copyright {%- endcomment -%}

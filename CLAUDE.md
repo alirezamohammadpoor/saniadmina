@@ -47,7 +47,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 
 ### Layout
 
-- 8px container padding mobile, 40px desktop
+- 8px container padding (mobile and desktop)
 - 24px section spacing mobile, 40px desktop
 - 3:4 image ratio on product cards
 - 4:5 image ratio on PDP gallery

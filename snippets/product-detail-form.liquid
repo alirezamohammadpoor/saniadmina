@@ -25,7 +25,7 @@
     data-component="product-detail-form"
   >
     {% form 'product', product, style: 'height: 100%' %}
-      <div class="lg:sticky lg:top-[var(--chrome-height)] lg:h-[calc(100dvh-var(--chrome-height))] lg:flex lg:items-center lg:justify-center">
+      <div class="lg:sticky lg:top-[var(--chrome-height)] lg:min-h-[calc(100dvh-var(--chrome-height))] lg:flex lg:items-center lg:justify-center">
         <div class="px-4 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
 
           {%- comment -%} Breadcrumb: derived from navigation structure {%- endcomment -%}
@@ -214,7 +214,7 @@
   </div>
 
   {%- comment -%} Product Info Modal — tab navigation {%- endcomment -%}
-  <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal role="dialog" aria-label="Product information" aria-hidden="true">
+  <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal data-component="product-info-modal" role="dialog" aria-label="Product information" aria-hidden="true">
     <div class="absolute inset-0 bg-fg/30 z-0 opacity-0 transition-opacity duration-300" data-modal-backdrop></div>
     <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-300" data-modal-panel>
       {%- comment -%} Header: close button, same height/padding as main header {%- endcomment -%}
@@ -223,7 +223,7 @@
       </div>
 
       {%- comment -%} Tab navigation — vertical list {%- endcomment -%}
-      <div class="flex flex-col gap-1 px-4 lg:px-10 pb-6 border-b border-fg/10">
+      <div class="flex flex-col gap-1 px-4 pb-6 border-b border-fg/10">
         <button type="button" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">Materials & Care</button>
         <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">Size Guide</button>
         <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">Shipping & Returns</button>
@@ -231,7 +231,7 @@
       </div>
 
       {%- comment -%} Tab content panels {%- endcomment -%}
-      <div class="px-4 lg:px-10 py-8">
+      <div class="px-4 py-8">
         <div data-info-panel="materials-care">
           <h4 class="text-[14px] text-fg font-normal mb-4">Materials</h4>
           <p class="text-[12px] text-fg leading-relaxed">
@@ -270,76 +270,6 @@
     </div>
   </div>
 
-  {%- comment -%} Info modal script — animated open/close {%- endcomment -%}
-  <script>
-    (function() {
-      const switchTab = (modal, id) => {
-        modal.querySelectorAll('[data-info-tab]').forEach((t) => {
-          const isActive = t.dataset.infoTab === id;
-          t.classList.toggle('font-medium', isActive);
-          t.classList.toggle('text-fg', isActive);
-          t.classList.toggle('font-normal', !isActive);
-          t.classList.toggle('text-muted', !isActive);
-        });
-        modal.querySelectorAll('[data-info-panel]').forEach((p) => {
-          p.classList.toggle('hidden', p.dataset.infoPanel !== id);
-        });
-      };
-
-      const openModal = (modal, tabId) => {
-        if (tabId) switchTab(modal, tabId);
-        modal.classList.remove('pointer-events-none');
-        modal.querySelector('[data-modal-backdrop]').classList.add('opacity-100');
-        modal.querySelector('[data-modal-backdrop]').classList.remove('opacity-0');
-        modal.querySelector('[data-modal-panel]').classList.remove('translate-x-full');
-        modal.querySelector('[data-modal-panel]').classList.add('translate-x-0');
-      };
-
-      const closeModal = (modal) => {
-        modal.querySelector('[data-modal-backdrop]').classList.remove('opacity-100');
-        modal.querySelector('[data-modal-backdrop]').classList.add('opacity-0');
-        modal.querySelector('[data-modal-panel]').classList.add('translate-x-full');
-        modal.querySelector('[data-modal-panel]').classList.remove('translate-x-0');
-        setTimeout(() => {
-          modal.classList.add('pointer-events-none');
-        }, 300);
-      };
-
-      document.addEventListener('click', (e) => {
-        const trigger = e.target.closest('[data-info-trigger]');
-        if (trigger) {
-          const modal = document.querySelector('[data-product-info-modal]');
-          if (modal) openModal(modal, trigger.dataset.infoTrigger);
-          return;
-        }
-
-        const tab = e.target.closest('[data-info-tab]');
-        if (tab) {
-          const modal = tab.closest('[data-product-info-modal]');
-          if (modal) switchTab(modal, tab.dataset.infoTab);
-          return;
-        }
-
-        if (e.target.closest('[data-modal-close]')) {
-          const modal = e.target.closest('[data-product-info-modal]');
-          if (modal) closeModal(modal);
-          return;
-        }
-
-        if (e.target.hasAttribute('data-modal-backdrop')) {
-          const modal = e.target.closest('[data-product-info-modal]');
-          if (modal) closeModal(modal);
-          return;
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          const modal = document.querySelector('[data-product-info-modal]:not(.pointer-events-none)');
-          if (modal) closeModal(modal);
-        }
-      });
-    })();
-  </script>
+  {%- comment -%} Info modal behavior handled by TS component (productInfoModal.ts) {%- endcomment -%}
 
 {% endunless %}

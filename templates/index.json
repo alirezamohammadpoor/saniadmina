@@ -34,18 +34,71 @@
         "limit": 8
       }
     },
-    "hero": {
-      "type": "page-hero",
+    "card_grid_WEQYPH": {
+      "type": "card-grid",
+      "blocks": {
+        "card_K994FE": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_136197333_1087730421650867_9009002994661625830_n.jpg",
+            "label": "BEHIND THE BRAND",
+            "excerpt": "Every pair begins in our Italian workshop. From hand-cut leather to the final stitch, crafted with care since day one.",
+            "link": ""
+          }
+        },
+        "card_KmkBXn": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_106912313_183477523134762_1159240814248151788_n.jpg",
+            "label": "BUILD YOUR COLLECTION",
+            "excerpt": "From boardroom to evening, discover how to style Sania D'Mina across every occasion.",
+            "link": ""
+          }
+        },
+        "card_4gtHik": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_627821082_18384224956155874_450668689235564343_n.jpg",
+            "label": "BRIDAL GUIDE",
+            "excerpt": "Find the perfect pair for your special day. Elegant silhouettes designed for comfort from ceremony to last dance.",
+            "link": ""
+          }
+        },
+        "card_QMBbtV": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_637184161_18506421193074814_119893245051565431_n.jpg",
+            "label": "How we make our shoes comfortable",
+            "excerpt": "A 7 cm heel with a real feel of 3 cm. The secret is in the construction — engineered for all-day wear.",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_K994FE",
+        "card_KmkBXn",
+        "card_4gtHik",
+        "card_QMBbtV"
+      ],
+      "name": "Card Grid",
+      "settings": {}
+    },
+    "image_text_split_MfrDd7": {
+      "type": "image-text-split",
+      "name": "Image + Text Split",
       "settings": {
-        "image": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
-        "image_mobile": "shopify://shop_images/downloadgram.org_646023259_18401576809177173_4996485319276667479_n.jpg",
-        "title": ""
+        "image": "shopify://shop_images/downloadgram.org_544861547_18376326361177173_7845137417686966486_n.jpg",
+        "image_position": "left",
+        "subtitle": "NORDISKA KOMPANIET STOCKHOLM",
+        "heading": "Shop in store",
+        "link": ""
       }
     }
   },
   "order": [
     "hero_split_iDL6UE",
     "featured-products",
-    "hero"
+    "card_grid_WEQYPH",
+    "image_text_split_MfrDd7"
   ]
 }

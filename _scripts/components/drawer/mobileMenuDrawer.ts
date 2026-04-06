@@ -13,5 +13,19 @@ export default class MobileMenuDrawer extends Drawer {
     })
 
     this.searchInline = new SearchInline(this.qs(SearchInline.SELECTOR) as HTMLFormElement)
+
+    // Expandable search bar toggle
+    const searchToggle = this.qs('[data-search-toggle]')
+    const searchForm = this.qs('[data-search-form]') as HTMLFormElement | null
+
+    if (searchToggle && searchForm) {
+      searchToggle.addEventListener('click', () => {
+        searchForm.classList.toggle('hidden')
+        if (!searchForm.classList.contains('hidden')) {
+          const input = searchForm.querySelector('input') as HTMLInputElement
+          input?.focus()
+        }
+      })
+    }
   }
 }
