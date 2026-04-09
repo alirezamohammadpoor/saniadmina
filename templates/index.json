@@ -34,54 +34,16 @@
         "limit": 8
       }
     },
-    "card_grid_WEQYPH": {
-      "type": "card-grid",
-      "blocks": {
-        "card_K994FE": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/downloadgram.org_136197333_1087730421650867_9009002994661625830_n.jpg",
-            "label": "BEHIND THE BRAND",
-            "excerpt": "Every pair begins in our Italian workshop. From hand-cut leather to the final stitch, crafted with care since day one.",
-            "link": ""
-          }
-        },
-        "card_KmkBXn": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/downloadgram.org_106912313_183477523134762_1159240814248151788_n.jpg",
-            "label": "BUILD YOUR COLLECTION",
-            "excerpt": "From boardroom to evening, discover how to style Sania D'Mina across every occasion.",
-            "link": ""
-          }
-        },
-        "card_4gtHik": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/downloadgram.org_627821082_18384224956155874_450668689235564343_n.jpg",
-            "label": "BRIDAL GUIDE",
-            "excerpt": "Find the perfect pair for your special day. Elegant silhouettes designed for comfort from ceremony to last dance.",
-            "link": ""
-          }
-        },
-        "card_QMBbtV": {
-          "type": "card",
-          "settings": {
-            "image": "shopify://shop_images/downloadgram.org_637184161_18506421193074814_119893245051565431_n.jpg",
-            "label": "How we make our shoes comfortable",
-            "excerpt": "A 7 cm heel with a real feel of 3 cm. The secret is in the construction — engineered for all-day wear.",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_K994FE",
-        "card_KmkBXn",
-        "card_4gtHik",
-        "card_QMBbtV"
-      ],
-      "name": "Card Grid",
-      "settings": {}
+    "journal_featured": {
+      "type": "journal-featured",
+      "settings": {
+        "title": "Journal",
+        "subtitle": "View all",
+        "blog": "journal",
+        "limit": 4,
+        "show_excerpt": true,
+        "show_tags": true
+      }
     },
     "image_text_split_MfrDd7": {
       "type": "image-text-split",
@@ -98,7 +60,7 @@
   "order": [
     "hero_split_iDL6UE",
     "featured-products",
-    "card_grid_WEQYPH",
+    "journal_featured",
     "image_text_split_MfrDd7"
   ]
 }

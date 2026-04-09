@@ -72,7 +72,8 @@
       "author_on_date_html": "By {{ author }} on {{ date }}",
       "author_html": "By {{ author }}",
       "comment_meta_html": "{{ author }} on {{ date }}",
-      "read_more": "Read more"
+      "read_more": "Read more",
+      "related": "Related Stories"
     },
     "comments": {
       "title": "Leave a comment",
@@ -89,7 +90,9 @@
       }
     },
     "general": {
-      "categories": "Categories"
+      "categories": "Categories",
+      "all": "All",
+      "load_more": "Load more"
     }
   },
   "cart": {

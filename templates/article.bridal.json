@@ -11,14 +11,25 @@
   "sections": {
     "main": {
       "type": "main-article",
-      "settings": {}
+      "settings": {
+        "show_author": false,
+        "show_date": true,
+        "show_tags": true
+      }
     },
     "featured_products": {
       "type": "featured-products",
       "settings": {
         "title": "Shop the Story",
-        "source": "product_list",
         "display": "scroll",
+        "source": "product_list",
+        "collection": "",
+        "product_list": [
+          "dun",
+          "bondi",
+          "elena",
+          "perlino"
+        ],
         "limit": 8
       }
     }
