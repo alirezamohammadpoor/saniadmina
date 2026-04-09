@@ -80,5 +80,22 @@
         "info": "ID of the list for newsletter signups.  e.g. 'abc123'"
       }
     ]
-  } 
+  },
+  {
+    "name": "Markets & Currency",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "currency_options",
+        "label": "Currency options (comma-separated)",
+        "default": "SEK,EUR,USD,GBP"
+      }
+    ]
+  }
 ]

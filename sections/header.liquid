@@ -35,7 +35,11 @@
         SANIA D'MINA
       </a>
 
-      {%- comment -%} Right: Bag {%- endcomment -%}
+      {%- comment -%} Right: Currency + Bag {%- endcomment -%}
+      <div class="flex items-center gap-3">
+        <div class="hidden lg:block">
+          {% render 'currency-selector', style: 'header' %}
+        </div>
       <button
         class="text-[12px] text-fg"
         data-ajax-cart-toggle
@@ -50,6 +54,7 @@
           Bag ({{ cart.item_count }})
         </span>
       </button>
+      </div>
     </div>
   </div>
 
@@ -115,18 +120,21 @@
     {%- comment -%} Preload collection images for hover swap — all links + sub-links {%- endcomment -%}
     <div class="hidden" data-menu-collection-images>
       {% for link in section.settings.primary_menu.links %}
-        {%- assign col_handle = link.url | split: '/collections/' | last | split: '?' | first -%}
-        {%- assign col = collections[col_handle] -%}
-        {% if col.image %}
-          <img
-            src="{{ col.image | image_url: width: 700 }}"
-            alt="{{ col.title }}"
-            data-collection="{{ col_handle }}"
-            data-title="{{ col.title }}"
-            data-desc="{{ col.description | strip_html | escape }}"
-          >
+        {% if link.url contains '/collections/' %}
+          {%- assign col_handle = link.url | split: '/collections/' | last | split: '?' | first -%}
+          {%- assign col = collections[col_handle] -%}
+          {% if col.image %}
+            <img
+              src="{{ col.image | image_url: width: 700 }}"
+              alt="{{ col.title }}"
+              data-collection="{{ col_handle }}"
+              data-title="{{ col.title }}"
+              data-desc="{{ col.description | strip_html | escape }}"
+            >
+          {% endif %}
         {% endif %}
         {% for sublink in link.links %}
+          {% unless sublink.url contains '/collections/' %}{% continue %}{% endunless %}
           {%- assign sub_handle = sublink.url | split: '/collections/' | last | split: '?' | first -%}
           {%- assign sub_col = collections[sub_handle] -%}
           {% if sub_col.image and sub_handle != col_handle %}

@@ -49,6 +49,11 @@
     </div>
 
     {%- comment -%} Copyright {%- endcomment -%}
+    {%- comment -%} Currency selector {%- endcomment -%}
+    <div class="mt-6">
+      {% render 'currency-selector', style: 'footer' %}
+    </div>
+
     {% if section.settings.copyright_text != blank %}
       {%- liquid
         assign current_year = 'now' | date: '%Y'
@@ -60,6 +65,24 @@
     {% endif %}
 
   </div>
+
+  {%- comment -%} Payment icons {%- endcomment -%}
+  {% if section.settings.show_payment_icons %}
+    {% if shop.enabled_payment_types.size > 0 %}
+      <div class="flex items-center justify-center gap-3 pb-6 [&_svg]:h-5 [&_svg]:w-auto [&_svg]:opacity-100">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag }}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="flex items-center justify-center gap-3 pb-6 opacity-40">
+        <span class="text-label text-muted">Visa</span>
+        <span class="text-label text-muted">Mastercard</span>
+        <span class="text-label text-muted">Amex</span>
+        <span class="text-label text-muted">Klarna</span>
+      </div>
+    {% endif %}
+  {% endif %}
 
   {%- comment -%} Large brand text — edge to edge {%- endcomment -%}
   <div class="text-[15vw] font-light leading-none text-fg overflow-hidden text-center">
@@ -81,6 +104,12 @@
     {
       "type": "header",
       "content": "Copyright"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
     },
     {
       "type": "textarea",

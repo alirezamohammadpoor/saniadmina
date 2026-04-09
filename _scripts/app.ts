@@ -28,6 +28,10 @@ import FooterSection from '@/sections/footer'
 import MobileMenuSection from '@/sections/mobileMenu'
 import AJAXCartSection from '@/sections/ajaxCart'
 
+// Standalone components (not tied to sections)
+import AnnouncementRotator from '@/components/announcementRotator'
+import CurrencySelector from '@/components/currencySelector'
+
 // Use this to expose anything needed throughout the rest of the app
 window.app = window.app || {};
 window.app.taxi = null;
@@ -45,6 +49,10 @@ function init() {
   sectionManager.register(FooterSection)
   sectionManager.register(MobileMenuSection)
   sectionManager.register(AJAXCartSection)
+
+  // Init standalone components (global, not tied to a section)
+  document.querySelectorAll<HTMLElement>(AnnouncementRotator.SELECTOR).forEach(el => new AnnouncementRotator(el))
+  document.querySelectorAll<HTMLElement>(CurrencySelector.SELECTOR).forEach(el => new CurrencySelector(el))
 
   // START Taxi
   if (isThemeEditor()) {

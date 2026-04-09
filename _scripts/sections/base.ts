@@ -81,6 +81,7 @@ export default class BaseSection {
       return new GraphicCoverVideo(el)
     })
 
+
     // Good for testing...
     // Array.from(container.querySelectorAll('img')).forEach(el => {
     //   if (!el.getAttribute('alt')) {
