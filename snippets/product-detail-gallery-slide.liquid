@@ -12,14 +12,15 @@
 {% if image != blank %}
   {%- liquid
     assign loading = loading | default: 'lazy'
-    
+    assign fetch_priority = fetch_priority | default: nil
+
     capture main_image_widths
       render 'image-widths', max_width: 1100
     endcapture
   -%}
   
   <div
-    class="relative aspect-[4/5] embla__slide"
+    class="relative aspect-[2/3] embla__slide"
     role="group"
     aria-roledescription="slide"
   >
@@ -28,6 +29,7 @@
       | image_url: width: 720
       | image_tag:
         loading: loading,
+        fetchpriority: fetch_priority,
         widths: main_image_widths,
         sizes: '100vw',
         alt: image.alt,

@@ -4,7 +4,7 @@
   --z-empty: 4;
   --z-header: 5;
 
-  @apply fixed z-(--z-ajax-cart) top-0 right-0 h-screen w-full bg-bg;
+  @apply fixed z-(--z-ajax-cart) top-0 right-0 h-[100dvh] w-full bg-bg;
   @media (min-width: 1024px) { max-width: min(90vw, 500px); }
   @apply translate-x-full;
   transition: var(--transition-drawer-out);
@@ -70,6 +70,7 @@
   @apply flex flex-col gap-y-3 bg-bg;
   z-index: var(--z-footer);
   padding: 16px var(--spacing-container);
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
 }
 
 

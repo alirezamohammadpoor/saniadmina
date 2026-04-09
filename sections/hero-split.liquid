@@ -12,6 +12,7 @@
         | image_url: width: 1400
         | image_tag:
           loading: 'eager',
+          fetchpriority: 'high',
           class: 'w-full h-full object-cover',
           sizes: '50vw',
           alt: section.settings.left_title | default: ''

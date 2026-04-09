@@ -3,7 +3,9 @@
     {% render 'graphic-cover'
                 image: section.settings.image,
                 image_mobile: section.settings.image_mobile,
-                video: section.settings.video
+                video: section.settings.video,
+                loading: 'eager',
+                fetch_priority: 'high'
     %}
 
     <div class="relative z-2 py-12">

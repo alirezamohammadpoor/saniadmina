@@ -67,8 +67,10 @@
             assign loading = 'lazy'
 
             if image_alt_upcase contains color_upcase
+              assign fp = nil
               if slides_count == 0 and is_active
                 assign loading = 'eager'
+                assign fp = 'high'
               endif
 
               capture list_item
@@ -76,7 +78,7 @@
               endcapture
 
               capture slide
-                render 'product-detail-gallery-slide', image: image, loading: loading
+                render 'product-detail-gallery-slide', image: image, loading: loading, fetch_priority: fp
               endcapture
 
               assign list_items = list_items | append: list_item

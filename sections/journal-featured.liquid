@@ -29,7 +29,7 @@
         <div class="w-[70%] shrink-0 snap-start lg:w-auto lg:shrink">
           <article class="flex h-full flex-col gap-y-3">
             <a href="{{ article.url }}" title="{{ article.title | escape }}">
-              <div class="relative aspect-[3/4] overflow-hidden bg-[#E8E5E0]">
+              <div class="relative aspect-[2/3] overflow-hidden bg-[#E8E5E0]">
                 {% if article.image != blank %}
                   <img
                     src="{{ article.image | image_url: width: 900 }}"

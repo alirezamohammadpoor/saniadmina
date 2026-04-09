@@ -45,6 +45,28 @@
         "show_tags": true
       }
     },
+    "product_as_seen_on_RWngnY": {
+      "type": "product-as-seen-on",
+      "blocks": {
+        "entry_qEpWg3": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_538225210_18530708827052914_6390897102737833055_n.jpg",
+            "product": "elena",
+            "color": "Black Leather",
+            "name": "MATILDA DJERF",
+            "instagram": "@matildadjerf"
+          }
+        }
+      },
+      "block_order": [
+        "entry_qEpWg3"
+      ],
+      "name": "As Seen On",
+      "settings": {
+        "title": "As seen on"
+      }
+    },
     "image_text_split_MfrDd7": {
       "type": "image-text-split",
       "name": "Image + Text Split",
@@ -61,6 +83,7 @@
     "hero_split_iDL6UE",
     "featured-products",
     "journal_featured",
+    "product_as_seen_on_RWngnY",
     "image_text_split_MfrDd7"
   ]
 }

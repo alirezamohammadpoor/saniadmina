@@ -21,7 +21,7 @@
       {% for block in section.blocks %}
         <div class="w-[70%] shrink-0 snap-start lg:w-auto lg:shrink" {{ block.shopify_attributes }}>
           {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" class="block" aria-label="{{ block.settings.label }}">{% endif %}
-            <div class="aspect-[3/4] overflow-hidden bg-[#E8E5E0]">
+            <div class="aspect-[2/3] overflow-hidden bg-[#E8E5E0]">
               {% if block.settings.image %}
                 {{ block.settings.image
                   | image_url: width: 800
