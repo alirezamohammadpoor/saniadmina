@@ -13,10 +13,10 @@
       "type": "hero-split",
       "name": "Hero Split",
       "settings": {
-        "left_image": "shopify://shop_images/downloadgram.org_640389287_1364863285683434_2587606691579560805_n.jpg",
-        "left_title": "BONDI",
+        "left_image": "shopify://shop_images/sania-dmina-DUN-ivory-suede-square-toe-mule-sandals-shoes-beige-summer.jpg",
+        "left_title": "DUN",
         "left_subtitle": "",
-        "left_link": "shopify://products/bondi",
+        "left_link": "shopify://products/dun",
         "right_image": "shopify://shop_images/sania-dmina-ELENA-pistachio-suede-slingback-shoes-comfortable-bridesmaid-wedding.jpg",
         "right_title": "ELENA",
         "right_subtitle": "",
@@ -48,6 +48,36 @@
     "product_as_seen_on_RWngnY": {
       "type": "product-as-seen-on",
       "blocks": {
+        "entry_nJn4mA": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_641623446_18565762258044942_3446250424782444638_n.jpg",
+            "product": "bondi",
+            "color": "Black",
+            "name": "SHARAREH HOSS",
+            "instagram": "@sharareh.hoss"
+          }
+        },
+        "entry_bbFxUn": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_642369717_18571594336022661_2144700104056212830_n.jpg",
+            "product": "elena",
+            "color": "Black",
+            "name": "BABBA C RIVERIA",
+            "instagram": "@babba"
+          }
+        },
+        "entry_GpgkHA": {
+          "type": "entry",
+          "settings": {
+            "image": "shopify://shop_images/downloadgram.org_656291130_18075219359176866_2126849560883856540_n.jpg",
+            "product": "bondi",
+            "color": "Black",
+            "name": "EMELIE ANDRÉA",
+            "instagram": "@mliandrea"
+          }
+        },
         "entry_qEpWg3": {
           "type": "entry",
           "settings": {
@@ -60,6 +90,9 @@
         }
       },
       "block_order": [
+        "entry_nJn4mA",
+        "entry_bbFxUn",
+        "entry_GpgkHA",
         "entry_qEpWg3"
       ],
       "name": "As Seen On",
