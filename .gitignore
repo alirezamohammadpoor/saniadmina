@@ -3,6 +3,9 @@ dist/
 upload/
 config.yml
 
+# Editor
+.cursor/
+
 # Logs
 logs
 *.log
