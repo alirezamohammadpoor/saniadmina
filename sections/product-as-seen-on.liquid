@@ -14,7 +14,7 @@
       {% endif %}
     </div>
 
-    <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x no-scrollbar" data-scroll-container>
+    <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
       {% for block in section.blocks %}
         {% if block.settings.image == blank %}{% continue %}{% endif %}
         <div class="w-[70%] lg:w-[calc(25%-3px)] shrink-0 snap-start" {{ block.shopify_attributes }}>

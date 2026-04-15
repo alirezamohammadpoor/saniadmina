@@ -17,7 +17,7 @@
       </div>
     {% endif %}
 
-    <div class="flex gap-1 overflow-x-auto snap-x no-scrollbar lg:grid lg:grid-cols-{{ section.blocks.size | at_most: 4 }} lg:overflow-visible">
+    <div class="flex gap-1 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:grid lg:grid-cols-{{ section.blocks.size | at_most: 4 }} lg:overflow-visible">
       {% for block in section.blocks %}
         <div class="w-[70%] shrink-0 snap-start lg:w-auto lg:shrink" {{ block.shopify_attributes }}>
           {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" class="block" aria-label="{{ block.settings.label }}">{% endif %}

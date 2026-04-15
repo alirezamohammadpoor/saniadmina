@@ -24,7 +24,7 @@
       </div>
     {% endif %}
 
-    <div class="flex gap-4 overflow-x-auto snap-x no-scrollbar lg:grid lg:grid-cols-{{ section.settings.limit | at_most: 4 }} lg:overflow-visible">
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar lg:grid lg:grid-cols-{{ section.settings.limit | at_most: 4 }} lg:overflow-visible">
       {% for article in selected_blog.articles limit: section.settings.limit %}
         <div class="w-[70%] shrink-0 snap-start lg:w-auto lg:shrink">
           <article class="flex h-full flex-col gap-y-3">

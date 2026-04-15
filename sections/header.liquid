@@ -36,24 +36,24 @@
       </a>
 
       {%- comment -%} Right: Currency + Bag {%- endcomment -%}
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-4">
         <div class="hidden lg:block">
           {% render 'currency-selector', style: 'header' %}
         </div>
-      <button
-        class="text-[12px] text-fg"
-        data-ajax-cart-toggle
-        aria-label="Toggle Bag"
-        aria-controls="ajax-cart"
-        aria-expanded="false"
-      >
-        <span
-          class="{% if cart.item_count > 0 %}has-items{% endif %}"
-          data-component="header-cart-control"
+        <button
+          class="text-[12px] text-fg"
+          data-ajax-cart-toggle
+          aria-label="Toggle Bag"
+          aria-controls="ajax-cart"
+          aria-expanded="false"
         >
-          Bag ({{ cart.item_count }})
-        </span>
-      </button>
+          <span
+            class="{% if cart.item_count > 0 %}has-items{% endif %}"
+            data-component="header-cart-control"
+          >
+            Bag (<span data-count>{{ cart.item_count }}</span>)
+          </span>
+        </button>
       </div>
     </div>
   </div>
