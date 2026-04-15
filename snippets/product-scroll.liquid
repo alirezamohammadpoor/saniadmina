@@ -21,20 +21,20 @@
   endif
 -%}
 
-{% if title != blank %}
-  <div class="flex items-center justify-between mb-4">
-    <h3 class="text-h3 text-fg">{{ title }}</h3>
+<div data-component="scroll-section">
+  {% if title != blank %}
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-h3 text-fg">{{ title }}</h3>
 
-    {% render 'scroll-arrows' %}
-  </div>
-{% endif %}
-
-<div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
-  {%- for product in products limit: limit -%}
-    <div class="w-[47%] lg:w-[calc(25%-6px)] shrink-0 snap-start">
-      {% render 'product-card', product: product %}
+      {% render 'scroll-arrows' %}
     </div>
-  {%- endfor -%}
-</div>
+  {% endif %}
 
-{% render 'scroll-arrows-script' %}
+  <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
+    {%- for product in products limit: limit -%}
+      <div class="w-[47%] lg:w-[calc(25%-6px)] shrink-0 snap-start">
+        {% render 'product-card', product: product %}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

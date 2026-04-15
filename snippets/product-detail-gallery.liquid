@@ -29,7 +29,7 @@
         for image in product.images
           assign image_alt_upcase = image.alt | upcase
 
-          if image_alt_upcase contains color_upcase
+          if image_alt_upcase == color_upcase
             assign colors_with_images = colors_with_images | plus: 1
             break
           endif
@@ -66,7 +66,7 @@
             assign image_alt_upcase = image.alt | upcase
             assign loading = 'lazy'
 
-            if image_alt_upcase contains color_upcase
+            if image_alt_upcase == color_upcase
               assign fp = nil
               if slides_count == 0 and is_active
                 assign loading = 'eager'

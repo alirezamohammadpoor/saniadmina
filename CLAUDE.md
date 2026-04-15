@@ -69,7 +69,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 - `config/settings_data.json` must have section defaults for all global sections or pages break.
 - Design tokens are code-owned in `_styles/app.css` `@theme` block — not exposed as theme editor settings.
 - Locale strings in `locales/en.default.json`, exported to JS via `snippets/head-scripts.liquid` → `window.app.strings`.
-- **Never use inline `<script>` in Liquid snippets for interactive behavior.** Taxi.js SPA navigation does not re-execute inline scripts after page transitions. All event listeners and DOM behavior must live in TypeScript components (`_scripts/components/`) which are instantiated via the section→component lifecycle on every navigation. Use `data-component` attributes on markup and register behavior in the component's constructor.
+- **Never use inline `<script>` in any Liquid file (sections or snippets) for interactive behavior.** Taxi.js SPA navigation does not re-execute inline scripts after page transitions — they fire once on full load and then never again. `window.__xxxInit` guards make this worse by blocking re-init entirely. All event listeners and DOM behavior must live in TypeScript components (`_scripts/components/`), extended from `BaseComponent`, wired in `constructor()` and cleaned up in `destroy()`. Register standalone components in `app.ts`. The header menu script in `sections/header.liquid` is existing legacy debt — do not copy that pattern.
 
 ## Product Range
 

@@ -6,6 +6,7 @@
 
 {% if section.blocks.size > 0 %}
   <section class="px-2 pt-6 lg:pt-10 pb-6 lg:pb-10" data-as-seen-on>
+    <div data-component="scroll-section">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-h3 text-fg">{{ section.settings.title | default: 'As seen on' }}</h3>
 
@@ -60,9 +61,8 @@
         </div>
       {% endfor %}
     </div>
+    </div>
   </section>
-
-  {% render 'scroll-arrows-script' %}
 {% endif %}
 
 {% schema %}

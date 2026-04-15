@@ -3,6 +3,7 @@ import type { RendererProps } from '@/types/taxi'
 
 import SectionManager from '@/core/sectionManager'
 
+import ScrollSection from '@/components/scrollSection'
 import FeaturedProducts from '@/sections/featuredProducts'
 import Addresses from '@/sections/addresses'
 import Article from '@/sections/article'
@@ -52,7 +53,9 @@ export default class BaseRenderer extends Renderer {
       PageHero
     ].forEach(section => {
       this.sectionManager.register(section)
-    })    
+    })
+
+    document.querySelectorAll<HTMLElement>(ScrollSection.SELECTOR).forEach(el => new ScrollSection(el))
   }
 
   onEnterCompleted() {

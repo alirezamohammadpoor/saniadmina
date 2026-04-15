@@ -31,6 +31,7 @@ import AJAXCartSection from '@/sections/ajaxCart'
 // Standalone components (not tied to sections)
 import AnnouncementRotator from '@/components/announcementRotator'
 import CurrencySelector from '@/components/currencySelector'
+import ScrollSection from '@/components/scrollSection'
 
 // Use this to expose anything needed throughout the rest of the app
 window.app = window.app || {};
@@ -53,6 +54,7 @@ function init() {
   // Init standalone components (global, not tied to a section)
   document.querySelectorAll<HTMLElement>(AnnouncementRotator.SELECTOR).forEach(el => new AnnouncementRotator(el))
   document.querySelectorAll<HTMLElement>(CurrencySelector.SELECTOR).forEach(el => new CurrencySelector(el))
+  document.querySelectorAll<HTMLElement>(ScrollSection.SELECTOR).forEach(el => new ScrollSection(el))
 
   // START Taxi
   if (isThemeEditor()) {
