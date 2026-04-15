@@ -117,7 +117,7 @@
   {% if is_radio %}
     <fieldset>
       <legend class="sr-only">{{ option.name }}</legend>
-      <div class="text-[12px] font-medium text-fg mb-3 flex items-center justify-between">
+      <div class="text-[12px] font-normal text-fg mb-3 flex items-center justify-between">
         <span>{{ option.name }}{% if is_color %}: <span class="font-normal" data-selected-color>{{ option.selected_value }}</span>{% endif %}</span>
 
         {%- comment -%} Size system toggle (EU/US/UK) {%- endcomment -%}
@@ -136,7 +136,7 @@
     {%- comment -%} Color sync and size toggle behavior handled by TS component (variantPickerOption.ts) {%- endcomment -%}
   {% else %}
     <div>
-      <label for="{{ option_parent_id }}" class="text-[12px] font-medium text-fg mb-3 block">
+      <label for="{{ option_parent_id }}" class="text-[12px] font-normal text-fg mb-3 block">
         {{ option.name }}
       </label>
 

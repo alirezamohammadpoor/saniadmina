@@ -26,7 +26,7 @@
   >
     {% form 'product', product, style: 'height: 100%' %}
       <div class="lg:sticky lg:top-[var(--chrome-height)] lg:min-h-[calc(100dvh-var(--chrome-height))] lg:flex lg:items-center lg:justify-center">
-        <div class="px-4 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
+        <div class="px-2 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
 
           {%- comment -%} Breadcrumb: derived from navigation structure {%- endcomment -%}
           {%- liquid
@@ -68,7 +68,7 @@
           </h1>
 
           {%- comment -%} Price {%- endcomment -%}
-          <div class="text-left text-[12px] lg:text-[14px] text-fg mb-6">
+          <div class="text-left text-[12px] text-fg mb-6">
             {% render 'product-detail-price',
                       product: product,
                       current_variant: current_variant
@@ -198,10 +198,10 @@
 
             {%- comment -%} Info links — open modal {%- endcomment -%}
             <div class="mt-6 flex flex-col gap-3">
-              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="materials-care">Materials & Care</button>
-              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="size-guide">Size Guide</button>
-              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="shipping-returns">Shipping & Returns</button>
-              <button type="button" class="text-[14px] text-fg text-left" data-info-trigger="payments">Payments</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="materials-care">Materials & Care</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="size-guide">Size Guide</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="shipping-returns">Shipping & Returns</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="payments">Payments</button>
             </div>
           </div>
         </div>
