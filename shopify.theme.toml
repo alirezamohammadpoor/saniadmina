@@ -1,0 +1,11 @@
+# Shopify CLI environments
+# Usage: `shopify theme push -e production` / `shopify theme push -e staging`
+# Docs: https://shopify.dev/docs/themes/tools/cli/environments
+
+[environments.production]
+store = "saniadmina.myshopify.com"
+theme = "157290823932"
+
+[environments.staging]
+store = "saniadmina.myshopify.com"
+theme = "157793583356"
