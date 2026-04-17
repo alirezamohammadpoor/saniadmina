@@ -216,7 +216,7 @@
   </div>
 
   {%- comment -%} Product Info Modal — tab navigation {%- endcomment -%}
-  <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal data-component="product-info-modal" role="dialog" aria-label="Product information" aria-hidden="true">
+  <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal data-component="product-info-modal" role="dialog" aria-modal="true" aria-label="{{ 'products.info.modal_label' | t }}" aria-hidden="true">
     <div class="absolute inset-0 bg-fg/30 z-0 opacity-0 transition-opacity duration-300" data-modal-backdrop></div>
     <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-300" data-modal-panel>
       {%- comment -%} Header: close button, same height/padding as main header {%- endcomment -%}
@@ -224,17 +224,22 @@
         <button type="button" class="text-[12px] text-fg" data-modal-close>{{ 'general.close' | t }}</button>
       </div>
 
-      {%- comment -%} Tab navigation — vertical list {%- endcomment -%}
-      <div class="flex flex-col gap-1 px-4 pb-6 border-b border-fg/10">
-        <button type="button" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">{{ 'products.info.materials_care' | t }}</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">{{ 'products.info.size_guide' | t }}</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">{{ 'products.info.shipping_returns' | t }}</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">{{ 'products.info.payments' | t }}</button>
+      {%- comment -%} Tab navigation — vertical tablist {%- endcomment -%}
+      <div
+        class="flex flex-col gap-1 px-4 pb-6 border-b border-fg/10"
+        role="tablist"
+        aria-orientation="vertical"
+        aria-label="{{ 'products.info.modal_label' | t }}"
+      >
+        <button type="button" id="InfoTab-materials-care" role="tab" aria-selected="true" aria-controls="InfoPanel-materials-care" tabindex="0" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">{{ 'products.info.materials_care' | t }}</button>
+        <button type="button" id="InfoTab-size-guide" role="tab" aria-selected="false" aria-controls="InfoPanel-size-guide" tabindex="-1" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">{{ 'products.info.size_guide' | t }}</button>
+        <button type="button" id="InfoTab-shipping-returns" role="tab" aria-selected="false" aria-controls="InfoPanel-shipping-returns" tabindex="-1" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">{{ 'products.info.shipping_returns' | t }}</button>
+        <button type="button" id="InfoTab-payments" role="tab" aria-selected="false" aria-controls="InfoPanel-payments" tabindex="-1" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">{{ 'products.info.payments' | t }}</button>
       </div>
 
       {%- comment -%} Tab content panels {%- endcomment -%}
       <div class="px-4 py-8">
-        <div data-info-panel="materials-care">
+        <div id="InfoPanel-materials-care" role="tabpanel" aria-labelledby="InfoTab-materials-care" tabindex="0" data-info-panel="materials-care">
           <h4 class="text-[14px] text-fg font-normal mb-4">Materials</h4>
           <p class="text-[12px] text-fg leading-relaxed">
             {{ product.metafields.custom.materials_care | default: 'Crafted from premium Italian calfskin leather with a leather sole. Handmade in Italy.' }}
@@ -245,13 +250,13 @@
             Store in the provided dust bag when not in use. Avoid prolonged exposure to direct sunlight and moisture.
           </p>
         </div>
-        <div data-info-panel="size-guide" class="hidden">
+        <div id="InfoPanel-size-guide" role="tabpanel" aria-labelledby="InfoTab-size-guide" tabindex="0" data-info-panel="size-guide" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Size Guide</h4>
           <p class="text-[12px] text-fg leading-relaxed">
             Find your perfect fit. Our shoes are crafted on Italian lasts and run true to European sizing.
           </p>
         </div>
-        <div data-info-panel="shipping-returns" class="hidden">
+        <div id="InfoPanel-shipping-returns" role="tabpanel" aria-labelledby="InfoTab-shipping-returns" tabindex="0" data-info-panel="shipping-returns" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Shipping</h4>
           <p class="text-[12px] text-fg leading-relaxed">
             Complimentary shipping on all orders. Orders are processed within 1-2 business days.
@@ -262,7 +267,7 @@
             {{ product.metafields.custom.shipping_returns | default: 'Free returns within 14 days of delivery. Items must be unworn and in original packaging.' }}
           </p>
         </div>
-        <div data-info-panel="payments" class="hidden">
+        <div id="InfoPanel-payments" role="tabpanel" aria-labelledby="InfoTab-payments" tabindex="0" data-info-panel="payments" class="hidden">
           <h4 class="text-[14px] text-fg font-normal mb-4">Payments</h4>
           <p class="text-[12px] text-fg leading-relaxed">
             We accept Visa, Mastercard, American Express, and Klarna. All transactions are secure and encrypted.

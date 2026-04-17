@@ -310,6 +310,12 @@
       "available_colors": "Available colors",
       "more_colors": "{{ count }} more colors",
       "scroll_default_label": "Product carousel",
+      "gallery_aria_label": "{{ title }} gallery, color {{ color }}",
+      "gallery_aria_label_single": "{{ title }} gallery",
+      "previous_image": "Previous image",
+      "previous_image_short": "Back",
+      "next_image": "Next image",
+      "next_image_short": "Forward",
       "price_aria_sale_html": "Sale price {{ sale_price }}, original price {{ original_price }}",
       "price": {
         "price": "Price",
@@ -321,7 +327,8 @@
       "materials_care": "Materials & Care",
       "size_guide": "Size Guide",
       "shipping_returns": "Shipping & Returns",
-      "payments": "Payments"
+      "payments": "Payments",
+      "modal_label": "Product information"
     }
   },
   "ajax_cart": {

@@ -96,6 +96,9 @@
           data-component="product-detail-gallery"
           data-product-title="{{ product.title | escape }}"
           data-color="{{ color }}"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="{{ 'products.product.gallery_aria_label' | t: title: product.title, color: color }}"
         >
           {%- comment -%} Mobile: Embla carousel {%- endcomment -%}
           <div class="lg:hidden">
@@ -146,6 +149,9 @@
     aria-current="true"
     data-component="product-detail-gallery"
     data-product-title="{{ product.title | escape }}"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="{{ 'products.product.gallery_aria_label_single' | t: title: product.title }}"
   >
     {%- comment -%} Mobile: Embla carousel {%- endcomment -%}
     <div class="lg:hidden">
