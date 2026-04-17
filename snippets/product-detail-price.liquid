@@ -35,6 +35,11 @@
   data-component="product-price"
   role="status"
 >
+  {% if current_variant_on_sale %}
+    <span class="sr-only">
+      {{ 'products.product.price.sale_price' | t }}
+    </span>
+  {% endif %}
   <span data-price>
     {{ current_variant.price | money_without_trailing_zeros }}
   </span>
@@ -44,10 +49,11 @@
       <span class="sr-only">
         {{ 'products.product.regular_price' | t }}
       </span>
-      
+
       <s
         {% if current_variant_on_sale != true %}class="hidden"{% endif %}
         data-compare-price
+        aria-hidden="true"
       >
         {% if current_variant_on_sale %}
           {{ current_variant.compare_at_price | money_without_trailing_zeros }}

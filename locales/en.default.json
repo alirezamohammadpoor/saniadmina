@@ -302,10 +302,15 @@
       "size_guide": "size guide",
       "quantity": {
         "label": "Quantity",
+        "group_label": "Quantity for {{ product }}",
         "input_label": "Quantity for {{ product }}",
         "increase": "Increase quantity for {{ product }}",
         "decrease": "Decrease quantity for {{ product }}"
       },
+      "available_colors": "Available colors",
+      "more_colors": "{{ count }} more colors",
+      "scroll_default_label": "Product carousel",
+      "price_aria_sale_html": "Sale price {{ sale_price }}, original price {{ original_price }}",
       "price": {
         "price": "Price",
         "regular_price": "Regular price",

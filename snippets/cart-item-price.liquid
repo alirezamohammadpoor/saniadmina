@@ -22,14 +22,14 @@
         <span class="sr-only">
           {{ 'products.product.price.regular_price' | t }}
         </span>
-        <s class="opacity-50">{{ item.variant.compare_at_price | money_without_trailing_zeros }}</s>
+        <s class="opacity-50" aria-hidden="true">{{ item.variant.compare_at_price | money_without_trailing_zeros }}</s>
       </span>
     {% elsif item.original_price != item.final_price %}
       <span>
         <span class="sr-only">
           {{ 'products.product.price.regular_price' | t }}
         </span>
-        <s>{{ item.original_price | money_without_trailing_zeros }}</s>
+        <s aria-hidden="true">{{ item.original_price | money_without_trailing_zeros }}</s>
       </span>
     {% endif %}
 

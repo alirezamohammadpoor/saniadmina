@@ -17,6 +17,7 @@
 {%- liquid
   assign id_prefix = id_prefix | default: 'newsletter-form'
   assign input_id = id_prefix | append: '-input'
+  assign message_id = id_prefix | append: '-message'
 -%}
 
 <form
@@ -41,6 +42,8 @@
             autocorrect="off"
             autocapitalize="off"
             required
+            aria-required="true"
+            aria-describedby="{{ message_id }}"
             placeholder="Email Address"
             class="w-full border-b border-fg bg-transparent text-[14px] text-fg pb-2 placeholder-muted outline-none"
           />
@@ -53,11 +56,15 @@
     </div>
 
     <div
+      id="{{ message_id }}"
       class="newsletter-form-message"
       data-form-message
       data-success="{{ success_message | default: 'Thank you for subscribing' }}"
       data-already-subscribed="This email address is already subscribed"
       data-fail="Please check your email and try again"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
     >
       <!-- -->
     </div>

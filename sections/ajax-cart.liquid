@@ -4,16 +4,17 @@
     class="ajax-cart overflow-hidden"
     data-component="ajax-cart"
     aria-hidden="true"
+    aria-modal="true"
     role="dialog"
     aria-labelledby="{{ section.id }}-title"
-    inert   
+    inert
   >
-    <h3 id="{{ section.id }}-title" class="sr-only">Bag</h3>
+    <h3 id="{{ section.id }}-title" class="sr-only">{{ 'layout.cart.title' | t }}</h3>
 
     <form action="{{ routes.cart_url }}" method="post" novalidate class="flex flex-col h-full">
       <div class="ajax-cart__header">
-        <span class="text-[12px] text-fg" data-cart-title>Bag ({{ cart.item_count }})</span>
-        <button class="text-[12px] text-fg" data-ajax-cart-close type="button">Close</button>
+        <span class="text-[12px] text-fg" data-cart-title>{{ 'layout.cart.title' | t }} ({{ cart.item_count }})</span>
+        <button class="text-[12px] text-fg" data-ajax-cart-close type="button">{{ 'general.close' | t }}</button>
       </div>
 
       <div class="flex-1 overflow-y-auto">

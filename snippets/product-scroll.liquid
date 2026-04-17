@@ -21,7 +21,11 @@
   endif
 -%}
 
-<div data-component="scroll-section">
+{%- assign scroll_label = title | default: 'products.product.scroll_default_label' | t -%}
+<section
+  data-component="scroll-section"
+  aria-label="{{ scroll_label }}"
+>
   {% if title != blank %}
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-h3 text-fg">{{ title }}</h3>
@@ -37,4 +41,4 @@
       </div>
     {%- endfor -%}
   </div>
-</div>
+</section>
