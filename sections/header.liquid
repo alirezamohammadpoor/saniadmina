@@ -10,6 +10,7 @@
       <div class="relative">
         {%- comment -%} Mobile: opens drawer {%- endcomment -%}
         <button
+          type="button"
           class="text-[12px] text-fg lg:hidden"
           data-mobile-menu-toggle
           aria-label="Toggle Menu"
@@ -21,9 +22,11 @@
 
         {%- comment -%} Desktop: toggles dropdown {%- endcomment -%}
         <button
+          type="button"
           class="text-[12px] text-fg hidden lg:block"
           data-desktop-menu-toggle
           aria-label="Toggle Menu"
+          aria-controls="desktop-menu-panel"
           aria-expanded="false"
         >
           Menu
@@ -41,6 +44,7 @@
           {% render 'currency-selector', style: 'header' %}
         </div>
         <button
+          type="button"
           class="text-[12px] text-fg"
           data-ajax-cart-toggle
           aria-label="Toggle Bag"
@@ -61,6 +65,7 @@
   {%- comment -%} Desktop mega menu — matches Figma node 25:2 {%- endcomment -%}
   {% if section.settings.primary_menu != blank %}
     <div
+      id="desktop-menu-panel"
       class="hidden lg:block opacity-0 pointer-events-none transition-opacity duration-300"
       data-desktop-menu-panel
     >
@@ -106,6 +111,8 @@
                 <img
                   src="{{ default_col.image | image_url: width: 700 }}"
                   alt="{{ default_col.title }}"
+                  width="700"
+                  height="875"
                   class="w-full h-full object-cover transition-opacity duration-500"
                   data-default-image
                 >
@@ -127,6 +134,8 @@
             <img
               src="{{ col.image | image_url: width: 700 }}"
               alt="{{ col.title }}"
+              width="700"
+              height="875"
               data-collection="{{ col_handle }}"
               data-title="{{ col.title }}"
               data-desc="{{ col.description | strip_html | escape }}"
@@ -141,6 +150,8 @@
             <img
               src="{{ sub_col.image | image_url: width: 700 }}"
               alt="{{ sub_col.title }}"
+              width="700"
+              height="875"
               data-collection="{{ sub_handle }}"
               data-title="{{ sub_col.title }}"
               data-desc="{{ sub_col.description | strip_html | escape }}"

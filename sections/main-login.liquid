@@ -50,11 +50,11 @@
       <div class="form-group">
         <div class="flex justify-between items-center">
           <button type="submit" class="btn">Submit</button>
-          <div style="padding: 0 11px;">
-            <a href="#" data-toggle-recover="false">Cancel</a>
+          <div class="px-3">
+            <button type="button" data-toggle-recover="false" class="underline">Cancel</button>
           </div>
         </div>
-      </div>          
+      </div>
     {% endform %}
   </div>
 {% endcapture %}
@@ -66,14 +66,14 @@
               title_tag: 'h1'
     %}
 
-    <div class="mx-auto" style="max-width: 560px;">
+    <div class="mx-auto max-w-[560px]">
       {% if recover_success %}
         <div class="mb-4 italic text-center">
-          Check your email for a link to reset your password.       
+          Check your email for a link to reset your password.
         </div>
       {% endif %}
 
-      <div style="display: flex; flex-direction: column; gap: 60px">
+      <div class="flex flex-col gap-15">
         {% if section.settings.new_message != blank %}
           <div>
             <h4 class="mb-2">New Customers</h4>
@@ -139,10 +139,10 @@
               <div class="form-group">
                 <div class="flex justify-between items-center">
                   <button type="submit" class="btn">Login</button>
-                  <div style="padding: 0 11px;">
-                    <a href="#" data-toggle-recover="true">
+                  <div class="px-3">
+                    <button type="button" data-toggle-recover="true" class="underline">
                       Forgot your password?
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

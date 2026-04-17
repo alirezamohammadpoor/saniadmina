@@ -52,14 +52,22 @@ function init() {
   sectionManager.register(AJAXCartSection)
 
   // Init standalone components (global, not tied to a section)
-  document.querySelectorAll<HTMLElement>(AnnouncementRotator.SELECTOR).forEach(el => new AnnouncementRotator(el))
-  document.querySelectorAll<HTMLElement>(CurrencySelector.SELECTOR).forEach(el => new CurrencySelector(el))
-  document.querySelectorAll<HTMLElement>(ScrollSection.SELECTOR).forEach(el => new ScrollSection(el))
+  for (const el of document.querySelectorAll<HTMLElement>(AnnouncementRotator.SELECTOR)) {
+    new AnnouncementRotator(el)
+  }
+  for (const el of document.querySelectorAll<HTMLElement>(CurrencySelector.SELECTOR)) {
+    new CurrencySelector(el)
+  }
+  for (const el of document.querySelectorAll<HTMLElement>(ScrollSection.SELECTOR)) {
+    new ScrollSection(el)
+  }
 
   // START Taxi
   if (isThemeEditor()) {
     // Prevent taxi js from running
-    Array.from(document.getElementsByTagName('a')).forEach(a => a.setAttribute('data-taxi-ignore', 'true'))
+    for (const a of Array.from(document.getElementsByTagName('a'))) {
+      a.setAttribute('data-taxi-ignore', 'true')
+    }
   }
 
   const taxi = new TaxiCore({
@@ -88,18 +96,18 @@ function init() {
     const body = document.body
 
     // Remove any body classes that match the template regex
-    Array.from(body.classList).forEach(cn => {
+    for (const cn of Array.from(body.classList)) {
       if (TEMPLATE_REGEX.test(cn)) {
         body.classList.remove(cn)
       }
-    })
+    }
 
     // Add any body classes for the *new* page that match the template regex
-    Array.from(toPage.body.classList as DOMTokenList).forEach(cn => {
+    for (const cn of Array.from(toPage.body.classList as DOMTokenList)) {
       if (TEMPLATE_REGEX.test(cn)) {
         body.classList.add(cn)
       }
-    })
+    }
 
     dispatch('taxi.navigateIn', e)
   })

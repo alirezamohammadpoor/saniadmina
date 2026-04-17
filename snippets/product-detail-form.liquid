@@ -6,11 +6,13 @@
 
   @param {object} product - The product to display - required
   @param {object} [current_variant] - The current variant to display - optional
+  @param {object} [current_collection] - The collection the product was reached from (for breadcrumb) - optional
 
   @example
     {% render 'product-detail-form',
               product: product,
-              current_variant: current_variant
+              current_variant: current_variant,
+              current_collection: collection
     %}
 {% enddoc %}
 
@@ -198,10 +200,10 @@
 
             {%- comment -%} Info links — open modal {%- endcomment -%}
             <div class="mt-6 flex flex-col gap-3">
-              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="materials-care">Materials & Care</button>
-              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="size-guide">Size Guide</button>
-              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="shipping-returns">Shipping & Returns</button>
-              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="payments">Payments</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="materials-care">{{ 'products.info.materials_care' | t }}</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="size-guide">{{ 'products.info.size_guide' | t }}</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="shipping-returns">{{ 'products.info.shipping_returns' | t }}</button>
+              <button type="button" class="text-[12px] text-fg text-left" data-info-trigger="payments">{{ 'products.info.payments' | t }}</button>
             </div>
           </div>
         </div>
@@ -219,15 +221,15 @@
     <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-300" data-modal-panel>
       {%- comment -%} Header: close button, same height/padding as main header {%- endcomment -%}
       <div class="flex items-center justify-end container h-[var(--header-height)]">
-        <button type="button" class="text-[12px] text-fg" data-modal-close>Close</button>
+        <button type="button" class="text-[12px] text-fg" data-modal-close>{{ 'general.close' | t }}</button>
       </div>
 
       {%- comment -%} Tab navigation — vertical list {%- endcomment -%}
       <div class="flex flex-col gap-1 px-4 pb-6 border-b border-fg/10">
-        <button type="button" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">Materials & Care</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">Size Guide</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">Shipping & Returns</button>
-        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">Payments</button>
+        <button type="button" class="text-[12px] font-medium text-fg text-left py-1" data-info-tab="materials-care">{{ 'products.info.materials_care' | t }}</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="size-guide">{{ 'products.info.size_guide' | t }}</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="shipping-returns">{{ 'products.info.shipping_returns' | t }}</button>
+        <button type="button" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">{{ 'products.info.payments' | t }}</button>
       </div>
 
       {%- comment -%} Tab content panels {%- endcomment -%}

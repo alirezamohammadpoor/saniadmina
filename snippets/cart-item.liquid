@@ -72,9 +72,9 @@
           <button
             class="text-[12px] text-fg underline"
             type="button"
-            aria-label="Remove {{ item.product.title | escape }} from cart"
+            aria-label="{{ 'cart.general.remove_item' | t: title: item.product.title | escape }}"
             data-remove
-          >Remove</button>
+          >{{ 'cart.general.remove' | t }}</button>
         </div>
       </div>
     </div>

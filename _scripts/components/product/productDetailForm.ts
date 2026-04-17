@@ -35,6 +35,9 @@ export default class ProductDetailForm extends BaseComponent {
   infoModal: ProductInfoModal | null
   a11yStatus: A11yStatus
 
+  #onInfoTriggerClick: (e: Event) => void
+  #onFormSubmitBound: (e: SubmitEvent) => void
+
   /**
    * ProductDetailForm constructor
    *
@@ -42,7 +45,7 @@ export default class ProductDetailForm extends BaseComponent {
    * @param options
    * @param options.onVariantChange -  Called when a new variant has been selected from the form,
    * @param options.enableHistoryState - If set to "true", turns on URL updating when switching variant
-   */  
+   */
   constructor(el: HTMLElement, options: ProductDetailFormSettings = {}) {
     super(el)
 
@@ -68,17 +71,25 @@ export default class ProductDetailForm extends BaseComponent {
     const infoModalEl = document.querySelector(ProductInfoModal.SELECTOR) as HTMLElement | null
     this.infoModal = infoModalEl ? new ProductInfoModal(infoModalEl) : null
 
-    // Info trigger buttons open the modal
-    this.el.addEventListener('click', (e: Event) => {
+    // Info trigger buttons open the modal — store bound ref for cleanup
+    this.#onInfoTriggerClick = (e: Event) => {
       const trigger = (e.target as HTMLElement).closest('[data-info-trigger]') as HTMLElement
       if (trigger && this.infoModal) {
         this.infoModal.open(trigger.dataset.infoTrigger)
       }
-    })
+    }
+    this.el.addEventListener('click', this.#onInfoTriggerClick)
 
     this.a11yStatus = A11yStatus.generate(this.form)
 
-    this.form.addEventListener('submit', this.onFormSubmit.bind(this))
+    this.#onFormSubmitBound = this.onFormSubmit.bind(this)
+    this.form.addEventListener('submit', this.#onFormSubmitBound)
+  }
+
+  destroy() {
+    this.el.removeEventListener('click', this.#onInfoTriggerClick)
+    this.form.removeEventListener('submit', this.#onFormSubmitBound)
+    super.destroy()
   }
 
   updateHistoryState(variant: LiteVariant) {

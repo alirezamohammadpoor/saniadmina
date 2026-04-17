@@ -8,6 +8,7 @@
     "error": "Something went wrong"
   },
   "general": {
+    "close": "Close",
     "meta": {
       "tags": "Tagged \"{{ tags }}\"",
       "page": "Page {{ page }}"
@@ -58,8 +59,7 @@
       "mobile_placeholder": "Tap to search",
       "submit": "Search",
       "search": "Search"
-    },
-
+    }
   },
   "accessibility": {
     "skip_to_content": "Skip to content",
@@ -99,6 +99,7 @@
     "general": {
       "title": "Your Bag",
       "remove": "Remove",
+      "remove_item": "Remove {{ title }} from cart",
       "note": "Special instructions for seller",
       "subtotal": "Subtotal",
       "shipping_at_checkout": "Shipping & taxes calculated at checkout",
@@ -303,13 +304,19 @@
         "label": "Quantity",
         "input_label": "Quantity for {{ product }}",
         "increase": "Increase quantity for {{ product }}",
-        "decrease": "Decrease quantity for {{ product }}",
+        "decrease": "Decrease quantity for {{ product }}"
       },
       "price": {
         "price": "Price",
         "regular_price": "Regular price",
         "sale_price": "Sale price"
-      }       
+      }
+    },
+    "info": {
+      "materials_care": "Materials & Care",
+      "size_guide": "Size Guide",
+      "shipping_returns": "Shipping & Returns",
+      "payments": "Payments"
     }
   },
   "ajax_cart": {
