@@ -32,6 +32,7 @@ import AJAXCartSection from '@/sections/ajaxCart'
 import AnnouncementRotator from '@/components/announcementRotator'
 import CurrencySelector from '@/components/currencySelector'
 import ScrollSection from '@/components/scrollSection'
+import DesktopMenu from '@/components/desktopMenu'
 
 // Use this to expose anything needed throughout the rest of the app
 window.app = window.app || {};
@@ -60,6 +61,9 @@ function init() {
   }
   for (const el of document.querySelectorAll<HTMLElement>(ScrollSection.SELECTOR)) {
     new ScrollSection(el)
+  }
+  for (const el of document.querySelectorAll<HTMLElement>(DesktopMenu.SELECTOR)) {
+    new DesktopMenu(el)
   }
 
   // START Taxi

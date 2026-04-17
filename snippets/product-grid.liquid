@@ -8,6 +8,7 @@
   @param {number} [columns_mobile] - Grid columns on mobile - defaults to 2
   @param {number} [columns_desktop] - Grid columns on desktop - defaults to 4
   @param {number} [limit] - Maximum products to show
+  @param {object} [collection] - Optional collection context forwarded to each product-card
 
   @example
     {% render 'product-grid',
@@ -40,7 +41,7 @@
 <div>
   <ul class="grid grid-cols-{{ columns_mobile }} lg:grid-cols-{{ columns_desktop }} gap-1">
     {%- for product in products limit: limit -%}
-      <li>{% render 'product-card', product: product %}</li>
+      <li>{% render 'product-card', product: product, collection: collection %}</li>
     {%- endfor -%}
   </ul>
 </div>

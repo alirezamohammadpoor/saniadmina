@@ -6,6 +6,7 @@
   @param {object} products - Collection of products to display - required
   @param {string} [title] - Optional heading text
   @param {number} [limit] - Maximum products to show - defaults to 6
+  @param {object} [collection] - Optional collection context forwarded to each product-card
 
   @example
     {% render 'product-scroll',
@@ -37,7 +38,7 @@
   <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
     {%- for product in products limit: limit -%}
       <div class="w-[47%] lg:w-[calc(25%-6px)] shrink-0 snap-start">
-        {% render 'product-card', product: product %}
+        {% render 'product-card', product: product, collection: collection %}
       </div>
     {%- endfor -%}
   </div>

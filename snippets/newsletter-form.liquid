@@ -18,6 +18,7 @@
   assign id_prefix = id_prefix | default: 'newsletter-form'
   assign input_id = id_prefix | append: '-input'
   assign message_id = id_prefix | append: '-message'
+  assign resolved_placeholder = input_placeholder | default: 'Email Address'
 -%}
 
 <form
@@ -32,7 +33,7 @@
     <div class="newsletter-form-inputs">
       <div class="flex flex-col gap-3">
         <div>
-          <label for="{{ input_id }}" class="sr-only">Email Address</label>
+          <label for="{{ input_id }}" class="sr-only">{{ resolved_placeholder }}</label>
           <input
             id="{{ input_id }}"
             name="email"
@@ -44,7 +45,7 @@
             required
             aria-required="true"
             aria-describedby="{{ message_id }}"
-            placeholder="Email Address"
+            placeholder="{{ resolved_placeholder }}"
             class="w-full border-b border-fg bg-transparent text-[14px] text-fg pb-2 placeholder-muted outline-none"
           />
         </div>

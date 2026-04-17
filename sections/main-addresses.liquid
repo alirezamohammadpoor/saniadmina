@@ -1,4 +1,9 @@
-{% comment %} @TODO - Convert form inputs to latest form-group styles {% endcomment %}
+{% # theme-check-disable UndefinedObject %}
+{% comment %}
+  UndefinedObject is disabled because `form` is injected by the surrounding
+  {% form %} tag but theme-check's static analysis doesn't follow that.
+  @TODO - Convert form inputs to latest form-group styles
+{% endcomment %}
 <section data-section-id="{{ section.id }}" data-section-type="addresses">
   <div class="container">
     {%- capture actions -%}

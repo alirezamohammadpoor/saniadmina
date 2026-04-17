@@ -3,14 +3,11 @@
   Cart Footer
   ------------------------------------------------------------------------------
 
-  @param {string} [checkout_button_text] - The text for the checkout button
-  @param {string} [checkout_message] - The message to display in the footer
+  Renders the sticky footer of the ajax cart (subtotal and checkout button).
+  Reads strings from locale; takes no params.
 
   @example
-    {% render 'cart-footer',
-             checkout_button_text: 'Go to checkout',
-             checkout_message: 'Calculated in checkout'
-    %}
+    {% render 'cart-footer' %}
 {% enddoc %}
 
 <div

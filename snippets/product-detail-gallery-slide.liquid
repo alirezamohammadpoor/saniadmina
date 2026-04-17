@@ -4,9 +4,10 @@
 
   @param {image} image - The image to display - required
   @param {string} [loading] - The loading attribute value - optional, defaults to 'lazy'
+  @param {string} [fetch_priority] - The fetchpriority attribute value (e.g. 'high' for above-the-fold) - optional
 
   @example
-    {% render 'product-detail-gallery-slide', image: product.images[0], loading: 'eager' %}
+    {% render 'product-detail-gallery-slide', image: product.images[0], loading: 'eager', fetch_priority: 'high' %}
 {% enddoc %}
 
 {% if image != blank %}

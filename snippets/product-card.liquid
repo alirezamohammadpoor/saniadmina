@@ -4,11 +4,13 @@
   @param {string} [sizes] - Optional sizes attribute for the image
   @param {number} [image_min_width] - Optional minimum width for the image - defaults to 500
   @param {number} [image_max_width] - Optional maximum width for the image - defaults to 900
+  @param {object} [collection] - Optional collection the product was reached from; used to build `within:` URLs for PDP breadcrumb context
 
   @example
   {% render 'product-card',
              product: product,
-             loading: 'eager'
+             loading: 'eager',
+             collection: collection
   %}
 {% enddoc %}
 
