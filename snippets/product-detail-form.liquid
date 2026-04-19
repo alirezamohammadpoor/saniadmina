@@ -30,9 +30,14 @@
       <div class="lg:sticky lg:top-[var(--chrome-height)] lg:min-h-[calc(100dvh-var(--chrome-height))] lg:flex lg:items-center lg:justify-center">
         <div class="px-2 py-6 lg:py-10 lg:px-0 lg:w-[80%] lg:max-w-[480px]">
 
-          {%- comment -%} Breadcrumb: derived from navigation structure {%- endcomment -%}
+          {%- comment -%}
+            Breadcrumb parent collection, fallback chain:
+              1. custom.primary_collection metafield — merchant-pinned authoritative parent
+              2. current_collection — collection the visitor arrived from (if any)
+              3. product.collections.first — last-resort default
+          {%- endcomment -%}
           {%- liquid
-            assign breadcrumb_col = current_collection | default: product.collections.first
+            assign breadcrumb_col = product.metafields.custom.primary_collection.value | default: current_collection | default: product.collections.first
             assign breadcrumb_parent = nil
             assign main_menu = linklists['main-menu']
             if breadcrumb_col and main_menu
