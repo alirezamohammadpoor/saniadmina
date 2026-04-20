@@ -3,17 +3,19 @@
 @source not '../assets/app.bundle.js';
 
 @theme {
-  /* Sania D'Mina design tokens */
-  --color-bg: #FAFAF9;
-  --color-fg: #1A1A18;
-  --color-muted: #9C9890;
+  /* Design tokens — override with brand values in a new project.
+     Only three semantic colors are exposed intentionally. Add accents
+     here if the brand requires them; never hardcode hex values in components. */
+  --color-bg: #FFFFFF;
+  --color-fg: #111111;
+  --color-muted: #6B6B6B;
 
   --color-white: #FFFFFF;
   --color-black: #000000;
 
   --spacing-container: 8px;
 
-  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --z-1: 1;
   --z-2: 2;

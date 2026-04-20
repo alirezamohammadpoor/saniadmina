@@ -26,7 +26,7 @@
   {% else %}
     <div class="flex items-center justify-center h-[var(--announcement-height)]">
       <p class="text-label text-[10px]">
-        Complimentary shipping on all orders
+        {{ 'announcement_bar.default_message' | t }}
       </p>
     </div>
   {% endif %}
@@ -55,7 +55,7 @@
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "Complimentary shipping on all orders"
+          "default": "Free shipping over $100"
         }
       ]
     }

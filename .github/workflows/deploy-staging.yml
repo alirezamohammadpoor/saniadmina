@@ -1,5 +1,10 @@
 name: Deploy theme (staging)
 
+# Prerequisites:
+# - shopify.theme.toml has `[environments.staging]` with `store` and `theme` set
+# - Repo secret SHOPIFY_CLI_THEME_TOKEN contains a Theme Access password
+#   generated via the "Theme Access" Shopify app
+
 on:
   push:
     branches: [staging]
@@ -17,10 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: shopify-staging
-      url: https://saniadmina.myshopify.com/?preview_theme_id=157793583356
     env:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-      SHOPIFY_FLAG_STORE: saniadmina.myshopify.com
     steps:
       - uses: actions/checkout@v4
 

@@ -1,8 +1,6 @@
 {
-  "name": "saniadmina",
-  "author": {
-    "name": "Alireza Mohammadpoor"
-  },
+  "name": "shopify-theme-template",
+  "description": "Shopify Online Store 2.0 theme template — Cadaver 2.0 base extended with a11y patterns, Taxi.js-safe TS components, and auto-deploy CI. See README.md to bootstrap a new brand.",
   "engines": {
     "node": "22.x"
   },

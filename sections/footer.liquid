@@ -9,8 +9,8 @@
       <div class="flex flex-col gap-6 lg:flex-row lg:gap-20">
         <div class="flex flex-col gap-1">
           <span class="text-label text-fg">Customer Care</span>
-          <a href="mailto:{{ section.settings.email | default: 'info@saniadmina.com' }}" class="text-[14px] text-muted">
-            {{ section.settings.email | default: 'info@saniadmina.com' }}
+          <a href="mailto:{{ section.settings.email | default: shop.email }}" class="text-[14px] text-muted">
+            {{ section.settings.email | default: shop.email }}
           </a>
         </div>
 
@@ -84,9 +84,9 @@
     {% endif %}
   {% endif %}
 
-  {%- comment -%} Large brand text — edge to edge {%- endcomment -%}
+  {%- comment -%} Large brand text — edge to edge; pulls from Shopify shop name {%- endcomment -%}
   <div class="text-[15vw] font-light leading-none text-fg overflow-hidden text-center">
-    SANIA D'MINA
+    {{ shop.name | upcase }}
   </div>
 </footer>
 
@@ -99,7 +99,7 @@
       "type": "text",
       "id": "email",
       "label": "Customer Care Email",
-      "default": "info@saniadmina.com"
+      "info": "Leave blank to use the store email from Shopify settings."
     },
     {
       "type": "header",
@@ -116,7 +116,7 @@
       "id": "copyright_text",
       "label": "Copyright Text",
       "info": "Use $year for current year. Use $shop for shop name.",
-      "default": "© $year Sania D'Mina"
+      "default": "© $year $shop"
     }
   ],
   "blocks": [

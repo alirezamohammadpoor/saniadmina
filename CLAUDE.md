@@ -1,84 +1,69 @@
-# Sania D'Mina — Shopify Theme
+# Shopify Theme Template
 
-Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in Italy, SEK 5,600–13,200 price range. Portfolio case study targeting Grebban.
+Shopify Online Store 2.0 theme built on [Cadaver 2.0](https://github.com/stefbowerman/cadaver-2.0), extended with:
+- Full a11y pass (WCAG 2.2 patterns on product card, carousel, modal, cart drawer, forms, prices)
+- TypeScript component architecture safe for Taxi.js SPA navigation (no inline `<script>` in Liquid)
+- Three-tier branch strategy with auto-deploy (see `README.md`)
+
+> This is a **template branch**. See `README.md` for how to bootstrap a new project from it, including what to scrub per brand.
 
 ## Stack
 
 - **Platform:** Shopify Online Store 2.0
-- **Boilerplate:** cadaver-2.0 (kept architecture, stripped branding)
+- **Boilerplate base:** cadaver-2.0
 - **CSS:** Tailwind V4 (via `_styles/app.css`)
 - **JS:** TypeScript, Vite, Taxi.js (SPA navigation)
 - **Architecture:** Section/component pattern — sections registered in `_scripts/app.ts`, components auto-init via `data-component` attributes
 
-## Figma
+## Design system (override per brand in `_styles/app.css` `@theme` block)
 
-- File: https://www.figma.com/design/xCLRBen7fd1LIpnnNaU5wu/Sania
-- All templates complete: Homepage, PDP, PLP (mobile + desktop)
+### Design tokens (code-owned, not theme editor settings)
 
-## Design System
-
-### Colors (3 tokens, monochrome — code-owned in `_styles/app.css`, not theme settings)
-
-| Token | Hex | Usage |
+| Token | Default | Purpose |
 |---|---|---|
-| bg | #FAFAF9 | Page background |
-| fg | #1A1A18 | Text, borders, icons |
-| muted | #9C9890 | Secondary text, labels |
+| `--color-bg` | neutral | Page background |
+| `--color-fg` | neutral | Text, borders, icons |
+| `--color-muted` | neutral | Secondary text, labels |
 
-### Typography (system Helvetica Neue / Helvetica / Arial)
+Type scale and spacing are exposed as Tailwind utilities (`text-display`, `text-h1`…`text-label`, `container`). Change values in `_styles/app.css`; classnames stay.
 
-| Role | Size | Weight | Notes |
-|---|---|---|---|
-| Display | 48px | 300 | — |
-| H1 | 40px | 400 | — |
-| H2 | 28px | 400 | — |
-| H3 | 20px | 400 | — |
-| Body | 16px | 400 | line-height 150% |
-| Label | 12px | 500 | Uppercase, tracking 0.08em |
+### Rules (do not violate without an inline-comment reason)
 
-### Rules
-
-- **Always use Tailwind classes for styling. Never write raw CSS.** The only exception is the existing `_product.css` hover swap which predates this rule.
+- **Always use Tailwind classes for styling. Never write raw CSS.** Exceptions must be commented inline with a reason.
 - **Always use `const`/`let` and arrow functions in JavaScript. Never use `var`.**
-- No accent colors. No shadows. No border radius.
-- Labels/nav/tags: uppercase + letter-spaced
-- Depth via whitespace and weight contrast only
-- Hierarchy through color (muted vs fg), not weight/size changes on headings
+- **Never use inline `<script>` in any Liquid file for interactive behavior.** Taxi.js SPA navigation does not re-execute inline scripts after page transitions. All event listeners and DOM behavior live in TypeScript components (`_scripts/components/`), extended from `BaseComponent`, wired in `constructor()` and cleaned up in `destroy()`. Register standalone components in `app.ts`.
+- **Translations:** every user-facing string uses the `t` filter. Locale strings in `locales/en.default.json`, exported to JS via `snippets/head-scripts.liquid` → `window.app.strings`.
 
-### Layout
+## Data contracts (customize per brand)
 
-- 8px container padding (mobile and desktop)
-- 24px section spacing mobile, 40px desktop
-- 3:4 image ratio on product cards
-- 4:5 image ratio on PDP gallery
+These conventions are assumed by the shipped product/cart/gallery snippets. Any brand adopting this template inherits them unless overridden.
 
-## Data Contracts
+| Contract | Where | What for |
+|---|---|---|
+| Swatches | Shopify native `option.values[].swatch`, color option named "Color" | Color swatch rendering on product card + variant picker |
+| Gallery mapping | `image.alt` = color name | Per-color gallery rotation on PDP |
+| Product tags | `badge:best-seller`, `badge:new` prefix convention | Badge rendering on product card |
+| PDP breadcrumb parent | `product.metafields.custom.primary_collection` (Collection ref, single) | Merchant-pinned parent collection — fallback chain: metafield → arrived-from → `product.collections.first` |
+| Copy | "Add to bag" (not "Add to cart"), "Bag" (not "Cart"), "Checkout" | Change in `locales/en.default.json` if you prefer "Cart" |
 
-- **Swatches:** Shopify native `option.values[].swatch`, color option named "Color"
-- **Gallery mapping:** `image.alt` = color name (existing cadaver pattern)
-- **Product tags:** `badge:best-seller`, `badge:new` prefix convention
-- **Editorial images (PLP):** Collection metafield `custom.editorial_images`
-- **Heel height:** Product metafield `custom.heel_height_mm`
-- **As seen on:** Product metafield `custom.as_seen_on` (JSON list)
-- **Size toggle:** EU default, US/UK from shop metafields `shop.metafields.custom.sizes_us`, `shop.metafields.custom.sizes_uk` (type: `list.single_line_text_field`)
-- **Copy:** "Add to bag" (not "Add to cart"), "Bag" (not "Cart"), "Checkout"
+## Key architecture notes (do not remove)
 
-## Key Architecture Notes
-
-- Global sections (header, footer, mobile-menu, ajax-cart) are registered in `_scripts/app.ts` lines 44–47. Keep `data-section-type` and `data-component` attributes intact when restyling.
+- Global sections (header, footer, mobile-menu, ajax-cart) are registered in `_scripts/app.ts`. Keep `data-section-type` and `data-component` attributes intact when restyling.
 - `config/settings_data.json` must have section defaults for all global sections or pages break.
 - Design tokens are code-owned in `_styles/app.css` `@theme` block — not exposed as theme editor settings.
-- Locale strings in `locales/en.default.json`, exported to JS via `snippets/head-scripts.liquid` → `window.app.strings`.
-- **Never use inline `<script>` in any Liquid file (sections or snippets) for interactive behavior.** Taxi.js SPA navigation does not re-execute inline scripts after page transitions — they fire once on full load and then never again. `window.__xxxInit` guards make this worse by blocking re-init entirely. All event listeners and DOM behavior must live in TypeScript components (`_scripts/components/`), extended from `BaseComponent`, wired in `constructor()` and cleaned up in `destroy()`. Register standalone components in `app.ts`. The header menu script in `sections/header.liquid` is existing legacy debt — do not copy that pattern.
-
-## Product Range
-
-14 models, 57 SKUs: Heels (CARLA 7, ELENA, PERLINO), Sandals (GIANNA, DUN, YUNA, BONDI, VENUS), Boots (AVENUE HIGH/MID, CHER, ROE). All sizes EU 35–43.5.
+- Locale strings → JS bridge: `snippets/head-scripts.liquid` → `window.app.strings`.
 
 ## Build
 
 ```
-bun run dev          # Vite dev
+bun run dev          # Vite watcher
 bun run build        # Production build
-shopify theme dev    # Theme preview
+shopify theme dev    # Theme preview (requires shopify.theme.toml configured)
+```
+
+## Quality gates
+
+```
+shopify theme check  # lint Liquid, expected: 0 offenses
+bun run build        # TypeScript compile + bundle, expected: 0 errors
 ```

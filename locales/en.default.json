@@ -342,6 +342,9 @@
       "checkout": "Go to checkout"
     }
   },
+  "announcement_bar": {
+    "default_message": "Free shipping over $100"
+  },
   "gift_cards": {
     "issued": {
       "title": "Here's your {{ value }} gift card for {{ shop }}",

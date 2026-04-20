@@ -33,9 +33,9 @@
         </button>
       </div>
 
-      {%- comment -%} Center: Brand {%- endcomment -%}
-      <a href="{{ routes.root_url }}" class="absolute left-1/2 -translate-x-1/2 text-[12px] text-fg whitespace-nowrap" aria-label="Home">
-        SANIA D'MINA
+      {%- comment -%} Center: Brand wordmark — pulls from Shopify shop name; swap for an SVG logo if the brand has one {%- endcomment -%}
+      <a href="{{ routes.root_url }}" class="absolute left-1/2 -translate-x-1/2 text-[12px] text-fg whitespace-nowrap" aria-label="{{ shop.name }}">
+        {{ shop.name | upcase }}
       </a>
 
       {%- comment -%} Right: Currency + Bag {%- endcomment -%}

@@ -89,37 +89,16 @@
             </div>
           {% endif %}
 
-          {%- comment -%} Heel variants — sibling products with different heel heights {%- endcomment -%}
-          {%- assign heel_variants = product.metafields.custom.heel_variants.value -%}
-          {% if heel_variants != blank %}
-            <div class="mb-6">
-              <span class="text-[12px] font-medium text-fg block mb-3">Heel height</span>
-              <div class="flex gap-1">
-                {% for entry in heel_variants %}
-                  {%- assign is_active = false -%}
-                  {%- if entry.id == product.id -%}
-                    {%- assign is_active = true -%}
-                  {%- endif -%}
-                  <a href="{{ entry.url }}" class="no-underline">
-                    <div class="w-24 h-[120px] overflow-hidden bg-[#E8E5E0] {% if is_active %}ring-1 ring-fg{% endif %}">
-                      {{ entry.featured_image
-                        | image_url: width: 240
-                        | image_tag:
-                          loading: 'lazy',
-                          class: 'w-full h-full object-cover',
-                          widths: '240',
-                          sizes: '96px'
-                      }}
-                    </div>
-                  </a>
-                {% endfor %}
-              </div>
-            </div>
-          {% elsif product.metafields.custom.heel_height_mm != blank %}
-            <div class="text-[12px] text-muted mb-6">
-              Heel height: {{ product.metafields.custom.heel_height_mm | divided_by: 10.0 }} cm
-            </div>
-          {% endif %}
+          {%- comment -%}
+            Brand-specific variant group (e.g. sibling products with different heel heights,
+            frame sizes, bottle volumes, etc.) was intentionally removed in the template.
+            Re-introduce here per brand. Pattern:
+
+              {%- assign siblings = product.metafields.custom.<your_key>.value -%}
+              {% if siblings != blank %}
+                …render sibling picker…
+              {% endif %}
+          {%- endcomment -%}
 
           <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <meta itemprop="priceCurrency" content="{{ shop.currency }}">
@@ -242,40 +221,31 @@
         <button type="button" id="InfoTab-payments" role="tab" aria-selected="false" aria-controls="InfoPanel-payments" tabindex="-1" class="text-[12px] font-normal text-muted text-left py-1" data-info-tab="payments">{{ 'products.info.payments' | t }}</button>
       </div>
 
-      {%- comment -%} Tab content panels {%- endcomment -%}
+      {%- comment -%}
+        Tab content panels — default bodies are brand-agnostic placeholders.
+        Replace with brand copy, or keep the metafield-backed pattern
+        (e.g. product.metafields.custom.materials_care) so merchants can edit
+        per-product content in the Shopify admin.
+      {%- endcomment -%}
       <div class="px-4 py-8">
         <div id="InfoPanel-materials-care" role="tabpanel" aria-labelledby="InfoTab-materials-care" tabindex="0" data-info-panel="materials-care">
-          <h4 class="text-[14px] text-fg font-normal mb-4">Materials</h4>
           <p class="text-[12px] text-fg leading-relaxed">
-            {{ product.metafields.custom.materials_care | default: 'Crafted from premium Italian calfskin leather with a leather sole. Handmade in Italy.' }}
-          </p>
-          <div class="border-t border-fg/10 my-6"></div>
-          <h4 class="text-[14px] text-fg font-normal mb-4">Care</h4>
-          <p class="text-[12px] text-fg leading-relaxed">
-            Store in the provided dust bag when not in use. Avoid prolonged exposure to direct sunlight and moisture.
+            {{ product.metafields.custom.materials_care | default: 'Describe materials and care instructions here. This content can also be populated per product via the `custom.materials_care` metafield.' }}
           </p>
         </div>
         <div id="InfoPanel-size-guide" role="tabpanel" aria-labelledby="InfoTab-size-guide" tabindex="0" data-info-panel="size-guide" class="hidden">
-          <h4 class="text-[14px] text-fg font-normal mb-4">Size Guide</h4>
           <p class="text-[12px] text-fg leading-relaxed">
-            Find your perfect fit. Our shoes are crafted on Italian lasts and run true to European sizing.
+            Replace with the brand’s size guide. Consider a metafield (`custom.size_guide`) if sizing differs per product.
           </p>
         </div>
         <div id="InfoPanel-shipping-returns" role="tabpanel" aria-labelledby="InfoTab-shipping-returns" tabindex="0" data-info-panel="shipping-returns" class="hidden">
-          <h4 class="text-[14px] text-fg font-normal mb-4">Shipping</h4>
           <p class="text-[12px] text-fg leading-relaxed">
-            Complimentary shipping on all orders. Orders are processed within 1-2 business days.
-          </p>
-          <div class="border-t border-fg/10 my-6"></div>
-          <h4 class="text-[14px] text-fg font-normal mb-4">Returns</h4>
-          <p class="text-[12px] text-fg leading-relaxed">
-            {{ product.metafields.custom.shipping_returns | default: 'Free returns within 14 days of delivery. Items must be unworn and in original packaging.' }}
+            {{ product.metafields.custom.shipping_returns | default: 'Describe shipping and returns policy here. Can be overridden per product via the `custom.shipping_returns` metafield.' }}
           </p>
         </div>
         <div id="InfoPanel-payments" role="tabpanel" aria-labelledby="InfoTab-payments" tabindex="0" data-info-panel="payments" class="hidden">
-          <h4 class="text-[14px] text-fg font-normal mb-4">Payments</h4>
           <p class="text-[12px] text-fg leading-relaxed">
-            We accept Visa, Mastercard, American Express, and Klarna. All transactions are secure and encrypted.
+            List the accepted payment methods. This copy typically comes from the brand’s commerce team.
           </p>
         </div>
       </div>
