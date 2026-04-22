@@ -18,22 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
       - name: Install dependencies
-        # --frozen-lockfile omitted intentionally: bun.lock is generated on macOS
-        # and does not include linux-specific rollup native binaries. Plain
-        # `bun install` still respects locked versions and resolves the missing
-        # platform optional deps on linux CI.
-        run: bun install
+        # Using npm in CI (rather than bun) sidesteps a known bun/rollup
+        # platform-binary issue: bun.lock is generated on macOS and bun
+        # install on linux does not reliably resolve the
+        # @rollup/rollup-linux-x64-gnu optional dep that Vite needs.
+        # Local development still uses `bun install` — this only affects CI.
+        run: npm install --no-audit --no-fund
 
       - name: Run Tier 1+2 tests (Vitest)
-        run: bun run test
+        run: npm test
