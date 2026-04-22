@@ -31,5 +31,12 @@ jobs:
         # Local development still uses `bun install` — this only affects CI.
         run: npm install --no-audit --no-fund
 
+      - name: Install linux rollup native binary
+        # Workaround for npm/cli#4828 — npm occasionally fails to resolve
+        # platform-specific optionalDependencies on fresh installs, causing
+        # vitest startup to crash. Force-installing rollup's linux native
+        # binding is the canonical fix.
+        run: npm install --no-save --no-audit --no-fund @rollup/rollup-linux-x64-gnu
+
       - name: Run Tier 1+2 tests (Vitest)
         run: npm test
