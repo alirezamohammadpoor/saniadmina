@@ -29,7 +29,11 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        # --frozen-lockfile omitted intentionally: bun.lock is generated on macOS
+        # and does not include linux-specific rollup native binaries. Plain
+        # `bun install` still respects locked versions and resolves the missing
+        # platform optional deps on linux CI.
+        run: bun install
 
       - name: Run Tier 1+2 tests (Vitest)
         run: bun run test
