@@ -1,11 +1,25 @@
 # Shopify CLI environments
-# Usage: `shopify theme push -e production` / `shopify theme push -e staging`
-# Docs: https://shopify.dev/docs/themes/tools/cli/environments
+#
+# Deploys are GitHub-native — Shopify auto-syncs the staging and main branches
+# to the themes below on push. Do NOT use `shopify theme push -e <env>` for
+# routine deploys; let the GitHub connection handle it.
+#
+# Use the CLI for:
+#   `shopify theme dev -e dev`     — local preview against an ephemeral dev theme
+#   `shopify theme pull -e staging`  — sync down merchant edits from staging
+#   `shopify theme pull -e production` — sync down merchant edits from production
+#
+# IMPORTANT: always pass -e. Without it, `shopify theme dev` falls back to the
+# CLI's last-used store cache — which can be a different project entirely.
 
-[environments.production]
+[environments.dev]
 store = "saniadmina.myshopify.com"
-theme = "157290823932"
+# No `theme =` — `shopify theme dev` creates an ephemeral dev theme each session.
 
 [environments.staging]
 store = "saniadmina.myshopify.com"
-theme = "157793583356"
+theme = "158043832572"
+
+[environments.production]
+store = "saniadmina.myshopify.com"
+theme = "158043799804"
