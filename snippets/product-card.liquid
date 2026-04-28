@@ -139,7 +139,7 @@
           >
             {% for value in option.values %}
               <li
-                class="block w-2.5 h-2.5{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
+                class="relative block w-2.5 h-2.5{% if forloop.index > max_mobile %} hidden lg:block{% endif %}"
                 style="{% if value.swatch.color %}background-color: {{ value.swatch.color }};{% else %}background-color: #1A1A18;{% endif %}"
                 title="{{ value }}"
               ><span class="sr-only">{{ value }}</span></li>
