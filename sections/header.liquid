@@ -40,23 +40,19 @@
 
       {%- comment -%} Right: Currency + Bag {%- endcomment -%}
       <div class="flex items-center gap-4">
-        <div class="hidden lg:block">
+        <div class="hidden lg:block text-[12px]">
           {% render 'currency-selector', style: 'header' %}
         </div>
         <button
           type="button"
-          class="text-[12px] text-fg"
+          class="text-[12px] text-fg{% if cart.item_count > 0 %} has-items{% endif %}"
+          data-component="header-cart-control"
           data-ajax-cart-toggle
           aria-label="Toggle Bag"
           aria-controls="ajax-cart"
           aria-expanded="false"
         >
-          <span
-            class="{% if cart.item_count > 0 %}has-items{% endif %}"
-            data-component="header-cart-control"
-          >
-            Bag (<span data-count>{{ cart.item_count }}</span>)
-          </span>
+          Bag (<span data-count>{{ cart.item_count }}</span>)
         </button>
       </div>
     </div>
