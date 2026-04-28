@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+    branches: [main, staging]
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        # Using npm in CI (rather than bun) sidesteps a known bun/rollup
+        # platform-binary issue: bun.lock is generated on macOS and bun
+        # install on linux does not reliably resolve the
+        # @rollup/rollup-linux-x64-gnu optional dep that Vite needs.
+        # Local development still uses `bun install` — this only affects CI.
+        run: npm install --no-audit --no-fund
+
+      - name: Install linux rollup native binary
+        # Workaround for npm/cli#4828 — npm occasionally fails to resolve
+        # platform-specific optionalDependencies on fresh installs, causing
+        # vitest startup to crash. Force-installing rollup's linux native
+        # binding is the canonical fix.
+        run: npm install --no-save --no-audit --no-fund @rollup/rollup-linux-x64-gnu
+
+      - name: Run Tier 1+2 tests (Vitest)
+        run: npm test
