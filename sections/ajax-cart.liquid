@@ -28,7 +28,14 @@
       <div class="ajax-cart__empty-text">
         {{ section.settings.empty_text | default: 'Your cart is empty' }}
       </div>
-    </div>    
+      <a
+        href="{{ routes.collections_url }}/all"
+        class="ajax-cart__empty-cta text-label underline mt-4"
+        data-ajax-cart-close
+      >
+        {{ 'ajax_cart.general.empty_cta' | t }}
+      </a>
+    </div>
   </div>
 
   <script type="application/json" data-cart-json>

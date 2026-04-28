@@ -75,8 +75,8 @@
 
 
 .ajax-cart__empty {
-  @apply absolute top-0 left-0 h-full w-full flex flex-col justify-center bg-bg;
-  z-index: var(--z-empty);  
+  @apply absolute top-0 left-0 h-full w-full flex flex-col items-center justify-center text-center bg-bg;
+  z-index: var(--z-empty);
 
   padding: 0 var(--spacing-container);
 
@@ -100,5 +100,19 @@
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0.3s;
+  }
+}
+
+.ajax-cart__empty-cta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition-property: opacity, transform;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+
+  .is-empty & {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
   }
 }
