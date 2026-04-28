@@ -1,0 +1,61 @@
+name: Build bundle
+
+# Auto-rebuild assets/app.bundle.{css,js} on every PR and commit any diff
+# back to the PR branch. Prevents a class of bug where a contributor adds
+# a new Tailwind arbitrary-value utility in a .liquid/.ts file but forgets
+# to commit the regenerated bundle — production then serves the new
+# markup against a stale CSS bundle that's missing the JIT-emitted rule.
+#
+# Skips PRs from forks (GITHUB_TOKEN can't push back to a fork branch).
+# The bot's push uses GITHUB_TOKEN, which by GitHub's default policy does
+# NOT re-trigger workflow runs, so there's no infinite loop.
+
+on:
+  pull_request:
+    branches: [staging, main]
+
+concurrency:
+  group: build-bundle-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        # Same npm + linux-rollup workaround as test.yml — see that
+        # workflow for the rationale.
+        run: npm install --no-audit --no-fund
+
+      - name: Install linux rollup native binary
+        run: npm install --no-save --no-audit --no-fund @rollup/rollup-linux-x64-gnu
+
+      - name: Build theme bundle
+        run: npm run build
+
+      - name: Commit bundle if stale
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain assets/)" ]]; then
+            git add assets/app.bundle.css assets/app.bundle.js
+            git commit -m "build: rebuild theme bundle [skip test]"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            echo "Bundle was stale — rebuilt and pushed."
+          else
+            echo "Bundle is up to date — nothing to commit."
+          fi
