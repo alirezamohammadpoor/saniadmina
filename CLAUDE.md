@@ -78,7 +78,22 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 ## Build
 
 ```
-bun run dev          # Vite dev
-bun run build        # Production build
-shopify theme dev    # Theme preview
+bun run dev                  # Vite dev (asset bundle, watch mode)
+bun run build                # Production build
+shopify theme dev -e dev     # Local preview on an ephemeral dev theme
 ```
+
+**Always pass `-e <env>`** to any `shopify theme` command. Without it, the CLI falls back to its last-used-store cache and may target a different project entirely (silently). Environments are defined in `shopify.theme.toml`.
+
+## Deploy
+
+GitHub-native: Shopify auto-syncs branches to themes — no CLI push, no GitHub Actions deploy workflow.
+
+```
+git push origin staging      # → auto-deploys to draft theme `saniadmina/staging` (158043832572)
+git push origin main         # → auto-deploys to draft theme `saniadmina/main` (158043799804)
+```
+
+To go live: in Shopify admin, click **Publish** on `saniadmina/main`. The previously-live theme moves to the theme library (one-click rollback if needed).
+
+CI still runs `.github/workflows/test.yml` on every PR (blocking on Tier 1+2 tests). E2E (Phase 2) will hook into post-deploy via the Shopify GitHub-sync completion, not via a dedicated deploy workflow.
