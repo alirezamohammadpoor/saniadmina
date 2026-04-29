@@ -10,30 +10,16 @@
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- comment -%}
-      LCP preload for PDP hero image. URL + srcset + sizes must match
-      the gallery's first slide exactly so the browser uses the preload
-      to satisfy the <img> request instead of double-fetching. Source:
-      `snippets/product-detail-gallery-slide.liquid` (width: 720,
-      sizes: '100vw') + `snippets/image-widths.liquid` (widths
-      ≤ max_width: 1100 → 180, 300, 500, 700, 900, 1100).
+      No PDP preload here. The gallery's first <img> already has
+      loading="eager" + fetchpriority="high" (set in
+      product-detail-gallery-slide.liquid), so the browser's preload
+      scanner discovers and prioritises it during HTML parse without
+      help. Adding a separate <link rel="preload"> competes with that
+      natural fetch slot rather than augmenting it — measured net
+      negative on staging mobile (load delay 880 → 1,110 ms).
+      Preload only helps when the LCP element is NOT scanner-visible:
+      CSS background-image, JS-injected, web fonts, etc.
     {%- endcomment -%}
-    {% if template.name == 'product' and product.featured_image %}
-      <link
-        rel="preload"
-        as="image"
-        href="{{ product.featured_image | image_url: width: 720 }}"
-        imagesrcset="
-          {{ product.featured_image | image_url: width: 180 }} 180w,
-          {{ product.featured_image | image_url: width: 300 }} 300w,
-          {{ product.featured_image | image_url: width: 500 }} 500w,
-          {{ product.featured_image | image_url: width: 700 }} 700w,
-          {{ product.featured_image | image_url: width: 900 }} 900w,
-          {{ product.featured_image | image_url: width: 1100 }} 1100w
-        "
-        imagesizes="100vw"
-        fetchpriority="high"
-      >
-    {% endif %}
 
     {% render 'head-favicon' %}
     {% render 'head-meta-title' %}
