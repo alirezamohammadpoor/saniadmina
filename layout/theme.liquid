@@ -10,22 +10,27 @@
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- comment -%}
-      LCP preload for PDP hero image. Tells the browser to fetch the
-      product's featured image immediately instead of waiting for HTML
-      parse + render-blocking CSS to discover the <img>. Mobile LCP win.
+      LCP preload for PDP hero image. URL + srcset + sizes must match
+      the gallery's first slide exactly so the browser uses the preload
+      to satisfy the <img> request instead of double-fetching. Source:
+      `snippets/product-detail-gallery-slide.liquid` (width: 720,
+      sizes: '100vw') + `snippets/image-widths.liquid` (widths
+      ≤ max_width: 1100 → 180, 300, 500, 700, 900, 1100).
     {%- endcomment -%}
     {% if template.name == 'product' and product.featured_image %}
       <link
         rel="preload"
         as="image"
-        href="{{ product.featured_image | image_url: width: 800 }}"
+        href="{{ product.featured_image | image_url: width: 720 }}"
         imagesrcset="
-          {{ product.featured_image | image_url: width: 400 }} 400w,
-          {{ product.featured_image | image_url: width: 600 }} 600w,
-          {{ product.featured_image | image_url: width: 800 }} 800w,
-          {{ product.featured_image | image_url: width: 1200 }} 1200w
+          {{ product.featured_image | image_url: width: 180 }} 180w,
+          {{ product.featured_image | image_url: width: 300 }} 300w,
+          {{ product.featured_image | image_url: width: 500 }} 500w,
+          {{ product.featured_image | image_url: width: 700 }} 700w,
+          {{ product.featured_image | image_url: width: 900 }} 900w,
+          {{ product.featured_image | image_url: width: 1100 }} 1100w
         "
-        imagesizes="(max-width: 1023px) 100vw, 50vw"
+        imagesizes="100vw"
         fetchpriority="high"
       >
     {% endif %}
