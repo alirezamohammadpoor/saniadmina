@@ -1,0 +1,46 @@
+.color-picker {
+  @apply fixed z-(--z-drawer) top-0 right-0 h-[100dvh] w-[80%] bg-bg;
+  @media (min-width: 1024px) { max-width: min(80vw, 500px); }
+  @apply translate-x-full;
+  transition: var(--transition-drawer-out);
+
+  pointer-events: none;
+
+  &.is-open {
+    @apply translate-x-0;
+    transition: var(--transition-drawer-in);
+    pointer-events: auto;
+  }
+}
+
+.color-picker__header {
+  @apply relative flex items-center justify-between shrink-0;
+  height: var(--header-height);
+  padding-inline: var(--spacing-container);
+}
+
+.color-picker__body {
+  @apply flex-1 overflow-y-auto;
+  padding: 0 var(--spacing-container) 40px;
+}
+
+.color-picker__card {
+  @apply transition-opacity duration-200;
+
+  &[disabled],
+  &[aria-disabled="true"] {
+    @apply opacity-40 cursor-not-allowed;
+  }
+}
+
+/* Color option radios — only the :checked label is visible, serving as
+ * both the form state and the "selected color" indicator on the PDP.
+ * Non-checked labels stay in DOM (hidden) so the drawer can dispatch
+ * change events on the matching radio to update selection. */
+input.color-radio + .color-label {
+  display: none;
+}
+
+input.color-radio:checked + .color-label {
+  @apply flex items-center gap-2;
+}

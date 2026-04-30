@@ -1,0 +1,120 @@
+{% doc %}
+  Color Picker Drawer
+  ------------------------------------------------------------------------------
+  Right-side drawer listing all available colors for a product as image+name cards.
+  Triggered from the variant-picker-option color row when color count exceeds threshold.
+  Clicking a card triggers the matching variant radio and closes the drawer.
+
+  @param {object} product - The product to display - required
+  @param {boolean} color_drawer_active - Whether to render the drawer for this
+    product (computed once in main-product.liquid for both this snippet and
+    variant-picker-option) - required
+
+  @example
+    {% render 'color-picker-drawer', product: product, color_drawer_active: color_drawer_active %}
+{% enddoc %}
+
+{%- liquid
+  comment
+    Find the color option (we still need it for the values iteration even
+    when color_drawer_active is the source-of-truth gate).
+    NOTE: Liquid does not allow filters inside `if` conditions, so we
+    assign the handle first and compare against it.
+  endcomment
+  assign color_option = nil
+  if color_drawer_active
+    for option in product.options_with_values
+      assign opt_handle = option.name | handle
+      if opt_handle == 'color'
+        assign color_option = option
+        break
+      endif
+    endfor
+  endif
+
+  assign drawer_id = 'color-picker-' | append: product.id
+  assign title_id = drawer_id | append: '-title'
+-%}
+
+{% if color_drawer_active and color_option %}
+  <div
+    id="{{ drawer_id }}"
+    class="color-picker overflow-hidden"
+    data-component="color-picker-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="{{ title_id }}"
+    aria-hidden="true"
+    inert
+  >
+    <div class="flex flex-col h-full">
+      {%- comment -%} Header — matches page header style (12px, sentence case, no tracking) {%- endcomment -%}
+      <div class="color-picker__header">
+        <h2 id="{{ title_id }}" class="text-[12px] text-fg">
+          {{ 'products.product.color_picker.title' | t | default: 'Color' }}
+        </h2>
+        <button
+          type="button"
+          class="text-[12px] text-fg"
+          data-close
+        >
+          {{ 'general.close' | t }}
+        </button>
+      </div>
+
+      {%- comment -%} Scrollable color list {%- endcomment -%}
+      <div class="color-picker__body" data-scroller>
+        <ul class="flex flex-col gap-4">
+          {% for value in color_option.values %}
+            {%- liquid
+              comment
+                Match the existing data contract — pull a product image whose
+                alt text equals the color name. Falls back to nothing if no
+                matching image exists; the placeholder bg shows in that case.
+              endcomment
+              assign image = nil
+              assign value_up = value | upcase
+              for img in product.images
+                assign img_alt_up = img.alt | upcase
+                if img_alt_up == value_up
+                  assign image = img
+                  break
+                endif
+              endfor
+
+              assign select_label = 'products.product.color_picker.select' | t: color: value | default: value
+            -%}
+            <li>
+              <button
+                type="button"
+                class="color-picker__card block w-full text-left"
+                data-color-picker-select
+                data-color="{{ value | escape }}"
+                aria-label="{{ select_label | escape }}"
+                {% if value.selected %}aria-current="true"{% endif %}
+                {% if value.available != true %}disabled aria-disabled="true"{% endif %}
+              >
+                <div class="aspect-[4/5] bg-[#E8E5E0] overflow-hidden mb-2">
+                  {% if image %}
+                    {{ image
+                      | image_url: width: 800
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '342, 513, 684, 800',
+                        sizes: '(max-width: 1023px) 80vw, min(80vw, 500px)',
+                        alt: value,
+                        class: 'w-full h-full object-cover'
+                    }}
+                  {% endif %}
+                </div>
+                <span class="text-[12px] text-fg">
+                  {{ value }}
+                </span>
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endif %}

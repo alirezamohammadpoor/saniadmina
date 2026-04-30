@@ -7,12 +7,14 @@
   @param {object} product - The product to display - required
   @param {object} [current_variant] - The current variant to display - optional
   @param {object} [current_collection] - The collection the product was reached from (for breadcrumb) - optional
+  @param {boolean} [color_drawer_active] - Whether the color picker drawer is active for this product. Threaded down to variant-picker-option so it knows to render the "All N Colors" trigger and hide inline swatches. Computed once in main-product.liquid.
 
   @example
     {% render 'product-detail-form',
               product: product,
               current_variant: current_variant,
-              current_collection: collection
+              current_collection: collection,
+              color_drawer_active: color_drawer_active
     %}
 {% enddoc %}
 
@@ -153,7 +155,8 @@
                   {% render 'variant-picker-option',
                             option: option,
                             product: product,
-                            selection_type: selection_type
+                            selection_type: selection_type,
+                            color_drawer_active: color_drawer_active
                   %}
                 </div>
               {% endfor %}

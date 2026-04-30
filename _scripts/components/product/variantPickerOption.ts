@@ -32,15 +32,9 @@ export default class VariantPickerOption extends BaseComponent {
 
     this.el.addEventListener('change', this.onChange.bind(this))
 
-    // Color label sync — update "Color: X" when a swatch is selected
-    const colorLabel = this.qs('[data-selected-color]') as HTMLElement | null
-    if (colorLabel) {
-      this.inputs.forEach(input => {
-        input.addEventListener('change', () => {
-          colorLabel.textContent = input.value
-        })
-      })
-    }
+    // Color visible state is now handled in CSS via `input.color-radio:checked + .color-label`
+    // (see _color-picker.css). When the drawer dispatches a `change` event on a radio,
+    // that radio becomes :checked and its label becomes visible automatically — no JS sync needed.
 
     // Size toggle — swap EU/US/UK labels
     const toggles = this.qsa('[data-toggle-system]') as HTMLElement[]

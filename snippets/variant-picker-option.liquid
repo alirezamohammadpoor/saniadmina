@@ -6,15 +6,15 @@
   @param {object} option - The option to display
   @param {object} product - The product object (for metafield access)
   @param {string} [selection_type] - The type of selection to display
+  @param {boolean} [color_drawer_active] - Whether the color picker drawer is the active picker for this product (computed in main-product.liquid). When true and this option is the color option, the inline swatches are hidden and the "All N Colors" trigger is rendered.
 
   @example
-    {% render 'variant-picker-option', option: option, product: product, selection_type: 'select' %}
+    {% render 'variant-picker-option', option: option, product: product, selection_type: 'select', color_drawer_active: color_drawer_active %}
 {% enddoc %}
 
 {%- liquid
   assign option_name_handle = option.name | handle
   assign option_parent_id = 'vpo-' | append: option_name_handle | append: '-' | append: product.id
-  assign swatch_count = option.values | map: 'swatch' | compact | size
   assign is_radio = false
   assign is_size = false
   assign is_color = false
@@ -41,8 +41,25 @@
   if is_size and sizes_us != blank and sizes_uk != blank
     assign has_size_toggle = true
   endif
+
+  comment
+    Color drawer mode — when this option is the color option AND the drawer
+    is active for the product (decided once in main-product.liquid), hide
+    the inline swatches and show the "All N Colors" trigger instead.
+  endcomment
+  assign use_color_drawer = false
+  if is_color and color_drawer_active
+    assign use_color_drawer = true
+  endif
+
+  assign color_drawer_id = 'color-picker-' | append: product.id
 -%}
 
+{%- comment -%}
+  option_values_content is used only for non-color radio options (size, etc.)
+  and the select-dropdown fallback. Color values are rendered inline below
+  (each radio's :checked label IS the visible selected-color indicator).
+{%- endcomment -%}
 {% capture option_values_content %}
   {% if is_radio %}
     <div class="{% if is_size %}grid grid-cols-6 auto-rows-[40px] gap-1{% else %}flex flex-wrap gap-1{% endif %}">
@@ -69,9 +86,7 @@
           >
 
           <label for="{{ input_id }}" class="cursor-pointer{% if is_size %} block w-full text-[12px] text-center leading-[40px] peer-checked:border-b peer-checked:border-fg peer-disabled:opacity-40 peer-disabled:line-through{% endif %}">
-            {% if is_color and swatch_count > 0 and value.swatch %}
-              {% render 'swatch', option_value: value, swatch: value.swatch, variant_image: value.variant.featured_media, use_variant_image: false, extra_class: '!w-6 !h-6' %}
-            {% elsif is_size %}
+            {% if is_size %}
               <span data-size-eu>{{ value }}</span>
               {% if has_size_toggle %}
                 <span data-size-us class="hidden">{{ sizes_us[forloop.index0] | default: value }}</span>
@@ -114,11 +129,69 @@
   data-component="variant-picker-option"
   data-name="{{ option.name }}"
 >
-  {% if is_radio %}
+  {% if is_color %}
+    <fieldset>
+      <legend class="sr-only">{{ option.name }}</legend>
+      {%- comment -%}
+        Color: each radio's label IS the visible selected-color indicator.
+        All radios stay sr-only; CSS (in _color-picker.css) reveals only the
+        :checked label (small swatch + name). Non-checked labels remain in
+        the DOM so the drawer can dispatch change events on the matching radio
+        to update selection.
+      {%- endcomment -%}
+      <div class="text-[12px] font-normal text-fg {% if use_color_drawer %}mb-1{% else %}mb-3{% endif %}">
+        {%- for value in option.values -%}
+          {%- liquid
+            assign input_id = option_parent_id | append: forloop.index0
+            assign value_swatch_color = nil
+            assign value_swatch_image = nil
+            if value.swatch.image
+              assign value_swatch_image = value.swatch.image
+            elsif value.swatch.color
+              assign value_swatch_color = value.swatch.color
+            endif
+          -%}
+          <input
+            type="radio"
+            id="{{ input_id }}"
+            name="{{ option.name | escape }}"
+            value="{{ value | escape }}"
+            aria-label="{{ value | escape }}"
+            class="sr-only color-radio"
+            {% if value.selected %}checked{% endif %}
+            {% if value.available != true %}disabled aria-disabled="true"{% endif %}
+          >
+          <label for="{{ input_id }}" class="color-label cursor-pointer">
+            {% if value_swatch_color or value_swatch_image %}
+              <span
+                class="block w-2 h-2 shrink-0 border border-fg/20 bg-cover bg-center"
+                style="
+                  {%- if value_swatch_image -%}background-image: url({{ value_swatch_image | image_url: width: 32 }});{%- endif -%}
+                  {%- if value_swatch_color -%}background-color: rgb({{ value_swatch_color.rgb }});{%- endif -%}
+                "
+              ></span>
+            {% endif %}
+            <span>{{ value }}</span>
+          </label>
+        {%- endfor -%}
+      </div>
+      {% if use_color_drawer %}
+        <button
+          type="button"
+          class="block text-left text-[12px] text-fg cursor-pointer mb-3"
+          aria-controls="{{ color_drawer_id }}"
+          aria-expanded="false"
+        >
+          All {{ option.values.size }} Colors
+        </button>
+      {% endif %}
+    </fieldset>
+
+  {% elsif is_radio %}
     <fieldset>
       <legend class="sr-only">{{ option.name }}</legend>
       <div class="text-[12px] font-normal text-fg mb-3 flex items-center justify-between">
-        <span>{{ option.name }}{% if is_color %}: <span class="font-normal" data-selected-color>{{ option.selected_value }}</span>{% endif %}</span>
+        <span>{{ option.name }}</span>
 
         {%- comment -%} Size system toggle (EU/US/UK) {%- endcomment -%}
         {% if is_size and has_size_toggle %}
@@ -133,7 +206,7 @@
       {{ option_values_content }}
     </fieldset>
 
-    {%- comment -%} Color sync and size toggle behavior handled by TS component (variantPickerOption.ts) {%- endcomment -%}
+    {%- comment -%} Size toggle behavior handled by TS component (variantPickerOption.ts) {%- endcomment -%}
   {% else %}
     <div>
       <label for="{{ option_parent_id }}" class="text-[12px] font-normal text-fg mb-3 block">

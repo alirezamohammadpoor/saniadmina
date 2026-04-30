@@ -324,6 +324,11 @@
         "price": "Price",
         "regular_price": "Regular price",
         "sale_price": "Sale price"
+      },
+      "color_picker": {
+        "title": "Color",
+        "trigger": "All {{ count }} Colors",
+        "select": "Select {{ color }}"
       }
     },
     "info": {
