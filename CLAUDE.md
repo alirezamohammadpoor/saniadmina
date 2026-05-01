@@ -23,7 +23,7 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 |---|---|---|
 | bg | #FAFAF9 | Page background |
 | fg | #1A1A18 | Text, borders, icons |
-| muted | #9C9890 | Secondary text, labels |
+| muted | #75736E | Secondary text, labels (WCAG AA on bg, 4.7:1) |
 
 ### Typography (system Helvetica Neue / Helvetica / Arial)
 

@@ -1,6 +1,20 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-%}
+
+  comment
+    Color picker drawer activation — single source of truth.
+    Computed here and threaded down to both consumers (variant-picker-option
+    and color-picker-drawer) so the threshold lives in exactly one place.
+  endcomment
+  assign color_drawer_active = false
+  for option in product.options_with_values
+    assign opt_handle = option.name | handle
+    if opt_handle == 'color' and option.values.size > 1
+      assign color_drawer_active = true
+      break
+    endif
+  endfor
+-%}
 
 <div data-section-id="{{ section.id }}" data-section-type="product">
   <div class="flex flex-col lg:flex-row">
@@ -15,10 +29,21 @@
       {% render 'product-detail-form',
                  product: product,
                  current_variant: current_variant,
-                 current_collection: collection
+                 current_collection: collection,
+                 color_drawer_active: color_drawer_active
       %}
     </div>
   </div>
+
+  {%- comment -%}
+    Color picker drawer — renders only when color_drawer_active (set above)
+    is true. Rendered here at section level (sibling to gallery + form)
+    so it overlays the whole PDP, not just the form column.
+  {%- endcomment -%}
+  {% render 'color-picker-drawer',
+            product: product,
+            color_drawer_active: color_drawer_active
+  %}
 
   <script type="application/ld+json">
     {{ product | structured_data }}

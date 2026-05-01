@@ -10,8 +10,8 @@
 {%- endif -%}
 
 <section class="flex flex-col lg:flex-row" data-section-id="{{ section.id }}">
-  {%- comment -%} Image — on mobile, pushed below text via order {%- endcomment -%}
-  <div class="w-full order-2 lg:order-none lg:w-1/2 {% if image_right %}lg:order-2{% endif %}">
+  {%- comment -%} Image — first on mobile (source order), positioned via lg:order-* on desktop {%- endcomment -%}
+  <div class="w-full lg:w-1/2 {% if image_right %}lg:order-2{% endif %}">
     {% if section.settings.image %}
       {{ section.settings.image
         | image_url: width: 1400
@@ -26,18 +26,20 @@
     {% endif %}
   </div>
 
-  {%- comment -%} Text {%- endcomment -%}
-  <div class="w-full order-1 lg:order-none lg:w-1/2 px-2 py-6 lg:py-10 lg:flex lg:items-center lg:justify-center {% if image_right %}lg:order-1{% endif %}">
+  {%- comment -%} Text — second on mobile, positioned via lg:order-* on desktop {%- endcomment -%}
+  <div class="w-full lg:w-1/2 px-2 py-6 lg:py-10 lg:flex lg:items-center lg:justify-center {% if image_right %}lg:order-1{% endif %}">
     <div class="lg:text-center">
       {% if section.settings.subtitle != blank %}
-        <p class="text-[16px] text-fg mb-4">{{ section.settings.subtitle }}</p>
+        <p>{{ section.settings.subtitle }}</p>
       {% endif %}
       {% if section.settings.heading != blank %}
-        {% if section.settings.link != blank %}
-          <a href="{{ section.settings.link }}" class="text-label underline">{{ section.settings.heading }}</a>
-        {% else %}
-          <p class="text-label">{{ section.settings.heading }}</p>
-        {% endif %}
+        <h3 class="text-label">
+          {% if section.settings.link != blank %}
+            <a href="{{ section.settings.link }}" class="underline">{{ section.settings.heading }}</a>
+          {% else %}
+            {{ section.settings.heading }}
+          {% endif %}
+        </h3>
       {% endif %}
     </div>
   </div>

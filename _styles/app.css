@@ -6,7 +6,7 @@
   /* Sania D'Mina design tokens */
   --color-bg: #FAFAF9;
   --color-fg: #1A1A18;
-  --color-muted: #9C9890;
+  --color-muted: #75736E;
 
   --color-white: #FFFFFF;
   --color-black: #000000;
@@ -253,3 +253,4 @@ img.lazy-image {
 @import './components/_ajax-cart.css';
 @import './components/_drawer.css';
 @import './components/_policy.css';
+@import './components/_color-picker.css';

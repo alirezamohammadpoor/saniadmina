@@ -4,12 +4,14 @@ import BaseSection from '@/sections/base'
 import type { VariantChangeEvent } from '@/components/product/variantPicker'
 import ProductDetailForm from '@/components/product/productDetailForm'
 import ProductDetailGallery from '@/components/product/productDetailGallery'
+import ColorPickerDrawer from '@/components/product/colorPickerDrawer'
 
 export default class ProductSection extends BaseSection {
   static TYPE = 'product'
 
   productDetailForm: ProductDetailForm
   galleries: ProductDetailGallery[]
+  colorPickerDrawer: ColorPickerDrawer | null
 
   constructor(container: HTMLElement) {
     super(container)
@@ -21,6 +23,12 @@ export default class ProductSection extends BaseSection {
     this.galleries = this.qsa(ProductDetailGallery.SELECTOR).map(el => {
       return new ProductDetailGallery(el)
     })
+
+    // Color picker drawer — only present when the product has > 5 colors
+    // (snippet renders nothing otherwise). Sibling to the form, not a child,
+    // so we look it up at section level.
+    const colorPickerEl = this.qs(ColorPickerDrawer.SELECTOR) as HTMLElement | undefined
+    this.colorPickerDrawer = colorPickerEl ? new ColorPickerDrawer(colorPickerEl) : null
   }
 
   onNavigateEnd() {
@@ -39,6 +47,7 @@ export default class ProductSection extends BaseSection {
   onUnload(e: ThemeEditorSectionUnloadEvent) {
     this.productDetailForm.destroy()
     this.galleries.forEach(g => g.destroy())
+    this.colorPickerDrawer?.destroy()
 
     super.onUnload(e)
   }

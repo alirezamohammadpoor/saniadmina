@@ -9,6 +9,9 @@
   },
   "general": {
     "close": "Close",
+    "currency": {
+      "label": "Currency"
+    },
     "meta": {
       "tags": "Tagged \"{{ tags }}\"",
       "page": "Page {{ page }}"
@@ -321,6 +324,11 @@
         "price": "Price",
         "regular_price": "Regular price",
         "sale_price": "Sale price"
+      },
+      "color_picker": {
+        "title": "Color",
+        "trigger": "All {{ count }} Colors",
+        "select": "Select {{ color }}"
       }
     },
     "info": {
@@ -339,7 +347,8 @@
       "shipping": "Shipping",
       "calculated_in_checkout": "Calculated in checkout",
       "total_value": "Total value",
-      "checkout": "Go to checkout"
+      "checkout": "Go to checkout",
+      "empty_cta": "Explore our products"
     }
   },
   "gift_cards": {

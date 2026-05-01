@@ -40,23 +40,19 @@
 
       {%- comment -%} Right: Currency + Bag {%- endcomment -%}
       <div class="flex items-center gap-4">
-        <div class="hidden lg:block">
+        <div class="hidden lg:block text-[12px]">
           {% render 'currency-selector', style: 'header' %}
         </div>
         <button
           type="button"
-          class="text-[12px] text-fg"
+          class="text-[12px] text-fg{% if cart.item_count > 0 %} has-items{% endif %}"
+          data-component="header-cart-control"
           data-ajax-cart-toggle
           aria-label="Toggle Bag"
           aria-controls="ajax-cart"
           aria-expanded="false"
         >
-          <span
-            class="{% if cart.item_count > 0 %}has-items{% endif %}"
-            data-component="header-cart-control"
-          >
-            Bag (<span data-count>{{ cart.item_count }}</span>)
-          </span>
+          Bag (<span data-count>{{ cart.item_count }}</span>)
         </button>
       </div>
     </div>
@@ -112,8 +108,8 @@
                 <img
                   src="{{ default_col.image | image_url: width: 700 }}"
                   alt="{{ default_col.title }}"
-                  width="700"
-                  height="875"
+                  width="{{ default_col.image.width }}"
+                  height="{{ default_col.image.height }}"
                   class="w-full h-full object-cover transition-opacity duration-500"
                   data-default-image
                 >
@@ -135,8 +131,8 @@
             <img
               src="{{ col.image | image_url: width: 700 }}"
               alt="{{ col.title }}"
-              width="700"
-              height="875"
+              width="{{ col.image.width }}"
+              height="{{ col.image.height }}"
               data-collection="{{ col_handle }}"
               data-title="{{ col.title }}"
               data-desc="{{ col.description | strip_html | escape }}"
@@ -151,8 +147,8 @@
             <img
               src="{{ sub_col.image | image_url: width: 700 }}"
               alt="{{ sub_col.title }}"
-              width="700"
-              height="875"
+              width="{{ sub_col.image.width }}"
+              height="{{ sub_col.image.height }}"
               data-collection="{{ sub_handle }}"
               data-title="{{ sub_col.title }}"
               data-desc="{{ sub_col.description | strip_html | escape }}"
