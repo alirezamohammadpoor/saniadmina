@@ -13,11 +13,11 @@
       "type": "hero-split",
       "name": "Hero Split",
       "settings": {
-        "left_image": "shopify://shop_images/sania-dmina-DUN-ivory-suede-square-toe-mule-sandals-shoes-beige-summer.jpg",
-        "left_title": "DUN",
+        "left_image": "shopify://shop_images/sania-dmina-ELENA-white-leather-slingback-shoes-wedding-comfortable.jpg",
+        "left_title": "ELENA",
         "left_subtitle": "",
-        "left_link": "shopify://products/dun",
-        "right_image": "shopify://shop_images/sania-dmina-ELENA-pistachio-suede-slingback-shoes-comfortable-bridesmaid-wedding.jpg",
+        "left_link": "shopify://products/elena",
+        "right_image": "shopify://shop_images/sania-dmina-ELENA-black-suede-slingback-shoes-comfortable-everyday_1b5803ce-6b02-4a5f-8309-8ea5f02be06c.jpg",
         "right_title": "ELENA",
         "right_subtitle": "",
         "right_link": "shopify://products/elena"
