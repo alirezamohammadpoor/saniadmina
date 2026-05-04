@@ -97,3 +97,13 @@ git push origin main         # → auto-deploys to draft theme `saniadmina/main`
 To go live: in Shopify admin, click **Publish** on `saniadmina/main`. The previously-live theme moves to the theme library (one-click rollback if needed).
 
 CI still runs `.github/workflows/test.yml` on every PR (blocking on Tier 1+2 tests). E2E (Phase 2) will hook into post-deploy via the Shopify GitHub-sync completion, not via a dedicated deploy workflow.
+
+## Workflow
+
+**Always ask for review before committing or opening PRs.** Even in auto mode, do not run `git commit` or `gh pr create` until you've shown the user:
+- A concise summary of the changes (file list + brief per-file description, or `git diff --stat` for larger changes)
+- The proposed commit message and/or PR title + body
+
+Wait for an explicit affirmative ("yes", "go", "ship it", "looks good") before proceeding. If the user wants changes, iterate first. Auto mode does not bypass this — explicit confirmation is the rule even during autonomous execution.
+
+Local file edits, reads, builds, and tests do not need this gate. Pushing a branch is fine if it's just to back up the work, but a PR-creating push (`-u` to a new remote branch followed by `gh pr create`) requires the same review handshake.
