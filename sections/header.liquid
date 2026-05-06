@@ -62,7 +62,7 @@
   {% if section.settings.primary_menu != blank %}
     <div
       id="desktop-menu-panel"
-      class="hidden lg:block opacity-0 pointer-events-none transition-opacity duration-300"
+      class="hidden lg:block opacity-0 pointer-events-none transition-opacity duration-200 ease-[var(--ease-out)]"
       data-desktop-menu-panel
       data-component="desktop-menu"
     >
@@ -96,10 +96,10 @@
           -%}
           <div class="flex items-end ml-auto shrink-0" data-menu-editorial>
             <div class="flex flex-col gap-2 pr-6 shrink-0 w-[250px]">
-              <h3 class="text-h3 text-fg transition-opacity duration-500" data-menu-preview-title>
+              <h3 class="text-h3 text-fg transition-opacity duration-200 ease-[var(--ease-out)]" data-menu-preview-title>
                 {{ default_col.title }}
               </h3>
-              <p class="text-[12px] text-fg leading-[18px] transition-opacity duration-500" data-menu-preview-desc>
+              <p class="text-[12px] text-fg leading-[18px] transition-opacity duration-200 ease-[var(--ease-out)]" data-menu-preview-desc>
                 {{ default_col.description | strip_html }}
               </p>
             </div>
@@ -110,7 +110,7 @@
                   alt="{{ default_col.title }}"
                   width="{{ default_col.image.width }}"
                   height="{{ default_col.image.height }}"
-                  class="w-full h-full object-cover transition-opacity duration-500"
+                  class="w-full h-full object-cover transition-opacity duration-200 ease-[var(--ease-out)]"
                   data-default-image
                 >
               {% endif %}

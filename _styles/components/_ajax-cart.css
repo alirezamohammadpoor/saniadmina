@@ -93,13 +93,13 @@
   opacity: 0;
   transform: translateY(10px);
   transition-property: opacity, transform;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
+  transition-duration: 350ms;
+  transition-timing-function: var(--ease-out);
 
   .is-empty & {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 0.3s;
+    transition-delay: 200ms;
   }
 }
 
@@ -107,12 +107,12 @@
   opacity: 0;
   transform: translateY(10px);
   transition-property: opacity, transform;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
+  transition-duration: 350ms;
+  transition-timing-function: var(--ease-out);
 
   .is-empty & {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: 0.4s;
+    transition-delay: 280ms;
   }
 }

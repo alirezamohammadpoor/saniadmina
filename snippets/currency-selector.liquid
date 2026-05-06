@@ -32,7 +32,7 @@
     </button>
 
     <div
-      class="absolute {% if style == 'mobile' %}bottom-full left-0 mb-2{% elsif style == 'footer' %}bottom-full left-0 mb-2{% else %}top-full right-0 mt-2{% endif %} bg-bg border border-fg/10 py-2 opacity-0 pointer-events-none transition-opacity duration-200 z-50"
+      class="absolute {% if style == 'mobile' %}bottom-full left-0 mb-2 origin-bottom-left{% elsif style == 'footer' %}bottom-full left-0 mb-2 origin-bottom-left{% else %}top-full right-0 mt-2 origin-top-right{% endif %} bg-bg border border-fg/10 py-2 opacity-0 scale-95 pointer-events-none transition duration-[180ms] ease-[var(--ease-out)] z-50"
       data-currency-dropdown
       role="listbox"
       aria-label="{{ 'general.currency.label' | t }}"

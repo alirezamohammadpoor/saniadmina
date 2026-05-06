@@ -40,15 +40,24 @@
 
 @layer base {
   :root {
-    --transition-drawer-in: translate 300ms ease;
-    --transition-drawer-out: translate 300ms ease;
-    --transition-backdrop-in: opacity 300ms ease;
-    --transition-backdrop-out: opacity 300ms ease;
+    /* Motion standards — Emil Kowalski-derived custom curves.
+       Use --ease-out for entries (drawer/dropdown open, hover→active, button release).
+       Use --ease-in-out for on-screen movement and exits.
+       Use --ease-drawer for iOS-style sheets (Vaul/Sonner feel). */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* Asymmetric drawer/backdrop transitions: punchier on entry, gentler on exit. */
+    --transition-drawer-in: translate 350ms var(--ease-out);
+    --transition-drawer-out: translate 250ms var(--ease-in-out);
+    --transition-backdrop-in: opacity 300ms var(--ease-out);
+    --transition-backdrop-out: opacity 200ms var(--ease-in-out);
 
     /* Set these as CSS variables so they can be adjusted via inline styling or modifier classes if necessary */
     --lazy-image-transition-timing-function: cubic-bezier(0.42, 0.33, 0.21, 0.82);
     --lazy-image-transition-duration: 0.32s;
-    --lazy-image-transition: opacity var(--lazy-image-transition-timing-function, ease-in) var(--lazy-image-transition-duration, 0.25s);    
+    --lazy-image-transition: opacity var(--lazy-image-transition-timing-function, var(--ease-out)) var(--lazy-image-transition-duration, 0.25s);
 
     --backdrop-color: #000;
     --backdrop-opacity: 0.6;      
@@ -162,6 +171,19 @@
     &:focus-visible:not(:has([disabled])) {
       @apply outline outline-fg;
     }
+  }
+
+  /* Tactile press feedback — universal on <button> and [role="button"].
+     Opt out via [data-no-press] for elements where scale is wrong (backdrop,
+     drag handles, grouped toggles where the parent owns the press). */
+  button:not([data-no-press]),
+  [role="button"]:not([data-no-press]) {
+    transition: transform 160ms var(--ease-out);
+  }
+
+  button:active:not([disabled]):not([aria-disabled="true"]):not([data-no-press]),
+  [role="button"]:active:not([disabled]):not([aria-disabled="true"]):not([data-no-press]) {
+    transform: scale(0.97);
   }
 
   button[disabled] {

@@ -32,6 +32,9 @@ export default class Backdrop extends BaseComponent {
     el.setAttribute('aria-label', settings.ariaLabel || settings.title)
     el.setAttribute('aria-expanded', toAriaBoolean(!!settings.ariaExpanded))
     el.setAttribute('aria-hidden', toAriaBoolean(!settings.ariaExpanded))
+    // Backdrop is a click-to-close target — don't apply the universal press scale
+    // (the user wants the drawer to close, not the backdrop itself to react).
+    el.setAttribute('data-no-press', '')
     
     if (settings.ariaControls) {
       el.setAttribute('aria-controls', settings.ariaControls)
