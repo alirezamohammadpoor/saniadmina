@@ -6,15 +6,25 @@ button[disabled] {
   @apply flex flex-wrap gap-x-12 gap-y-5;
 }
 
+/* Tactile press feedback — opt-in via .btn-press on any clickable element.
+   Subtle scale tells the user the interface heard them. */
+.btn-press {
+  transition: transform 160ms var(--ease-out);
+}
+
+.btn-press:active:not([disabled]):not([aria-disabled="true"]) {
+  transform: scale(0.97);
+}
+
 .btn {
   @apply inline-flex items-center justify-center text-center; /* Layout */
   @apply py-3 px-5 border; /* Design */
   @apply bg-fg text-bg border-fg; /* Colors */
   @apply uppercase text-sm leading-none font-bold; /* Text */
 
-  transition-property: background-color, border-color, color;
+  transition-property: background-color, border-color, color, transform;
   transition-duration: 250ms;
-  transition-timing-function: ease;
+  transition-timing-function: var(--ease-out);
 
   &[disabled] {
     @apply bg-muted border-muted text-bg;
@@ -23,6 +33,11 @@ button[disabled] {
   &:not([disabled]) {
     @apply hover:bg-fg/80 hover:border-fg/80;
     @apply active:bg-fg active:border-fg;
+  }
+
+  &:active:not([disabled]) {
+    transform: scale(0.97);
+    transition-duration: 160ms;
   }
 
   &:focus-visible {
