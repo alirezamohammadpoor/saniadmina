@@ -1,0 +1,83 @@
+{%- comment -%}
+  Feature Store
+  ----------------------------------------------------------------------------
+  Editorial 50/50 section for highlighting a physical store, atelier,
+  shop-in-shop, or pop-up. Image on one side, eyebrow + body paragraph
+  on the other. Bottom-inner-corner anchored on desktop, stacked on mobile.
+
+  Designed in Figma — see Components / Editorial → Feature Store.
+{%- endcomment -%}
+
+{%- assign image_right = false -%}
+{%- if section.settings.image_position == 'right' -%}
+  {%- assign image_right = true -%}
+{%- endif -%}
+
+<section class="flex flex-col lg:flex-row" data-section-id="{{ section.id }}" data-section-type="feature-store">
+  {%- comment -%} Image — first on mobile (source order), reorder via lg:order on desktop {%- endcomment -%}
+  <div class="w-full aspect-[3/4] lg:aspect-auto lg:w-1/2 {% if image_right %}lg:order-2{% endif %}">
+    {% if section.settings.image %}
+      {{ section.settings.image
+        | image_url: width: 1400
+        | image_tag:
+          loading: 'lazy',
+          class: 'w-full h-full object-cover',
+          sizes: '(max-width: 1023px) 100vw, 50vw',
+          alt: section.settings.eyebrow | default: ''
+      }}
+    {% else %}
+      <div class="w-full h-full bg-[#E8E5E0]"></div>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Content — top-aligned/left on mobile, bottom-inner-corner on desktop {%- endcomment -%}
+  <div class="w-full lg:w-1/2 px-2 py-6 lg:py-20 lg:px-20 lg:flex lg:flex-col {% if image_right %}lg:order-1{% endif %}">
+    <div class="lg:mt-auto flex flex-col gap-6 {% if image_right %}lg:text-right{% endif %}">
+      {% if section.settings.eyebrow != blank %}
+        <p class="text-label">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <p>{{ section.settings.body }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature Store",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow / location label",
+      "info": "Renders uppercase + tracked. Example: \"Nordiska Kompaniet Stockholm\"."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body copy"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Store"
+    }
+  ]
+}
+{% endschema %}
