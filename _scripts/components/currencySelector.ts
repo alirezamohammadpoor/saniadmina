@@ -53,15 +53,15 @@ export default class CurrencySelector extends BaseComponent {
 
   private open() {
     this.toggle.setAttribute('aria-expanded', 'true')
-    this.dropdown.classList.remove('opacity-0', 'pointer-events-none')
-    this.dropdown.classList.add('opacity-100', 'pointer-events-auto')
+    this.dropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none')
+    this.dropdown.classList.add('opacity-100', 'scale-100', 'pointer-events-auto')
     document.addEventListener('click', this.onClickOutside)
   }
 
   private close() {
     this.toggle.setAttribute('aria-expanded', 'false')
-    this.dropdown.classList.add('opacity-0', 'pointer-events-none')
-    this.dropdown.classList.remove('opacity-100', 'pointer-events-auto')
+    this.dropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none')
+    this.dropdown.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto')
     document.removeEventListener('click', this.onClickOutside)
   }
 

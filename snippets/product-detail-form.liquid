@@ -225,8 +225,8 @@
 
   {%- comment -%} Product Info Modal — tab navigation {%- endcomment -%}
   <div class="fixed inset-0 z-200 pointer-events-none" data-product-info-modal data-component="product-info-modal" role="dialog" aria-modal="true" aria-label="{{ 'products.info.modal_label' | t }}" aria-hidden="true">
-    <div class="absolute inset-0 bg-fg/30 z-0 opacity-0 transition-opacity duration-300" data-modal-backdrop></div>
-    <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-300" data-modal-panel>
+    <div class="absolute inset-0 bg-fg/30 z-0 opacity-0 transition-opacity duration-300 ease-[var(--ease-out)]" data-modal-backdrop></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full lg:w-[480px] bg-bg overflow-y-auto z-10 translate-x-full transition-transform duration-[350ms] ease-[var(--ease-out)]" data-modal-panel>
       {%- comment -%} Header: close button, same height/padding as main header {%- endcomment -%}
       <div class="flex items-center justify-end container h-[var(--header-height)]">
         <button type="button" class="text-[12px] text-fg" data-modal-close>{{ 'general.close' | t }}</button>
