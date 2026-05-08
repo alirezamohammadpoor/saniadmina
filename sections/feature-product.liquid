@@ -1,0 +1,87 @@
+{%- comment -%}
+  Feature Product
+  ----------------------------------------------------------------------------
+  Editorial 60/40 asymmetric section for highlighting a product or collection
+  with brand-story copy. Lead image dominates, content column carries an
+  eyebrow + body paragraph. Bottom-inner-corner anchored on desktop, stacked
+  on mobile.
+
+  Designed in Figma — see Components / Editorial → Feature Product.
+{%- endcomment -%}
+
+{%- assign image_right = false -%}
+{%- if section.settings.image_position == 'right' -%}
+  {%- assign image_right = true -%}
+{%- endif -%}
+
+<section class="flex flex-col lg:flex-row" data-section-id="{{ section.id }}" data-section-type="feature-product">
+  {%- comment -%} Lead image (~60% on desktop, full width on mobile) {%- endcomment -%}
+  <div class="w-full aspect-[3/4] lg:aspect-auto lg:w-3/5 {% if image_right %}lg:order-2{% endif %}">
+    {% if section.settings.image %}
+      {{ section.settings.image
+        | image_url: width: 1600
+        | image_tag:
+          loading: 'lazy',
+          class: 'w-full h-full object-cover',
+          sizes: '(max-width: 1023px) 100vw, 60vw',
+          alt: section.settings.eyebrow | default: ''
+      }}
+    {% else %}
+      <div class="w-full h-full bg-[#E8E5E0]"></div>
+    {% endif %}
+  </div>
+
+  {%- comment -%}
+    Content column (~40% desktop). Asymmetric padding: 80px on the outer edge,
+    64px on the inner edge (closer to the image). Bottom-inner-corner anchor.
+  {%- endcomment -%}
+  <div class="w-full lg:w-2/5 px-2 py-6 lg:py-20 {% if image_right %}lg:pl-20 lg:pr-16 lg:order-1{% else %}lg:pl-16 lg:pr-20{% endif %} lg:flex lg:flex-col">
+    <div class="lg:mt-auto flex flex-col gap-6 {% if image_right %}lg:text-right{% endif %}">
+      {% if section.settings.eyebrow != blank %}
+        <p class="text-label">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <p>{{ section.settings.body }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature Product",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow / collection or edit label",
+      "info": "Renders uppercase + tracked. Example: \"Spring Edit 2026\"."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body copy"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Product"
+    }
+  ]
+}
+{% endschema %}
