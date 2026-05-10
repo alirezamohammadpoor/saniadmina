@@ -50,8 +50,22 @@
 
     {%- comment -%} Copyright {%- endcomment -%}
     {%- comment -%} Currency selector {%- endcomment -%}
-    <div class="mt-6">
+    <div class="mt-6 flex items-center gap-6">
       {% render 'currency-selector', style: 'footer' %}
+
+      {%- comment -%}
+        Cookie settings — re-opens the cookie preference drawer rendered by the
+        global cookie-consent section. The aria-controls target id matches the
+        drawer markup in sections/cookie-consent.liquid.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="text-[12px] text-muted underline underline-offset-2"
+        aria-controls="cookie-drawer-cookie-consent"
+        aria-expanded="false"
+      >
+        {{ 'cookie_consent.footer_link' | t | default: 'Cookie settings' }}
+      </button>
     </div>
 
     {% if section.settings.copyright_text != blank %}
