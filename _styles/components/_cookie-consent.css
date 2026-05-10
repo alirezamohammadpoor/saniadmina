@@ -1,0 +1,173 @@
+/* =====================================================================
+ * Cookie Consent
+ * ---------------------------------------------------------------------
+ * Two surfaces:
+ *   .cookie-banner — small bottom-right card on desktop, full-width-bottom
+ *                    on mobile. Slides in from below on first visit.
+ *   .cookie-drawer — right-side preference drawer, mirrors .color-picker
+ *                    drawer pattern (motion tokens, 80vw mobile, capped on
+ *                    desktop).
+ * ===================================================================== */
+
+/* --- Banner --------------------------------------------------------- */
+
+.cookie-banner {
+  @apply fixed z-(--z-drawer) left-0 right-0 bottom-0 lg:left-auto lg:bottom-6 lg:right-6 lg:w-[360px] bg-bg;
+  border-top: 1px solid var(--color-fg);
+
+  /* Slide-in/out from bottom; opacity fade on top */
+  transform: translateY(100%);
+  opacity: 0;
+  transition:
+    transform 250ms var(--ease-in-out),
+    opacity 200ms var(--ease-in-out);
+
+  /* When [hidden] is removed but before .is-visible is added, keep it
+     transparent + below the viewport so the entrance animation runs from
+     a clean state. */
+  pointer-events: none;
+
+  @media (min-width: 1024px) {
+    border: 1px solid var(--color-fg);
+  }
+
+  &.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      transform 350ms var(--ease-out),
+      opacity 300ms var(--ease-out);
+    pointer-events: auto;
+  }
+}
+
+.cookie-banner__inner {
+  @apply flex flex-col;
+  padding: 24px 16px;
+
+  @media (min-width: 1024px) {
+    padding: 28px;
+  }
+}
+
+.cookie-banner__eyebrow {
+  margin-bottom: 12px;
+}
+
+.cookie-banner__body {
+  @apply text-[12px] text-fg;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.cookie-banner__customize {
+  @apply text-[12px] text-fg underline underline-offset-2 self-start;
+  margin-bottom: 20px;
+}
+
+/* Stacked full-width buttons — Accept on top, Decline below. */
+.cookie-banner__actions {
+  @apply flex flex-col gap-2;
+
+  & > button {
+    width: 100%;
+  }
+}
+
+/* --- Drawer --------------------------------------------------------- */
+
+.cookie-drawer {
+  @apply fixed z-(--z-drawer) top-0 right-0 h-[100dvh] w-[80%] bg-bg;
+  @media (min-width: 1024px) {
+    max-width: min(80vw, 480px);
+  }
+  @apply translate-x-full;
+  transition: var(--transition-drawer-out);
+
+  pointer-events: none;
+
+  &.is-open {
+    @apply translate-x-0;
+    transition: var(--transition-drawer-in);
+    pointer-events: auto;
+  }
+}
+
+.cookie-drawer__header {
+  @apply relative flex items-center justify-between shrink-0;
+  height: var(--header-height);
+  padding-inline: var(--spacing-container);
+  border-bottom: 1px solid var(--color-fg);
+}
+
+.cookie-drawer__body {
+  @apply flex-1 overflow-y-auto;
+  padding: 24px var(--spacing-container);
+}
+
+.cookie-drawer__categories {
+  @apply flex flex-col;
+}
+
+.cookie-drawer__category {
+  @apply flex flex-col gap-2;
+  padding: 20px 0;
+  border-top: 1px solid var(--color-fg);
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-fg);
+  }
+}
+
+.cookie-drawer__category-header {
+  @apply flex items-center justify-between cursor-pointer;
+}
+
+.cookie-drawer__category-desc {
+  @apply text-[12px] text-fg;
+  line-height: 150%;
+}
+
+/* Custom square checkbox — sr-only the native input, render a sibling
+ * .cookie-drawer__check styled by the input's :checked state. */
+.cookie-drawer__checkbox {
+  @apply sr-only;
+}
+
+.cookie-drawer__check {
+  @apply inline-block relative shrink-0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-fg);
+  background-color: var(--color-bg);
+  transition: background-color 160ms var(--ease-out);
+
+  /* The "check" — a small filled square that pops in when input is :checked */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background-color: var(--color-bg);
+    transform: scale(0);
+    transition: transform 160ms var(--ease-out);
+  }
+}
+
+.cookie-drawer__checkbox:checked ~ .cookie-drawer__check {
+  background-color: var(--color-fg);
+
+  &::after {
+    transform: scale(1);
+  }
+}
+
+.cookie-drawer__checkbox:focus-visible ~ .cookie-drawer__check {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+.cookie-drawer__footer {
+  @apply flex flex-col gap-2 shrink-0;
+  padding: 16px var(--spacing-container) 24px;
+  border-top: 1px solid var(--color-fg);
+}
