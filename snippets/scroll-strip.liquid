@@ -1,0 +1,59 @@
+{% doc %}
+  Scroll Strip
+  ----------------------------------------------------------------------------
+  Reusable horizontal scrolling card strip wrapper. Owns the section heading,
+  scroll arrows, and snap-scroll container. Card content is supplied by the
+  caller via the `items` parameter (use Liquid `capture`). Each card item
+  should carry the `scroll-strip-item` utility class for consistent width +
+  snap behavior across the strip.
+
+  Used by:
+    - snippets/product-scroll.liquid (PDP "You may also like", homepage "New Arrivals")
+    - sections/product-as-seen-on.liquid ("As seen on")
+
+  Future product-listing or card-grid sections (e.g. "From the archive",
+  "Bestsellers") should compose against this snippet rather than reimplement
+  the scroll mechanics.
+
+  @param {string} items - Rendered HTML of card items (use {% capture %}). Required.
+  @param {string} [title] - Section heading text. Renders as <h2 class="text-h3">.
+  @param {boolean} [show_arrows] - Defaults to true. Set false to hide.
+  @param {string} [aria_label] - Accessible label for the section. Defaults to title.
+
+  @example
+    {%- capture items -%}
+      {%- for product in products -%}
+        <div class="scroll-strip-item">
+          {% render 'product-card', product: product %}
+        </div>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {% render 'scroll-strip', title: 'You may also like', items: items %}
+{% enddoc %}
+
+{%- liquid
+  if show_arrows == nil
+    assign show_arrows = true
+  endif
+
+  assign label = aria_label | default: title
+-%}
+
+<section
+  data-component="scroll-section"
+  {% if label != blank %}aria-label="{{ label | escape }}"{% endif %}
+>
+  {% if title != blank %}
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-h3 text-fg">{{ title }}</h2>
+
+      {% if show_arrows %}
+        {% render 'scroll-arrows' %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
+    {{ items }}
+  </div>
+</section>
