@@ -52,6 +52,24 @@ Spec work redesign of saniadmina.com — Swedish luxury shoe brand, handmade in 
 - 3:4 image ratio on product cards
 - 4:5 image ratio on PDP gallery
 
+### Section heading standard
+
+Product-listing and editorial card-grid sections use a single, reusable heading style:
+
+```html
+<h2 class="text-h3 text-fg">{{ title }}</h2>
+```
+
+Resolves to 20px / weight 400 / line-height 120% (`text-h3` utility in `_styles/app.css`). Always semantic `<h2>` (sentence case, no eyebrow), visual size `text-h3`. Currently applied to:
+
+- `snippets/product-scroll.liquid` — "You may also like" (PDP), "New Arrivals" (homepage)
+- `sections/product-as-seen-on.liquid` — "As seen on"
+- `sections/journal-featured.liquid` — "Journal"
+
+Any future product-listing or card-grid section (e.g. "From the archive", "Bestsellers") should reuse this exact pattern. Card content under the heading varies by purpose (product card with price + swatches; UGC card with influencer name; article card with date) — only the heading is standardized.
+
+The Feature Store / Feature Product editorial sections use `text-h3` at the visual level via `lg:text-[16px]` override; they're a different family (full-width editorial 50/50, not card grid) and intentionally render smaller on desktop to lean into editorial restraint.
+
 ## Data Contracts
 
 - **Swatches:** Shopify native `option.values[].swatch`, color option named "Color"

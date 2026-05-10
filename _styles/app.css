@@ -12,6 +12,10 @@
   --color-black: #000000;
 
   --spacing-container: 8px;
+  /* Vertical section spacing alias — references the responsive
+     --layout-padding-top/bottom defined in :root (24px mobile, 40px desktop).
+     Use as `py-(--spacing-layout)` in Tailwind, or `var(--spacing-layout)` in CSS. */
+  --spacing-layout: var(--layout-padding-top);
 
   --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
@@ -30,6 +34,19 @@
 @utility text-h3 { font-size: 20px; font-weight: 400; line-height: 120%; }
 @utility text-body { font-size: 16px; font-weight: 400; line-height: 150%; }
 @utility text-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Card item inside a horizontal snap-scroll strip.
+   Used by snippets/scroll-strip.liquid via product-scroll + product-as-seen-on.
+   Mobile: 70% (one full card + ~30% peek). Desktop: 25% (4 cards). */
+@utility scroll-strip-item {
+  width: 70%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+
+  @media (min-width: 1024px) {
+    width: calc(25% - 6px);
+  }
+}
 
 @utility container {
   max-width: none;

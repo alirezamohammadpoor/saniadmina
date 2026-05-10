@@ -98,8 +98,12 @@
     {% endif %}
   {% endif %}
 
-  {%- comment -%} Large brand text — edge to edge {%- endcomment -%}
-  <div class="text-[15vw] font-light leading-none text-fg overflow-hidden text-center">
+  {%- comment -%}
+    Large brand text — sized to sit just inside the viewport at the longest
+    locale ("SANIA D'MINA"). 15.5vw fills edge-to-edge with subtle clip; tracking
+    pushes the letters open for the editorial display feel.
+  {%- endcomment -%}
+  <div class="text-[15.5vw] font-light leading-none tracking-[0.02em] text-fg overflow-hidden text-center whitespace-nowrap">
     SANIA D'MINA
   </div>
 </footer>

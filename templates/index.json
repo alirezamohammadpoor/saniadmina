@@ -100,15 +100,24 @@
         "title": "As seen on"
       }
     },
-    "image_text_split_MfrDd7": {
-      "type": "image-text-split",
-      "name": "Image + Text Split",
+    "feature_store_WkhdU9": {
+      "type": "feature-store",
+      "name": "Feature Store",
       "settings": {
         "image": "shopify://shop_images/downloadgram.org_544861547_18376326361177173_7845137417686966486_n.jpg",
         "image_position": "left",
-        "subtitle": "NORDISKA KOMPANIET STOCKHOLM",
-        "heading": "Shop in store",
-        "link": ""
+        "heading": "Nordiska Kompaniet Stockholm",
+        "body": "The collection lives within NK's edit on Hamngatan 18–20 — alongside the brands that share its considered approach to retail."
+      }
+    },
+    "feature_product_qN8eQX": {
+      "type": "feature-product",
+      "name": "Feature Product",
+      "settings": {
+        "image": "shopify://shop_images/sania-dmina-ELENA-pistachio-suede-slingback-shoes-comfortable-bridesmaid-wedding.jpg",
+        "image_position": "left",
+        "heading": "Elena",
+        "body": "A pointed-toe pump in Italian leather, on a quiet 75mm heel.\n\nThe shape is the work — a long, narrow last drawn close to the foot, with a back that holds without effort. Made in Italy from full-grain calf, finished by hand."
       }
     }
   },
@@ -117,6 +126,7 @@
     "featured-products",
     "journal_featured",
     "product_as_seen_on_RWngnY",
-    "image_text_split_MfrDd7"
+    "feature_store_WkhdU9",
+    "feature_product_qN8eQX"
   ]
 }
