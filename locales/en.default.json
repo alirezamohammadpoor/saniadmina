@@ -351,6 +351,39 @@
       "empty_cta": "Explore our products"
     }
   },
+  "cookie_consent": {
+    "banner": {
+      "aria_label": "Cookie notice",
+      "eyebrow": "Cookies"
+    },
+    "drawer": {
+      "title": "Cookie preferences"
+    },
+    "actions": {
+      "accept": "Accept",
+      "decline": "Decline",
+      "customize": "Customize preferences",
+      "accept_all": "Accept all",
+      "save_preferences": "Save preferences",
+      "reject_all": "Reject all"
+    },
+    "categories": {
+      "always_on": "Always on",
+      "necessary": {
+        "title": "Necessary",
+        "desc": "Required for the site to function. Cannot be disabled."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "desc": "Helps us understand how visitors use the site so we can improve it."
+      },
+      "marketing": {
+        "title": "Marketing",
+        "desc": "Used to deliver relevant content and ads on this site and elsewhere."
+      }
+    },
+    "footer_link": "Cookie settings"
+  },
   "gift_cards": {
     "issued": {
       "title": "Here's your {{ value }} gift card for {{ shop }}",

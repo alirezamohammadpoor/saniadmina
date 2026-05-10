@@ -1,0 +1,211 @@
+{%- comment -%}
+  Cookie Consent
+  ----------------------------------------------------------------------------
+  Two surfaces wired into one section:
+    1. Banner — bottom-right card on desktop, full-width-bottom on mobile.
+       Shown on first visit when no consent decision exists.
+    2. Drawer — right-side preference drawer for granular Accept/Reject by
+       category (Necessary / Analytics / Marketing). Re-opened from the footer
+       "Cookie settings" link.
+
+  Integrates with Shopify's Customer Privacy API
+  (window.Shopify.customerPrivacy.setTrackingConsent) so analytics + marketing
+  pixels are gated by the user's choice automatically.
+
+  Designed in Figma — see Components / Cookie Consent.
+{%- endcomment -%}
+
+{%- liquid
+  assign body_text = section.settings.body | default: 'We use cookies to improve your experience.'
+  assign drawer_intro = section.settings.drawer_intro | default: 'We use cookies to enable site functionality, analyze performance, and personalize content. You can accept all, reject all, or choose by category.'
+  assign banner_id = 'cookie-banner-' | append: section.id
+  assign drawer_id = 'cookie-drawer-' | append: section.id
+  assign drawer_title_id = drawer_id | append: '-title'
+-%}
+
+{%- comment -%} Banner — hidden by default; CookieBanner.ts adds .is-visible after deciding it should show {%- endcomment -%}
+<aside
+  id="{{ banner_id }}"
+  class="cookie-banner"
+  data-component="cookie-banner"
+  data-drawer-target="{{ drawer_id }}"
+  role="region"
+  aria-label="{{ 'cookie_consent.banner.aria_label' | t | default: 'Cookie notice' }}"
+  hidden
+>
+  <div class="cookie-banner__inner">
+    <p class="text-label cookie-banner__eyebrow">
+      {{ 'cookie_consent.banner.eyebrow' | t | default: 'Cookies' }}
+    </p>
+
+    <p class="cookie-banner__body">{{ body_text }}</p>
+
+    <button
+      type="button"
+      class="cookie-banner__customize"
+      aria-controls="{{ drawer_id }}"
+      aria-expanded="false"
+    >
+      {{ 'cookie_consent.actions.customize' | t | default: 'Customize preferences' }}
+    </button>
+
+    <div class="cookie-banner__actions">
+      <button
+        type="button"
+        class="h-12 bg-fg text-bg text-[12px] font-medium flex items-center justify-center px-6 disabled:bg-muted disabled:cursor-not-allowed"
+        data-cookie-action="accept-all"
+      >
+        {{ 'cookie_consent.actions.accept' | t | default: 'Accept' }}
+      </button>
+      <button
+        type="button"
+        class="h-12 bg-bg text-fg border border-fg text-[12px] font-medium flex items-center justify-center px-6"
+        data-cookie-action="reject-all"
+      >
+        {{ 'cookie_consent.actions.decline' | t | default: 'Decline' }}
+      </button>
+    </div>
+  </div>
+</aside>
+
+{%- comment -%} Drawer — granular preferences {%- endcomment -%}
+<div
+  id="{{ drawer_id }}"
+  class="cookie-drawer overflow-hidden"
+  data-component="cookie-drawer"
+  data-banner-target="{{ banner_id }}"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="{{ drawer_title_id }}"
+  aria-hidden="true"
+  inert
+>
+  <div class="flex flex-col h-full">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="cookie-drawer__header">
+      <h2 id="{{ drawer_title_id }}" class="text-label text-fg">
+        {{ 'cookie_consent.drawer.title' | t | default: 'Cookie preferences' }}
+      </h2>
+      <button
+        type="button"
+        class="text-[12px] text-fg"
+        data-close
+      >
+        {{ 'general.close' | t }}
+      </button>
+    </div>
+
+    {%- comment -%} Scrollable body {%- endcomment -%}
+    <div class="cookie-drawer__body" data-scroller>
+      <p class="text-[12px] text-fg mb-6">
+        {{ drawer_intro }}
+      </p>
+
+      <ul class="cookie-drawer__categories">
+        {%- comment -%} Necessary — always on, no toggle {%- endcomment -%}
+        <li class="cookie-drawer__category">
+          <div class="cookie-drawer__category-header">
+            <span class="text-label text-fg">
+              {{ 'cookie_consent.categories.necessary.title' | t | default: 'Necessary' }}
+            </span>
+            <span class="text-[12px] text-fg">
+              {{ 'cookie_consent.categories.always_on' | t | default: 'Always on' }}
+            </span>
+          </div>
+          <p class="cookie-drawer__category-desc">
+            {{ 'cookie_consent.categories.necessary.desc' | t | default: 'Required for the site to function. Cannot be disabled.' }}
+          </p>
+        </li>
+
+        {%- comment -%} Analytics {%- endcomment -%}
+        <li class="cookie-drawer__category">
+          <label class="cookie-drawer__category-header">
+            <span class="text-label text-fg">
+              {{ 'cookie_consent.categories.analytics.title' | t | default: 'Analytics' }}
+            </span>
+            <input
+              type="checkbox"
+              class="cookie-drawer__checkbox"
+              data-cookie-category="analytics"
+            >
+            <span class="cookie-drawer__check" aria-hidden="true"></span>
+          </label>
+          <p class="cookie-drawer__category-desc">
+            {{ 'cookie_consent.categories.analytics.desc' | t | default: 'Helps us understand how visitors use the site so we can improve it.' }}
+          </p>
+        </li>
+
+        {%- comment -%} Marketing {%- endcomment -%}
+        <li class="cookie-drawer__category">
+          <label class="cookie-drawer__category-header">
+            <span class="text-label text-fg">
+              {{ 'cookie_consent.categories.marketing.title' | t | default: 'Marketing' }}
+            </span>
+            <input
+              type="checkbox"
+              class="cookie-drawer__checkbox"
+              data-cookie-category="marketing"
+            >
+            <span class="cookie-drawer__check" aria-hidden="true"></span>
+          </label>
+          <p class="cookie-drawer__category-desc">
+            {{ 'cookie_consent.categories.marketing.desc' | t | default: 'Used to deliver relevant content and ads on this site and elsewhere.' }}
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    {%- comment -%} Footer actions {%- endcomment -%}
+    <div class="cookie-drawer__footer">
+      <button
+        type="button"
+        class="w-full h-12 bg-fg text-bg text-[12px] font-medium flex items-center justify-center px-6 disabled:bg-muted disabled:cursor-not-allowed"
+        data-cookie-action="accept-all"
+      >
+        {{ 'cookie_consent.actions.accept_all' | t | default: 'Accept all' }}
+      </button>
+      <button
+        type="button"
+        class="w-full h-12 bg-bg text-fg border border-fg text-[12px] font-medium flex items-center justify-center px-6"
+        data-cookie-action="save-preferences"
+      >
+        {{ 'cookie_consent.actions.save_preferences' | t | default: 'Save preferences' }}
+      </button>
+      <button
+        type="button"
+        class="w-full h-12 bg-bg text-fg border border-fg text-[12px] font-medium flex items-center justify-center px-6"
+        data-cookie-action="reject-all"
+      >
+        {{ 'cookie_consent.actions.reject_all' | t | default: 'Reject all' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cookie Consent",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner copy"
+    },
+    {
+      "type": "text",
+      "id": "body",
+      "label": "Banner body",
+      "default": "We use cookies to improve your experience."
+    },
+    {
+      "type": "header",
+      "content": "Drawer copy"
+    },
+    {
+      "type": "textarea",
+      "id": "drawer_intro",
+      "label": "Drawer intro",
+      "default": "We use cookies to enable site functionality, analyze performance, and personalize content. You can accept all, reject all, or choose by category."
+    }
+  ]
+}
+{% endschema %}
