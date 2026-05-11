@@ -33,6 +33,8 @@ import AnnouncementRotator from '@/components/announcementRotator'
 import CurrencySelector from '@/components/currencySelector'
 import ScrollSection from '@/components/scrollSection'
 import DesktopMenu from '@/components/desktopMenu'
+import CookieBanner from '@/components/cookieConsent/banner'
+import CookieDrawer from '@/components/cookieConsent/drawer'
 
 // Use this to expose anything needed throughout the rest of the app
 window.app = window.app || {};
@@ -64,6 +66,12 @@ function init() {
   }
   for (const el of document.querySelectorAll<HTMLElement>(DesktopMenu.SELECTOR)) {
     new DesktopMenu(el)
+  }
+  for (const el of document.querySelectorAll<HTMLElement>(CookieBanner.SELECTOR)) {
+    new CookieBanner(el)
+  }
+  for (const el of document.querySelectorAll<HTMLElement>(CookieDrawer.SELECTOR)) {
+    new CookieDrawer(el)
   }
 
   // START Taxi

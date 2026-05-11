@@ -1,7 +1,9 @@
 {% doc %}
   Product Scroll
   ------------------------------------------------------------------------------
-  Horizontal scrolling product card strip. Reusable across sections.
+  Horizontal scrolling product card strip. Composes scroll-strip with
+  product-card content. Used for "You may also like" (PDP related products)
+  and "New Arrivals" (homepage featured products).
 
   @param {object} products - Collection of products to display - required
   @param {string} [title] - Optional heading text
@@ -20,26 +22,22 @@
   if limit == blank
     assign limit = 6
   endif
+
+  assign scroll_label = title | default: 'products.product.scroll_default_label' | t
 -%}
 
-{%- assign scroll_label = title | default: 'products.product.scroll_default_label' | t -%}
-<section
-  data-component="scroll-section"
-  aria-label="{{ scroll_label }}"
->
-  {% if title != blank %}
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-h3 text-fg">{{ title }}</h2>
-
-      {% render 'scroll-arrows' %}
+{%- capture items -%}
+  {%- for product in products limit: limit -%}
+    <div class="scroll-strip-item">
+      {% render 'product-card',
+                product: product,
+                collection: collection,
+                sizes: '(max-width: 1023.98px) 70vw, 25vw' %}
     </div>
-  {% endif %}
+  {%- endfor -%}
+{%- endcapture -%}
 
-  <div class="flex gap-1 overflow-x-auto overflow-y-hidden snap-x snap-mandatory no-scrollbar" data-scroll-container>
-    {%- for product in products limit: limit -%}
-      <div class="w-[47%] lg:w-[calc(25%-6px)] shrink-0 snap-start">
-        {% render 'product-card', product: product, collection: collection %}
-      </div>
-    {%- endfor -%}
-  </div>
-</section>
+{% render 'scroll-strip',
+          title: title,
+          aria_label: scroll_label,
+          items: items %}

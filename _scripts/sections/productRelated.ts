@@ -3,6 +3,7 @@ import { fetchDom } from '@/core/utils/dom'
 
 import BaseSection from '@/sections/base'
 import ProductCard from '@/components/product/productCard'
+import ScrollSection from '@/components/scrollSection'
 
 // See: https://shopify.dev/docs/storefronts/themes/product-merchandising/recommendations/related-products#implementing-product-recommendations
 
@@ -16,6 +17,7 @@ export default class ProductRelatedSection extends BaseSection {
 
   #abortController: AbortController | null
   productCards: ProductCard[]
+  scrollSections: ScrollSection[]
   contentTarget: HTMLElement
   content: HTMLElement
   recommendationsUrl: string
@@ -30,6 +32,7 @@ export default class ProductRelatedSection extends BaseSection {
 
     this.#abortController = null
     this.productCards = []
+    this.scrollSections = []
 
     this.contentTarget = this.qs(selectors.contentTarget)
     this.content = this.qs(selectors.content)
@@ -70,6 +73,11 @@ export default class ProductRelatedSection extends BaseSection {
       this.contentTarget.replaceChildren(content)
 
       this.productCards = this.qsa(ProductCard.SELECTOR, this.contentTarget).map((el: HTMLElement) => new ProductCard(el))
+
+      // The injected content wraps cards in a scroll-strip (data-component="scroll-section").
+      // We must hand-instantiate ScrollSection here — app.ts's boot-time loop already ran
+      // before this XHR completed, and SectionManager only handles top-level [data-section-type].
+      this.scrollSections = this.qsa(ScrollSection.SELECTOR, this.contentTarget).map((el: HTMLElement) => new ScrollSection(el))
     }
     catch (e) {
       console.warn(e)
